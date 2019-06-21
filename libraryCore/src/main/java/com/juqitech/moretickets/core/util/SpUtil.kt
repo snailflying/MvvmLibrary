@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.text.TextUtils
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-05
  * @desc
  */

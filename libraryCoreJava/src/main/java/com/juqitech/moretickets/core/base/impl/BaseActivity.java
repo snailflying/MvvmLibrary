@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.juqitech.moretickets.core.util.StatusBarUtil;
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-04
  * @desc 简单 Activity，无业务逻辑可继承此类
  */

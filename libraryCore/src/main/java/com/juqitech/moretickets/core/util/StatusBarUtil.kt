@@ -21,7 +21,7 @@ import com.juqitech.moretickets.core.base.impl.BaseApp
 
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-04
  * @desc
  */

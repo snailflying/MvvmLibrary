@@ -3,7 +3,7 @@ package com.juqitech.moretickets.core
 import com.juqitech.moretickets.core.serviceloader.ServicesLoader
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-05
  * @desc 获取 app 环境配置信息
  * @see ServicesLoader

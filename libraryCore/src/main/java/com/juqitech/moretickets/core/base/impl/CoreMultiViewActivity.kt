@@ -15,7 +15,7 @@ import com.juqitech.moretickets.core.base.MultiViewStatus.STATUS_LOADING
 import com.juqitech.moretickets.core.base.MultiViewStatus.STATUS_MAIN
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-06
  * @desc 提供默认的 loading、error、empty 等状态 UI
  * 需要更改状态的 view Id 强制规定命名 为 id=@+id/multiStatusView

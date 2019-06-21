@@ -7,7 +7,7 @@ import com.juqitech.moretickets.library.BuildConfig;
 
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-04
  * @desc
  */

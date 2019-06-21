@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-04
  * @desc RetrofitFactory
  * 非 Public 类型，不对外公开，必须通过 HttpClient 获取

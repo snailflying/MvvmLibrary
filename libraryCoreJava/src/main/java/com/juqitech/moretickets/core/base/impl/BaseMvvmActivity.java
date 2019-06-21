@@ -9,7 +9,7 @@ import com.juqitech.moretickets.core.base.IBaseViewModel;
 import com.juqitech.moretickets.core.util.LogUtil;
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-03
  * @desc MVP 模式 Activity
  */

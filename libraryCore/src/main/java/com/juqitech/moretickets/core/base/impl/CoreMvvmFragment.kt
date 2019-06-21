@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle
 import com.juqitech.moretickets.core.base.IViewModel
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-05
  * @desc
  */

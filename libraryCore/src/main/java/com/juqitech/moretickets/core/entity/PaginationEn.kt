@@ -3,7 +3,7 @@ package com.juqitech.moretickets.core.entity
 import java.io.Serializable
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-05
  * @desc
  */

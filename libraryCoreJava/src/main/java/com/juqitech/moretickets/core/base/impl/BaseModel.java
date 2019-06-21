@@ -7,7 +7,7 @@ import com.juqitech.moretickets.core.http.HttpClient;
 import com.juqitech.moretickets.core.util.LogUtil;
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-04
  * @desc
  */

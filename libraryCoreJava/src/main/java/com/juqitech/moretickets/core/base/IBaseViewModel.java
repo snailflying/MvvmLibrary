@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.OnLifecycleEvent;
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-03
  * @desc
  */

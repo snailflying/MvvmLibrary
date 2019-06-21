@@ -1,7 +1,7 @@
 package com.juqitech.moretickets.core.base
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-06
  * @desc 页面显示状态
  */

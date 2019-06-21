@@ -8,7 +8,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 
 /**
- * @author zhanfeng
+ * @author zhiqiang
  * @date 2019-06-05
  * @desc 可选择不重载 [.getRetrofit]和[.getOkHttpClient]
  */
