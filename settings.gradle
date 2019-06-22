@@ -1,1 +1,1 @@
-include ':app', ':libraryCore', ':libraryCoreJava'
+include ':app', ':libraryCore', ':libraryCoreJava', ':libraryframework'

@@ -1,4 +1,4 @@
-package com.themone.theone.library;
+package com.theone.framework;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.theone.niumowang.library.test", appContext.getPackageName());
+        assertEquals("com.theone.libraryframework.test", appContext.getPackageName());
     }
 }

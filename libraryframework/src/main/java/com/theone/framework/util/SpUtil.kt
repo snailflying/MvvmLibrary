@@ -1,4 +1,4 @@
-package com.themone.core.util
+package com.theone.framework.util
 
 import android.content.Context
 import android.content.SharedPreferences
