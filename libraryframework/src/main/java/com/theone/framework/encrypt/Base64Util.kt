@@ -5,7 +5,7 @@ import android.util.Base64
 /**
  * @Author zhiqiang
  * @Date 2019-05-15
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description Base64工具类，以保持跟后台统一
  */
 object Base64Util {

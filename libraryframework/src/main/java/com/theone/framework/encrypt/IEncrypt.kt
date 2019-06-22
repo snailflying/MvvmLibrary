@@ -5,7 +5,7 @@ import javax.crypto.Cipher
 /**
  * @Author zhiqiang
  * @Date 2019-05-14
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description 加解密策接口
  */
 interface IEncrypt {

@@ -8,7 +8,7 @@ import android.util.Log
 /**
  * @Author zhiqiang
  * @Date 2019-06-20
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 object DeviceUtil {

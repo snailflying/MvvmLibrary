@@ -8,7 +8,7 @@ import com.theone.framework.encrypt.AesRsaEncrypt
 /**
  * @Author zhiqiang
  * @Date 2019-06-22
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 

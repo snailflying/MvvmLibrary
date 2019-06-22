@@ -7,7 +7,7 @@ import java.math.BigInteger
 /**
  * @Author zhiqiang
  * @Date 2019-06-07
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 object HexUtil {

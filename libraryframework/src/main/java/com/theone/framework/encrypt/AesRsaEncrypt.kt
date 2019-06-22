@@ -20,7 +20,7 @@ import javax.security.auth.x500.X500Principal
 /**
  * @Author zhiqiang
  * @Date 2019-05-15
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description 加密大数据时使用，因两层加密，加密小数据反而慢，小数据时推荐用RsaEncrypt
  */
 class AesRsaEncrypt

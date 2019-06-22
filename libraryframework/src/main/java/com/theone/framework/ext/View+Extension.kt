@@ -6,7 +6,7 @@ import android.view.inputmethod.InputMethodManager
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Date 2019-06-19
  * @Description
  */

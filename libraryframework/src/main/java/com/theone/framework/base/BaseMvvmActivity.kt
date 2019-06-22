@@ -8,7 +8,7 @@ import com.theone.framework.util.I18NUtil
 /**
  * @Author zhiqiang
  * @Date 2019-06-19
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 abstract class BaseMvvmActivity<VM : IViewModel> : CoreMvvmActivity<VM>() {

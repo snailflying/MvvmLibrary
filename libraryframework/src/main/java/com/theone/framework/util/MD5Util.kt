@@ -9,7 +9,7 @@ import java.security.NoSuchAlgorithmException
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Date 2019-06-19
  * @Description 参考：http://blankj.com
  */

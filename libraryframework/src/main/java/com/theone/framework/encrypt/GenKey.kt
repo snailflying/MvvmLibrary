@@ -14,7 +14,7 @@ import java.security.NoSuchAlgorithmException
 /**
  * @Author zhiqiang
  * @Date 2019-05-15
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 object GenKey {

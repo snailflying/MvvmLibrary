@@ -6,7 +6,7 @@ import java.io.File
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Date 2019-06-18
  * @Description 文件管理 工具类
  */

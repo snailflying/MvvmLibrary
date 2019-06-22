@@ -7,7 +7,7 @@ import com.themone.core.base.impl.CoreMvvmFragment
 /**
  * @Author zhiqiang
  * @Date 2019-06-19
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 abstract class BaseMvvmFragment<VM : IViewModel> : CoreMvvmFragment<VM>() {

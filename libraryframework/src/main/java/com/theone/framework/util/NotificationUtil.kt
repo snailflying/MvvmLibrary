@@ -17,7 +17,7 @@ import androidx.core.app.NotificationCompat
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Date 2019-06-17
  * @Description 通知管理类 参考https://github.com/yangchong211/YCNotification
  */

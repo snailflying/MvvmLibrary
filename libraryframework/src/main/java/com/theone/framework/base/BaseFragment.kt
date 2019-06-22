@@ -6,7 +6,7 @@ import com.themone.core.base.impl.CoreFragment
 /**
  * @Author zhiqiang
  * @Date 2019-06-19
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 open class BaseFragment : CoreFragment() {

@@ -3,7 +3,7 @@ package com.theone.framework.util
 /**
  * @Author zhiqiang
  * @Date 2019-06-22
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 
@@ -22,7 +22,7 @@ import java.io.IOException
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Date 2019-06-15
  * @Description 管理类(振动:[Vibrator]+提示音:[SoundPool],[MediaPlayer],[Ringtone])
  */
