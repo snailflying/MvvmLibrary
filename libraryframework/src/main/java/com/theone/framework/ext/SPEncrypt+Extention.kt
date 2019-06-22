@@ -12,9 +12,9 @@ import com.theone.framework.encrypt.AesRsaEncrypt
  * @Description
  */
 
-fun SharedPreferences.getEncryptString(key: String, defValue: String?, pwd: String? = "l1r2z3o2q1n"): String {
+fun SharedPreferences.getEncryptString(key: String, defValue: String = "", pwd: String? = "l1r2z3o2q1n"): String {
     val encryptValue = this.getString(encryptPreference(plainText = key, pwd = pwd), null)
-    return if (encryptValue == null) defValue ?: "" else decryptPreference(cipherText = encryptValue, pwd = pwd)
+    return if (encryptValue == null) defValue else decryptPreference(cipherText = encryptValue, pwd = pwd)
 }
 
 fun SharedPreferences.Editor.putEncryptString(
@@ -27,7 +27,7 @@ fun SharedPreferences.Editor.putEncryptString(
 }
 
 
-fun SharedPreferences.getEncryptInt(key: String, defValue: Int, pwd: String? = "l1r2z3o2q1n"): Int {
+fun SharedPreferences.getEncryptInt(key: String, defValue: Int = 0, pwd: String? = "l1r2z3o2q1n"): Int {
     val encryptValue = this.getString(encryptPreference(plainText = key, pwd = pwd), null)
 
     return if (encryptValue == null) defValue else decryptPreference(cipherText = encryptValue, pwd = pwd).toInt()
@@ -46,7 +46,7 @@ fun SharedPreferences.Editor.putEncryptInt(
 }
 
 
-fun SharedPreferences.getEncryptLong(key: String, defValue: Long, pwd: String? = "l1r2z3o2q1n"): Long {
+fun SharedPreferences.getEncryptLong(key: String, defValue: Long = 0, pwd: String? = "l1r2z3o2q1n"): Long {
     val encryptValue = this.getString(encryptPreference(plainText = key, pwd = pwd), null)
     return if (encryptValue == null) defValue else decryptPreference(cipherText = encryptValue, pwd = pwd).toLong()
 }
@@ -63,7 +63,7 @@ fun SharedPreferences.Editor.putEncryptLong(
     return this
 }
 
-fun SharedPreferences.getEncryptFloat(key: String, defValue: Float, pwd: String? = "l1r2z3o2q1n"): Float {
+fun SharedPreferences.getEncryptFloat(key: String, defValue: Float = 0F, pwd: String? = "l1r2z3o2q1n"): Float {
     val encryptValue = this.getString(encryptPreference(plainText = key, pwd = pwd), null)
     return if (encryptValue == null) defValue else decryptPreference(cipherText = encryptValue, pwd = pwd).toFloat()
 }
@@ -80,7 +80,7 @@ fun SharedPreferences.Editor.putEncryptFloat(
     return this
 }
 
-fun SharedPreferences.getEncryptBoolean(key: String, defValue: Boolean, pwd: String? = "l1r2z3o2q1n"): Boolean {
+fun SharedPreferences.getEncryptBoolean(key: String, defValue: Boolean = false, pwd: String? = "l1r2z3o2q1n"): Boolean {
     val encryptValue = this.getString(encryptPreference(plainText = key, pwd = pwd), null)
     return if (encryptValue == null) defValue else decryptPreference(cipherText = encryptValue, pwd = pwd).toBoolean()
 }
@@ -99,13 +99,13 @@ fun SharedPreferences.Editor.putEncryptBoolean(
 
 fun SharedPreferences.getEncryptStringSet(
     key: String,
-    defValues: Set<String>,
+    defValues: Set<String> = HashSet(),
     pwd: String? = "l1r2z3o2q1n"
 ): Set<String> {
     val encryptSet = this.getStringSet(encryptPreference(plainText = key, pwd = pwd), null)
-    return if (encryptSet==null){
+    return if (encryptSet == null) {
         defValues
-    } else{
+    } else {
         val decryptSet = HashSet<String>()
         for (encryptValue in encryptSet) {
             decryptSet.add(decryptPreference(cipherText = encryptValue, pwd = pwd))
