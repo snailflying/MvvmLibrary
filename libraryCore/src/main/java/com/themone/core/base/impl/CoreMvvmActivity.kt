@@ -16,6 +16,7 @@ abstract class CoreMvvmActivity<VM : IViewModel> : CoreActivity() {
     private val TAG = "BaseMvpActivity"
 
     protected var mViewModel: VM? = null
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

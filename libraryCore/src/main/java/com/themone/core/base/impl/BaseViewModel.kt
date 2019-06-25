@@ -19,25 +19,18 @@ import io.reactivex.disposables.Disposable
  * @desc
  */
 abstract class BaseViewModel<M : IModel> : ViewModel(), IViewModel {
-
-    protected var mModel: M? = null
-
-    /**
-     * 为了方便kotlin引用
-     */
-    protected var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
-
-    init {
-        this.mModel = this.onCreateModel()
-    }
-
     /**
      * 初始化 model
      *
      * @return model
      */
-    protected abstract fun onCreateModel(): M
+    protected abstract var mModel: M?
 
+    /**
+     * 为了方便kotlin引用
+     */
+    protected var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
+        private set
 
     @MainThread
     override fun onResume(owner: LifecycleOwner) {

@@ -14,6 +14,7 @@ import com.themone.core.base.IViewModel
 abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
 
     protected var mViewModel: VM? = null
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
