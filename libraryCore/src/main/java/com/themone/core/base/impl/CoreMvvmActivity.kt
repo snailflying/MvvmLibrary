@@ -13,7 +13,7 @@ import com.themone.core.util.LogUtil
  */
 abstract class CoreMvvmActivity<VM : IViewModel> : CoreActivity() {
 
-    private val TAG = "BaseMvpActivity"
+    private val TAG = "CoreMvvmActivity"
 
     protected var mViewModel: VM? = null
         private set

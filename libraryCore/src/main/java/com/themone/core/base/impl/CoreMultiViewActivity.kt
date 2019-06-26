@@ -60,7 +60,7 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
             return
         }
         if (null == viewLoading) {
-            viewLoading = View.inflate(mContext, R.layout.view_progresss, null)
+            viewLoading = View.inflate(this, R.layout.view_progresss, null)
             if (null == viewLoading) {
                 throw IllegalStateException(
                     "A View should be named 'view_progresss' in viewLoadingResource."
@@ -82,7 +82,7 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
         }
         if (!isErrorViewAdded) {
             isErrorViewAdded = true
-            viewError = View.inflate(mContext, mViewErrorRes, null)
+            viewError = View.inflate(this, mViewErrorRes, null)
             if (null == viewError) {
                 throw IllegalStateException(
                     "A View should be named 'view_error' in ErrorLayoutResource."

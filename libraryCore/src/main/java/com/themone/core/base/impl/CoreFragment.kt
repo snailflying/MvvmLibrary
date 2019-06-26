@@ -1,6 +1,5 @@
 package com.themone.core.base.impl
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +12,7 @@ import com.themone.core.util.LogUtil
  */
 open class CoreFragment : Fragment() {
 
-    protected var mContext: Activity? = null
+    protected var mContext: Context? = null
     private var mIsFirstVisible = true
     private var isViewCreated = false
     private var isSupportVisible = false
@@ -133,7 +132,7 @@ open class CoreFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        mContext = activity
+        mContext = context
     }
 
     companion object {

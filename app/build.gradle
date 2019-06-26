@@ -36,4 +36,10 @@ dependencies {
     implementation rootProject.ext.dependencies["appcompat"]
     implementation rootProject.ext.dependencies["core_ktx"]
     implementation rootProject.ext.dependencies["constraintlayout"]
+
+    implementation rootProject.ext.dependencies["rxjava2"]
+    implementation rootProject.ext.dependencies["rxandroid2"]
+    implementation rootProject.ext.dependencies["rxkotlin"]
+    implementation project(':libraryCore')
+    implementation project(':libraryframework')
 }

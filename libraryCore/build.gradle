@@ -43,7 +43,6 @@ dependencies {
     implementation rootProject.ext.dependencies["palette"]
 
     implementation rootProject.ext.dependencies["rxjava2"]
-    implementation rootProject.ext.dependencies["rxjava2"]
 
     //network
     implementation rootProject.ext.dependencies["okhttp3"]

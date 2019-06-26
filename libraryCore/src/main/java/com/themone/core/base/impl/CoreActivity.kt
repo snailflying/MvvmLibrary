@@ -1,6 +1,7 @@
 package com.themone.core.base.impl
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.themone.core.util.StatusBarUtil
@@ -12,11 +13,9 @@ import com.themone.core.util.StatusBarUtil
  */
 open class CoreActivity : AppCompatActivity() {
 
-    protected lateinit var mContext: Activity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mContext = this
         StatusBarUtil.setTransparentForWindow(this)
     }
 
@@ -25,10 +24,6 @@ open class CoreActivity : AppCompatActivity() {
         if (isFitsSystemWindows()) {
             StatusBarUtil.setFitsSystemWindows(this)
         }
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
     }
 
     open fun isFitsSystemWindows(): Boolean {

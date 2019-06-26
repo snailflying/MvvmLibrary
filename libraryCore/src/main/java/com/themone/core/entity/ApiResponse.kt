@@ -9,19 +9,18 @@ import java.io.Serializable
  */
 
 /**
- * errorCode : 200
+ * statusCode : 200
  * message : ""
  * pagination : {"count":9,"offset":0,"length":20,"sortingConditions":[],"total":9,"pageNo":1,"pageSize":20}
  * data : {}
  */
 data class ApiResponse<T>(
     var data: T?,
-    var errorCode: Int,
-    var message: String,
-    var pagination: PaginationEn? = null
+    var statusCode: Int,
+    var message: String
 ) : Serializable {
 
     val isSuccess: Boolean
-        get() = errorCode == 200 && null != data
+        get() = statusCode == 200 && null != data
 
 }

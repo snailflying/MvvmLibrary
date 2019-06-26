@@ -16,9 +16,6 @@ abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
     protected var mViewModel: VM? = null
         private set
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
