@@ -12,9 +12,8 @@ import com.theone.framework.util.I18NUtil
  * @Description
  */
 open class BaseActivity : CoreActivity() {
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(I18NUtil.updateResource(newBase))
-        LogUtil.i("attachBaseContext")
 
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(I18NUtil.updateResource(newBase))
     }
 }
