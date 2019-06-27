@@ -8,7 +8,7 @@ package com.themone.core.base
 enum class MultiViewStatus {
     STATUS_LOADING,
     STATUS_EMPTY,
-    STATUS_HTTP_ERROR,
+    STATUS_ERROR,
     STATUS_MAIN,
     STATUS_NETWORK_FAILED
 }

@@ -1,10 +1,14 @@
 package com.themone.core.base.impl
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
-import com.themone.core.base.IMultiStatusProvider
+import androidx.annotation.Nullable
+import com.themone.core.base.IMultiStateProvider
 import com.themone.core.base.IViewModel
 import com.themone.core.base.MultiViewStatus
 import com.themone.core.base.MultiViewStatus.*
@@ -16,22 +20,36 @@ import com.themone.theone.library.R
  * @desc 提供默认的 loading、error、empty 等状态 UI
  * 需要更改状态的 view Id 强制规定命名 为 id=@+id/multiStatusView
  */
-abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), IMultiStatusProvider {
+abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), IMultiStateProvider {
 
-    protected var viewError: View? = null
-    protected var viewLoading: View? = null
-    protected var mMultiStatusView: View? = null
-    var mParent: ViewGroup? = null
+    protected var errorView: View? = null
+    protected var emptyView: View? = null
+    protected var loadingView: View? = null
+    protected var contentView: View? = null
+    var parentViewGroup: ViewGroup? = null
+    protected var viewState = STATUS_MAIN
+        set(value) {
+            val previousField = field
 
-    private var mViewErrorRes: Int = 0
+            if (value != previousField) {
+                field = value
+                setView(previousField)
+                multiStatusListener?.onStateChanged(value)
+            }
+        }
+    var multiStatusListener: StatusListener? = null
 
-    protected var mViewState = STATUS_MAIN
-    var isErrorViewAdded = false
-    var mMultiStatusLP: ViewGroup.LayoutParams? = null
+    var animateLayoutChanges: Boolean = false
 
-    internal val httpErrorRes: Int
-        @LayoutRes
-        get() = R.layout.view_error
+    var contentLayoutParams: ViewGroup.LayoutParams? = null
+
+    @LayoutRes
+    protected val errorLayout: Int = R.layout.view_error
+
+    @LayoutRes
+    protected val emptyLayout: Int = R.layout.view_error
+    @LayoutRes
+    protected val loadingLayout: Int = R.layout.view_progresss
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,100 +57,236 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
     }
 
     private fun initUiStatus(view: View, savedInstanceState: Bundle?) {
-        mMultiStatusView = view.findViewById(R.id.multiStatusView)
-        if (mMultiStatusView == null) {
+        contentView = view.findViewById(R.id.multiStatusView)
+        if (contentView == null) {
             throw IllegalStateException(
                 "The subclass of RootActivity must contain a View named 'view_main'."
             )
         }
-        if (mMultiStatusView!!.parent !is ViewGroup) {
+        if (contentView!!.parent !is ViewGroup) {
             throw IllegalStateException(
                 "view_main's ParentView should be a ViewGroup."
             )
         }
-        mMultiStatusLP = mMultiStatusView!!.layoutParams
-        mParent = mMultiStatusView!!.parent as ViewGroup
-        mViewErrorRes = httpErrorRes
+        contentLayoutParams = contentView!!.layoutParams
+        parentViewGroup = contentView!!.parent as ViewGroup
     }
 
-    override fun onStatusLoading() {
-        if (mViewState === STATUS_LOADING) {
+    override fun showStateLoading(view: View?) {
+        if (viewState === STATUS_LOADING) {
             return
         }
-        if (null == viewLoading) {
-            viewLoading = View.inflate(mContext, R.layout.view_progresss, null)
-            if (null == viewLoading) {
+        if (view != null) {
+            loadingView = view
+            //设置同一个layoutParams
+            parentViewGroup!!.addView(loadingView, contentLayoutParams)
+        } else if (null == loadingView) {
+            loadingView = View.inflate(mContext, loadingLayout, null)
+            if (null == loadingView) {
                 throw IllegalStateException(
                     "A View should be named 'view_progresss' in viewLoadingResource."
                 )
             }
             //设置同一个layoutParams
-            mParent!!.addView(viewLoading, mMultiStatusLP)
-            viewLoading = mParent!!.findViewById(R.id.loadingView)
+            parentViewGroup!!.addView(loadingView, contentLayoutParams)
         }
         hideCurrentView()
-        mViewState = STATUS_LOADING
-        viewLoading!!.visibility = View.VISIBLE
-        //        ivLoading.start();
+        viewState = STATUS_LOADING
     }
 
-    override fun onStatusHttpError() {
-        if (mViewState === STATUS_HTTP_ERROR) {
+    override fun showErrorState(view: View?) {
+        if (viewState === STATUS_ERROR) {
             return
         }
-        if (!isErrorViewAdded) {
-            isErrorViewAdded = true
-            viewError = View.inflate(mContext, mViewErrorRes, null)
-            if (viewError == null) {
+        if (view != null) {
+            errorView = view
+            //设置同一个layoutParams
+            parentViewGroup!!.addView(errorView, contentLayoutParams)
+        } else if (errorView == null) {
+            errorView = View.inflate(mContext, errorLayout, null)
+            if (errorView == null) {
                 throw IllegalStateException(
                     "A View should be named 'view_error' in ErrorLayoutResource."
                 )
             }
             //设置同一个layoutParams
-            mParent!!.addView(viewError, mMultiStatusLP)
-            viewError = mParent!!.findViewById(R.id.errorView)
-            viewError!!.setOnClickListener { event -> retryNetWork() }
+            parentViewGroup!!.addView(errorView, contentLayoutParams)
+            errorView = parentViewGroup!!.findViewById(R.id.errorView)
         }
-        hideCurrentView()
-        mViewState = STATUS_HTTP_ERROR
-        viewError!!.visibility = View.VISIBLE
+        setView(viewState)
+        viewState = STATUS_ERROR
     }
 
-    override fun onStatusEmpty() {
-        onStatusMain()
-    }
-
-    override fun onStatusMain() {
-        if (mViewState === STATUS_MAIN) {
+    override fun showStateEmpty(view: View?) {
+        if (viewState === STATUS_EMPTY) {
             return
         }
-        hideCurrentView()
-        mViewState = STATUS_MAIN
-        mMultiStatusView!!.visibility = View.VISIBLE
+        if (view != null) {
+            emptyView = view
+            //设置同一个layoutParams
+            parentViewGroup!!.addView(emptyView, contentLayoutParams)
+        } else if (emptyView == null) {
+            emptyView = View.inflate(mContext, emptyLayout, null)
+            if (emptyView == null) {
+                throw IllegalStateException(
+                    "A View should be named 'view_error' in ErrorLayoutResource."
+                )
+            }
+            //设置同一个layoutParams
+            parentViewGroup!!.addView(emptyView, contentLayoutParams)
+        }
+        setView(viewState)
+        viewState = STATUS_EMPTY
+    }
+
+    override fun showStateMain() {
+        if (viewState === STATUS_MAIN) {
+            return
+        }
+        setView(viewState)
+        viewState = STATUS_MAIN
 
     }
 
-    override fun onStatusServiceEx() {
-        onStatusHttpError()
+    override fun showStateFailed(view: View?) {
+        showErrorState()
+    }
+
+
+    open fun hideCurrentView() {
+        when (viewState) {
+            STATUS_EMPTY, STATUS_MAIN -> contentView!!.visibility = View.GONE
+            STATUS_LOADING ->
+                //                ivLoading.stop();
+                loadingView!!.visibility = View.GONE
+            STATUS_ERROR, STATUS_NETWORK_FAILED -> if (null != errorView) {
+                errorView!!.visibility = View.GONE
+            }
+        }
     }
 
     /**
-     * 点击重试
+     * Returns the [View] associated with the [com.kennyc.view.MultiStateView.ViewState]
+     *
+     * @param state The [com.kennyc.view.MultiStateView.ViewState] with to return the view for
+     * @return The [View] associated with the [com.kennyc.view.MultiStateView.ViewState], null if no view is present
      */
-    open fun retryNetWork() {}
+    @Nullable
+    fun getView(state: MultiViewStatus): View? {
+        return when (state) {
+            STATUS_LOADING -> loadingView
 
-    fun hideCurrentView() {
-        when (mViewState) {
-            MultiViewStatus.STATUS_EMPTY, STATUS_MAIN -> mMultiStatusView!!.visibility = View.GONE
-            STATUS_LOADING ->
-                //                ivLoading.stop();
-                viewLoading!!.visibility = View.GONE
-            STATUS_HTTP_ERROR, MultiViewStatus.STATUS_NETWORK_FAILED -> if (null != viewError) {
-                viewError!!.visibility = View.GONE
+            STATUS_MAIN -> contentView
+
+            STATUS_EMPTY -> emptyView
+
+            STATUS_ERROR -> errorView
+
+            else -> throw IllegalArgumentException("Unknown ViewState $state")
+        }
+    }
+
+    /**
+     * Shows the [View] based on the [com.kennyc.view.MultiStateView.ViewState]
+     */
+    private fun setView(previousState: MultiViewStatus) {
+        when (viewState) {
+            STATUS_LOADING -> {
+                requireNotNull(loadingView).apply {
+                    contentView?.visibility = View.GONE
+                    errorView?.visibility = View.GONE
+                    emptyView?.visibility = View.GONE
+
+                    if (animateLayoutChanges) {
+                        animateLayoutChange(getView(previousState))
+                    } else {
+                        visibility = View.VISIBLE
+                    }
+                }
             }
+
+            STATUS_EMPTY -> {
+                requireNotNull(emptyView).apply {
+                    contentView?.visibility = View.GONE
+                    errorView?.visibility = View.GONE
+                    loadingView?.visibility = View.GONE
+
+                    if (animateLayoutChanges) {
+                        animateLayoutChange(getView(previousState))
+                    } else {
+                        visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            STATUS_ERROR -> {
+                requireNotNull(errorView).apply {
+                    contentView?.visibility = View.GONE
+                    loadingView?.visibility = View.GONE
+                    emptyView?.visibility = View.GONE
+
+                    if (animateLayoutChanges) {
+                        animateLayoutChange(getView(previousState))
+                    } else {
+                        visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            STATUS_MAIN -> {
+                requireNotNull(contentView).apply {
+                    loadingView?.visibility = View.GONE
+                    errorView?.visibility = View.GONE
+                    emptyView?.visibility = View.GONE
+
+                    if (animateLayoutChanges) {
+                        animateLayoutChange(getView(previousState))
+                    } else {
+                        visibility = View.VISIBLE
+                    }
+                }
+            }
+
             else -> {
+                throw IllegalArgumentException("Unable to set state for value $viewState")
             }
         }
     }
 
+    /**
+     * Animates the layout changes between [ViewState]
+     *
+     * @param previousView The view that it was currently on
+     */
+    private fun animateLayoutChange(@Nullable previousView: View?) {
+        if (previousView == null) {
+            requireNotNull(getView(viewState)).visibility = View.VISIBLE
+            return
+        }
+
+        ObjectAnimator.ofFloat(previousView, "alpha", 1.0f, 0.0f).apply {
+            duration = 250L
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationStart(animation: Animator?) {
+                    previousView.visibility = View.VISIBLE
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    previousView.visibility = View.GONE
+                    val currentView = requireNotNull(getView(viewState))
+                    currentView.visibility = View.VISIBLE
+                    ObjectAnimator.ofFloat(currentView, "alpha", 0.0f, 1.0f).setDuration(250L).start()
+                }
+            })
+        }.start()
+    }
+
+    interface StatusListener {
+        /**
+         * Callback for when the [ViewState] has changed
+         *
+         * @param viewState The [ViewState] that was switched to
+         */
+        fun onStateChanged(viewState: MultiViewStatus)
+    }
 }
