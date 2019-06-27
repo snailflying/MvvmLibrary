@@ -145,11 +145,6 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
 
     }
 
-    override fun showStateFailed(view: View?) {
-        showErrorState()
-    }
-
-
     /**
      * Returns the [View] associated with the [com.kennyc.view.MultiStateView.ViewState]
      *

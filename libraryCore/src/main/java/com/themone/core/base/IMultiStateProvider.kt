@@ -29,9 +29,4 @@ interface IMultiStateProvider {
      * 正常数据页面
      */
     fun showStateMain()
-
-    /**
-     * 请求成功，后台服务异常
-     */
-    fun showStateFailed(view: View? = null)
 }
