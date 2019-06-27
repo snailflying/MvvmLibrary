@@ -45,12 +45,12 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
     var contentLayoutParams: ViewGroup.LayoutParams? = null
 
     @LayoutRes
-    protected val errorLayout: Int = R.layout.view_error
+    protected open val errorLayout: Int = R.layout.view_error
 
     @LayoutRes
-    protected val emptyLayout: Int = R.layout.view_error
+    protected open val emptyLayout: Int = R.layout.view_error
     @LayoutRes
-    protected val loadingLayout: Int = R.layout.view_progresss
+    protected open val loadingLayout: Int = R.layout.view_progresss
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,7 +91,6 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
             //设置同一个layoutParams
             parentViewGroup!!.addView(loadingView, contentLayoutParams)
         }
-        hideCurrentView()
         viewState = STATUS_LOADING
     }
 
@@ -114,7 +113,6 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
             parentViewGroup!!.addView(errorView, contentLayoutParams)
             errorView = parentViewGroup!!.findViewById(R.id.errorView)
         }
-        setView(viewState)
         viewState = STATUS_ERROR
     }
 
@@ -136,7 +134,6 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
             //设置同一个layoutParams
             parentViewGroup!!.addView(emptyView, contentLayoutParams)
         }
-        setView(viewState)
         viewState = STATUS_EMPTY
     }
 
@@ -144,26 +141,12 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
         if (viewState === STATUS_MAIN) {
             return
         }
-        setView(viewState)
         viewState = STATUS_MAIN
 
     }
 
     override fun showStateFailed(view: View?) {
         showErrorState()
-    }
-
-
-    open fun hideCurrentView() {
-        when (viewState) {
-            STATUS_EMPTY, STATUS_MAIN -> contentView!!.visibility = View.GONE
-            STATUS_LOADING ->
-                //                ivLoading.stop();
-                loadingView!!.visibility = View.GONE
-            STATUS_ERROR, STATUS_NETWORK_FAILED -> if (null != errorView) {
-                errorView!!.visibility = View.GONE
-            }
-        }
     }
 
     /**

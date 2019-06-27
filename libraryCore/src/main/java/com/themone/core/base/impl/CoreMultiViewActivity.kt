@@ -45,12 +45,12 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
     var contentLayoutParams: ViewGroup.LayoutParams? = null
 
     @LayoutRes
-    protected val errorLayout: Int = R.layout.view_error
+    protected open val errorLayout: Int = R.layout.view_error
 
     @LayoutRes
-    protected val emptyLayout: Int = R.layout.view_error
+    protected open val emptyLayout: Int = R.layout.view_error
     @LayoutRes
-    protected val loadingLayout: Int = R.layout.view_progresss
+    protected open val loadingLayout: Int = R.layout.view_progresss
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +91,6 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
             //设置同一个layoutParams
             parentViewGroup!!.addView(loadingView, contentLayoutParams)
         }
-        hideCurrentView()
         viewState = STATUS_LOADING
     }
 
@@ -114,7 +113,6 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
             parentViewGroup!!.addView(errorView, contentLayoutParams)
             errorView = parentViewGroup!!.findViewById(R.id.errorView)
         }
-        setView(viewState)
         viewState = STATUS_ERROR
     }
 
@@ -136,7 +134,6 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
             //设置同一个layoutParams
             parentViewGroup!!.addView(emptyView, contentLayoutParams)
         }
-        setView(viewState)
         viewState = STATUS_EMPTY
     }
 
@@ -144,7 +141,6 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
         if (viewState === STATUS_MAIN) {
             return
         }
-        setView(viewState)
         viewState = STATUS_MAIN
 
     }
@@ -153,18 +149,6 @@ abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), 
         showErrorState()
     }
 
-
-    open fun hideCurrentView() {
-        when (viewState) {
-            STATUS_EMPTY, STATUS_MAIN -> mainView!!.visibility = View.GONE
-            STATUS_LOADING ->
-                //                ivLoading.stop();
-                loadingView!!.visibility = View.GONE
-            STATUS_ERROR, STATUS_NETWORK_FAILED -> if (null != errorView) {
-                errorView!!.visibility = View.GONE
-            }
-        }
-    }
 
     /**
      * Returns the [View] associated with the [com.kennyc.view.MultiStateView.ViewState]
