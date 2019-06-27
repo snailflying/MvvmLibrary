@@ -28,11 +28,14 @@ import com.themone.core.base.impl.BaseApp
 object StatusBarUtil {
 
     @JvmStatic
-    fun compat(activity: Activity, darkModeFlag: Boolean) {
-
-        if (MIUISetStatusBarLightMode(activity, darkModeFlag) || setStatusBarLightMode(activity, darkModeFlag)) {
+    fun compat(context: Context, darkModeFlag: Boolean) {
+        if (context is Activity) {
+            if (MIUISetStatusBarLightMode(context, darkModeFlag) || setStatusBarLightMode(context, darkModeFlag)) {
+            } else {
+                flymeSetStatusBarLightMode(context.window, darkModeFlag)
+            }
         } else {
-            flymeSetStatusBarLightMode(activity.window, darkModeFlag)
+            throw IllegalStateException("context is not instance activity")
         }
     }
 
@@ -48,21 +51,26 @@ object StatusBarUtil {
     /**
      * 设置填充状态栏高度
      */
-    fun setFitsSystemWindows(activity: Activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val parent = activity.findViewById<ViewGroup>(android.R.id.content)
-            val rootView = parent.getChildAt(0)
-            //自动设置状态栏颜色
-            autoSetStatusBarTextColor(activity, rootView)
-            if (null != rootView) {
-                val statusBarHeight = getStatusBarHeight(activity)
-                rootView.fitsSystemWindows = true
-                rootView.setPadding(
-                    rootView.paddingLeft, rootView.paddingTop + statusBarHeight,
-                    rootView.paddingRight, rootView.paddingBottom
-                )
+    fun setFitsSystemWindows(context: Context) {
+        if (context is Activity) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                val parent = context.findViewById<ViewGroup>(android.R.id.content)
+                val rootView = parent.getChildAt(0)
+                //自动设置状态栏颜色
+                autoSetStatusBarTextColor(context, rootView)
+                if (null != rootView) {
+                    val statusBarHeight = getStatusBarHeight(context)
+                    rootView.fitsSystemWindows = true
+                    rootView.setPadding(
+                        rootView.paddingLeft, rootView.paddingTop + statusBarHeight,
+                        rootView.paddingRight, rootView.paddingBottom
+                    )
+                }
             }
+        } else {
+            throw IllegalStateException("context is not instance activity")
         }
+
     }
 
     /**
@@ -81,18 +89,23 @@ object StatusBarUtil {
     /**
      * 设置透明状态栏
      */
-    fun setTransparentForWindow(activity: Activity) {
-        val window = activity.window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    fun setTransparentForWindow(context: Context) {
+        if (context is Activity) {
+            val window = context.window
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
-            window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-            window.statusBarColor = Color.TRANSPARENT
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                window.statusBarColor = Color.TRANSPARENT
 
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val localLayoutParams = window.attributes
-            localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or localLayoutParams.flags
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                val localLayoutParams = window.attributes
+                localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or localLayoutParams.flags
+            }
+        } else {
+            throw IllegalStateException("context is not instance activity")
         }
+
     }
 
     /**
@@ -283,5 +296,4 @@ object StatusBarUtil {
         }
         return swatch?.rgb ?: Color.WHITE
     }
-
 }
