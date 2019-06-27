@@ -9,6 +9,5 @@ enum class MultiViewStatus {
     STATUS_LOADING,
     STATUS_EMPTY,
     STATUS_ERROR,
-    STATUS_MAIN,
-    STATUS_NETWORK_FAILED
+    STATUS_MAIN
 }
