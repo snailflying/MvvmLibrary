@@ -1,8 +1,7 @@
 package com.themone.core.base.impl
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.themone.core.util.StatusBarUtil
 
@@ -30,4 +29,18 @@ open class CoreActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean = if (KeyEvent.KEYCODE_BACK == keyCode) {
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            finish()
+            true
+        } else {
+            try {
+                supportFragmentManager.popBackStackImmediate()
+            } catch (e: Exception) {
+            }
+            true
+        }
+    } else {
+        super.onKeyDown(keyCode, event)
+    }
 }

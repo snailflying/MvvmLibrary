@@ -2,6 +2,7 @@ package com.themone.core.base.impl
 
 import android.content.Context
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import com.themone.core.util.LogUtil
 
@@ -133,6 +134,14 @@ open class CoreFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         mContext = context
+    }
+
+    /**
+     * 触发返回键
+     */
+    protected fun onBackPressed() {
+        val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK)
+        activity?.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent)
     }
 
     companion object {
