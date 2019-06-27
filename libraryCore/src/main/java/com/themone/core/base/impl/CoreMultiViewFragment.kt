@@ -19,6 +19,7 @@ import com.themone.theone.library.R
  * @date 2019-06-06
  * @desc 提供默认的 loading、error、empty 等状态 UI
  * 需要更改状态的 view Id 强制规定命名 为 id=@+id/multiStatusView
+ * 参考：https://github.com/Kennyc1012/MultiStateView
  */
 abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), IMultiStateProvider {
 
