@@ -11,6 +11,11 @@ interface IMultiStateProvider {
 
 
     /**
+     * 根据状态显示页面
+     */
+    fun showStateView(state: MultiViewState)
+
+    /**
      * loading 页面
      */
     fun showStateLoading(view: View? = null)
@@ -18,7 +23,7 @@ interface IMultiStateProvider {
     /**
      * 网络异常，请求失败
      */
-    fun showErrorState(view: View? = null)
+    fun showStateError(view: View? = null)
 
     /**
      * 空数据

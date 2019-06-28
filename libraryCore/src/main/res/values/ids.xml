@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="multiStatusView" type="id" />
+    <item name="multiStateView" type="id" />
 
 </resources>

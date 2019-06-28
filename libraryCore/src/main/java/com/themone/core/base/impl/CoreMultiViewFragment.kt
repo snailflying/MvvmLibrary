@@ -10,15 +10,15 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.Nullable
 import com.themone.core.base.IMultiStateProvider
 import com.themone.core.base.IViewModel
-import com.themone.core.base.MultiViewStatus
-import com.themone.core.base.MultiViewStatus.*
+import com.themone.core.base.MultiViewState
+import com.themone.core.base.MultiViewState.*
 import com.themone.theone.library.R
 
 /**
  * @author zhiqiang
  * @date 2019-06-06
  * @desc 提供默认的 loading、error、empty 等状态 UI
- * 需要更改状态的 view Id 强制规定命名 为 id=@+id/multiStatusView
+ * 需要更改状态的 view Id 强制规定命名 为 id=@+id/multiStateView
  * 参考：https://github.com/Kennyc1012/MultiStateView
  */
 abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), IMultiStateProvider {
@@ -28,7 +28,7 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
     private var loadingView: View? = null
     private var contentView: View? = null
     private var parentViewGroup: ViewGroup? = null
-    protected var viewState = STATUS_MAIN
+    protected var viewState = STATE_MAIN
         set(value) {
             val previousField = field
 
@@ -50,7 +50,7 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
     @LayoutRes
     protected open val emptyLayout: Int = R.layout.view_error
     @LayoutRes
-    protected open val loadingLayout: Int = R.layout.view_progresss
+    protected open val loadingLayout: Int = R.layout.view_loading
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -58,7 +58,7 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
     }
 
     private fun initUiStatus(view: View, savedInstanceState: Bundle?) {
-        contentView = view.findViewById(R.id.multiStatusView)
+        contentView = view.findViewById(R.id.multiStateView)
         if (contentView == null) {
             throw IllegalStateException(
                 "The subclass of RootActivity must contain a View named 'view_main'."
@@ -73,8 +73,17 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
         parentViewGroup = contentView!!.parent as ViewGroup
     }
 
+    override fun showStateView(state: MultiViewState) {
+        when (state) {
+            STATE_MAIN -> showStateMain()
+            STATE_EMPTY -> showStateEmpty()
+            STATE_ERROR -> showStateError()
+            STATE_LOADING -> showStateLoading()
+        }
+    }
+
     override fun showStateLoading(view: View?) {
-        if (viewState === STATUS_LOADING) {
+        if (viewState === STATE_LOADING) {
             return
         }
         if (view != null) {
@@ -91,11 +100,11 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
             //设置同一个layoutParams
             parentViewGroup!!.addView(loadingView, contentLayoutParams)
         }
-        viewState = STATUS_LOADING
+        viewState = STATE_LOADING
     }
 
-    override fun showErrorState(view: View?) {
-        if (viewState === STATUS_ERROR) {
+    override fun showStateError(view: View?) {
+        if (viewState === STATE_ERROR) {
             return
         }
         if (view != null) {
@@ -113,11 +122,11 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
             parentViewGroup!!.addView(errorView, contentLayoutParams)
             errorView = parentViewGroup!!.findViewById(R.id.errorView)
         }
-        viewState = STATUS_ERROR
+        viewState = STATE_ERROR
     }
 
     override fun showStateEmpty(view: View?) {
-        if (viewState === STATUS_EMPTY) {
+        if (viewState === STATE_EMPTY) {
             return
         }
         if (view != null) {
@@ -134,14 +143,14 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
             //设置同一个layoutParams
             parentViewGroup!!.addView(emptyView, contentLayoutParams)
         }
-        viewState = STATUS_EMPTY
+        viewState = STATE_EMPTY
     }
 
     override fun showStateMain() {
-        if (viewState === STATUS_MAIN) {
+        if (viewState === STATE_MAIN) {
             return
         }
-        viewState = STATUS_MAIN
+        viewState = STATE_MAIN
 
     }
 
@@ -152,15 +161,15 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
      * @return The [View] associated with the [com.kennyc.view.MultiStateView.ViewState], null if no view is present
      */
     @Nullable
-    fun getView(state: MultiViewStatus): View? {
+    fun getView(state: MultiViewState): View? {
         return when (state) {
-            STATUS_LOADING -> loadingView
+            STATE_LOADING -> loadingView
 
-            STATUS_MAIN -> contentView
+            STATE_MAIN -> contentView
 
-            STATUS_EMPTY -> emptyView
+            STATE_EMPTY -> emptyView
 
-            STATUS_ERROR -> errorView
+            STATE_ERROR -> errorView
 
             else -> throw IllegalArgumentException("Unknown ViewState $state")
         }
@@ -169,9 +178,9 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
     /**
      * Shows the [View] based on the [com.kennyc.view.MultiStateView.ViewState]
      */
-    private fun setView(previousState: MultiViewStatus) {
+    private fun setView(previousState: MultiViewState) {
         when (viewState) {
-            STATUS_LOADING -> {
+            STATE_LOADING -> {
                 requireNotNull(loadingView).apply {
                     contentView?.visibility = View.GONE
                     errorView?.visibility = View.GONE
@@ -185,7 +194,7 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
                 }
             }
 
-            STATUS_EMPTY -> {
+            STATE_EMPTY -> {
                 requireNotNull(emptyView).apply {
                     contentView?.visibility = View.GONE
                     errorView?.visibility = View.GONE
@@ -199,7 +208,7 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
                 }
             }
 
-            STATUS_ERROR -> {
+            STATE_ERROR -> {
                 requireNotNull(errorView).apply {
                     contentView?.visibility = View.GONE
                     loadingView?.visibility = View.GONE
@@ -213,7 +222,7 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
                 }
             }
 
-            STATUS_MAIN -> {
+            STATE_MAIN -> {
                 requireNotNull(contentView).apply {
                     loadingView?.visibility = View.GONE
                     errorView?.visibility = View.GONE
@@ -267,6 +276,6 @@ abstract class CoreMultiViewFragment<VM : IViewModel> : CoreMvvmFragment<VM>(), 
          *
          * @param viewState The [ViewState] that was switched to
          */
-        fun onStateChanged(viewState: MultiViewStatus)
+        fun onStateChanged(viewState: MultiViewState)
     }
 }
