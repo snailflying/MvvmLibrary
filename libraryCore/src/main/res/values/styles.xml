@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Dialog"></style>
+    <style name="Dialog" parent="android:Theme.Dialog">
+        <!-- 是否没有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
     <style name="Dialog.Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_push_up_in</item>
         <item name="android:windowExitAnimation">@anim/dialog_push_up_out</item>

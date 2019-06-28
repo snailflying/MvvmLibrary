@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.themone.theone.library.R
 
 import java.io.Serializable
 
@@ -12,7 +13,11 @@ import java.io.Serializable
  * @Email liuzhiqiang@theone.com
  * @Date 2019/2/16
  */
-open class BaseDialogBuilder(val mContext: Context, protected val mFragmentManager: FragmentManager, private val mClass: Class<out BaseDialogFragment>) {
+open class BaseDialogBuilder(
+    val mContext: Context,
+    protected val mFragmentManager: FragmentManager,
+    private val mClass: Class<out BaseDialogFragment>
+) {
 
     private var mDialogFragment: BaseDialogFragment? = null
     private var mTargetFragment: Fragment? = null
@@ -44,7 +49,7 @@ open class BaseDialogBuilder(val mContext: Context, protected val mFragmentManag
     /**
      * 主题
      */
-    private var mTheme: Int = 0
+    private var mTheme: Int = R.style.Dialog
     /**
      * 动画
      */
@@ -68,7 +73,7 @@ open class BaseDialogBuilder(val mContext: Context, protected val mFragmentManag
      *
      * @return
      */
-    protected fun prepareArguments(): Bundle {
+    protected open fun prepareArguments(): Bundle {
         if (args == null) {
             args = Bundle()
         }
@@ -79,18 +84,8 @@ open class BaseDialogBuilder(val mContext: Context, protected val mFragmentManag
      * @param args 直接传Bundle
      * @return
      */
-    fun putBundle(args: Bundle): BaseDialogBuilder {
+    fun setBundle(args: Bundle): BaseDialogBuilder {
         this.args = args
-        return this
-    }
-
-    /**
-     * @param key   Bundle传值key
-     * @param value Bundle传值value
-     * @return
-     */
-    fun putArgs(key: String, value: Serializable): BaseDialogBuilder {
-        prepareArguments().putSerializable(key, value)
         return this
     }
 

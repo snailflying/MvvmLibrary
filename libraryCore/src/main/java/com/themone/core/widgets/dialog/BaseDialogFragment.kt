@@ -25,6 +25,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
+import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
@@ -32,10 +33,10 @@ import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_DIM_A
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_REQUEST_CODE
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_SCALE
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_SHOW_FROM_BOTTOM
-import com.themone.core.widgets.dialog.iface.IDialogNegativeListener
-import com.themone.core.widgets.dialog.iface.IDialogPositiveListener
 import com.themone.core.widgets.dialog.iface.IDialogCancelListener
 import com.themone.core.widgets.dialog.iface.IDialogDismissListener
+import com.themone.core.widgets.dialog.iface.IDialogNegativeListener
+import com.themone.core.widgets.dialog.iface.IDialogPositiveListener
 import com.themone.theone.library.R
 import java.util.*
 
@@ -45,7 +46,7 @@ import java.util.*
  * @Date 2019/2/16
  * @Description dialog的基类
  */
-abstract class BaseDialogFragment : DialogFragment() {
+abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     protected var mRequestCode = DEFAULT_REQUEST_CODE
     /**
@@ -68,7 +69,7 @@ abstract class BaseDialogFragment : DialogFragment() {
     /**
      * 主题
      */
-    private var mTheme: Int = 0
+    private var mTheme: Int = R.style.Dialog
     /**
      * 动画
      */
@@ -100,17 +101,13 @@ abstract class BaseDialogFragment : DialogFragment() {
     protected val negativeListeners: List<IDialogNegativeListener>
         get() = getDialogListeners(IDialogNegativeListener::class.java)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initBundle()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val targetFragment = targetFragment
-        if (targetFragment != null) {
-            mRequestCode = targetRequestCode
-        } else {
-            val args = arguments
-            if (args != null) {
-                mRequestCode = args.getInt(BaseDialogBuilder.ARG_REQUEST_CODE, DEFAULT_REQUEST_CODE)
-            }
-        }
         //放在onCreateDialog()不起作用
         initDialogParams(dialog)
     }
@@ -137,6 +134,17 @@ abstract class BaseDialogFragment : DialogFragment() {
     }
 
     /**
+     * 支持BottomSheetDialog
+     */
+//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+//        return (if (showFromBottom) {
+//            BottomSheetDialog(this.context!!, this.theme)
+//        } else {
+//            Dialog(activity!!, theme)
+//        })
+//    }
+
+    /**
      * 采用fragment interface pattern方式传递callback回调
      * targetFragment需要配合[BaseDialogBuilder.setTargetFragment]
      *
@@ -156,7 +164,20 @@ abstract class BaseDialogFragment : DialogFragment() {
         return Collections.unmodifiableList(listeners)
     }
 
-    private fun initDialogParams(dialog: Dialog) {
+    /**
+     * 因为setStyle()的原因，必须在onCreate()内调用
+     */
+    private fun initBundle() {
+        val targetFragment = targetFragment
+        if (targetFragment != null) {
+            mRequestCode = targetRequestCode
+        } else {
+            val args = arguments
+            if (args != null) {
+                mRequestCode = args.getInt(BaseDialogBuilder.ARG_REQUEST_CODE, DEFAULT_REQUEST_CODE)
+            }
+        }
+
         val args = arguments
         if (args != null) {
             canceledOnTouchOutside =
@@ -165,10 +186,14 @@ abstract class BaseDialogFragment : DialogFragment() {
             dimAmount = args.getFloat(BaseDialogBuilder.ARG_DIM_AMOUNT, DEFAULT_DIM_AMOUNT)
             scale = args.getDouble(BaseDialogBuilder.ARG_SCALE, DEFAULT_SCALE)
             animStyle = args.getInt(BaseDialogBuilder.ARG_ANIM_STYLE)
-            mTheme = args.getInt(BaseDialogBuilder.ARG_USE_THEME, theme)
+            val defaultTheme = if (theme == 0) -1 else theme
+            mTheme = args.getInt(BaseDialogBuilder.ARG_USE_THEME, R.style.Dialog)
         }
+        //必须在onCreate()内调用
         setStyle(DialogFragment.STYLE_NO_TITLE, mTheme)
+    }
 
+    private fun initDialogParams(dialog: Dialog) {
         dialog.setCanceledOnTouchOutside(canceledOnTouchOutside)
         val window = dialog.window
         if (window != null) {

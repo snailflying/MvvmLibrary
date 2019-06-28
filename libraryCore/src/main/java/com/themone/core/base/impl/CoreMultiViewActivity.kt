@@ -23,11 +23,11 @@ import com.themone.theone.library.R
  */
 abstract class CoreMultiViewActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), IMultiStateProvider {
 
-    protected var errorView: View? = null
-    protected var emptyView: View? = null
-    protected var loadingView: View? = null
-    protected var mainView: View? = null
-    var parentViewGroup: ViewGroup? = null
+    private var errorView: View? = null
+    private var emptyView: View? = null
+    private var loadingView: View? = null
+    private var mainView: View? = null
+    private var parentViewGroup: ViewGroup? = null
     protected var viewState = STATUS_MAIN
         set(value) {
             val previousField = field

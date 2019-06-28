@@ -49,7 +49,7 @@ internal class WindowHelper private constructor(// 用于 Activity 暂停时移�
      * [Application.ActivityLifecycleCallbacks]
      */
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle) {
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         mCurrentTag = getObjectTag(activity)
         mActivitySet[mCurrentTag] = activity
     }
