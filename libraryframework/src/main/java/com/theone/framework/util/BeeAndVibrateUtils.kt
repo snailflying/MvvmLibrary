@@ -29,9 +29,9 @@ import java.io.IOException
 object BeeAndVibrateUtils {
     private const val TAG = "BeeAndVibrateUtils"
 
-    private const val BEEP_VOLUME = 0.1F;
-    private const val VIBRATE_DURATION = 100L;
-    private const val VIBRATE_WAVE_DURATION = 130L;
+    private const val BEEP_VOLUME = 0.1F
+    private const val VIBRATE_DURATION = 100L
+    private const val VIBRATE_WAVE_DURATION = 130L
 
     private fun shouldPlayBeep(context: Context): Boolean?  {
         val audioService = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager

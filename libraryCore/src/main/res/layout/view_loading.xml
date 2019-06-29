@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#4082EC3F"
     android:gravity="center"
     android:padding="30dp">
 
@@ -15,7 +14,7 @@
         android:gravity="center"
         android:lineSpacingMultiplier="1.4"
         android:padding="30dp"
-        android:text="页面加载中...\n请等待"
+        android:text="loading..."
         android:textColor="#222222"
         android:textSize="14sp" />
 

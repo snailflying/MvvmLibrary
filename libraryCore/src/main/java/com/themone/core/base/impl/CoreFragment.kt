@@ -100,7 +100,7 @@ open class CoreFragment : Fragment() {
     private fun dispatchChildVisibleState(visible: Boolean) {
         val childFragmentManager = this.childFragmentManager
         val fragments = childFragmentManager.fragments
-        if (!fragments.isEmpty()) {
+        if (fragments.isNotEmpty()) {
             val var4 = fragments.iterator()
 
             while (var4.hasNext()) {

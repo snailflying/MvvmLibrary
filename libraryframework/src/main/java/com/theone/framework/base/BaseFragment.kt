@@ -9,5 +9,4 @@ import com.themone.core.base.impl.CoreFragment
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-open class BaseFragment : CoreFragment() {
-}
+open class BaseFragment : CoreFragment()

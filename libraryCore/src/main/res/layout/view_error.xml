@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#4029C1E7"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="30dp">
@@ -14,7 +13,7 @@
         android:layout_height="wrap_content"
         android:lineSpacingMultiplier="1.4"
         android:padding="30dp"
-        android:text="网络连接失败，请点击屏幕重试"
+        android:text="network error"
         android:textColor="#222222"
         android:textSize="14sp" />
 

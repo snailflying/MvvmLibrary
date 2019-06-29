@@ -16,7 +16,6 @@ gen
 out
 reports
 
-*.iml
 *.ipr
 *.iws
 classes

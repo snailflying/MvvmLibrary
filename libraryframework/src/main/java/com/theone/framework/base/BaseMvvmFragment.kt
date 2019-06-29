@@ -10,5 +10,4 @@ import com.themone.core.base.impl.CoreMvvmFragment
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-abstract class BaseMvvmFragment<VM : IViewModel> : CoreMvvmFragment<VM>() {
-}
+abstract class BaseMvvmFragment<VM : IViewModel> : CoreMvvmFragment<VM>()

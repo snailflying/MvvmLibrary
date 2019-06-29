@@ -224,7 +224,7 @@ object StatusBarUtil {
             override fun onPostExecute(colorExtractor: Int) {
                 compat(activity, isDarkColor(colorExtractor))
             }
-        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, view);
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, view)
     }
 
     /**

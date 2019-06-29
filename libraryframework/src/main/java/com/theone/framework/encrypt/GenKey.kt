@@ -65,7 +65,7 @@ object GenKey {
             val deviceSerial = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
 
             return if (TextUtils.isEmpty(deviceSerial)) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O && context.checkSelfPermission(
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && context.checkSelfPermission(
                         Manifest.permission.READ_PHONE_STATE
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {

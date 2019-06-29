@@ -8,5 +8,4 @@ import com.themone.core.base.impl.BaseApp
  * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-class App: BaseApp() {
-}
+class App: BaseApp()
