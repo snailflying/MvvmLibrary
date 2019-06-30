@@ -28,6 +28,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_DIM_AMOUNT
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_REQUEST_CODE
@@ -136,13 +137,13 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     /**
      * 支持BottomSheetDialog
      */
-//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        return (if (showFromBottom) {
-//            BottomSheetDialog(this.context!!, this.theme)
-//        } else {
-//            Dialog(activity!!, theme)
-//        })
-//    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return (if (showFromBottom) {
+            BottomSheetDialog(this.context!!, this.theme)
+        } else {
+            Dialog(activity!!, theme)
+        })
+    }
 
     /**
      * 采用fragment interface pattern方式传递callback回调

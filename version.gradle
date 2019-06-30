@@ -20,11 +20,9 @@ ext {
     version = [
             //support
             multidex             : "1.0.3",
-            appcompat            : "1.0.2",
-            constraintlayout     : "1.1.3",
+            support              : "1.0.0",
             palette              : "1.0.0",
-            core_ktx             : '1.0.2',
-            androidSupport       : "28.0.0",
+            constraintlayout     : "1.1.3",
 
             retrofit2            : "2.5.0",
             okhttp3              : "3.12.0",
@@ -65,10 +63,12 @@ ext {
             "kotlinx_coroutines_android" : "org.jetbrains.kotlinx:kotlinx-coroutines-android:${version["kotlinx_coroutines"]}",
 
             //support
-            "appcompat"                  : "androidx.appcompat:appcompat:${version["appcompat"]}",
-            "constraintlayout"           : "androidx.constraintlayout:constraintlayout:${version["constraintlayout"]}",
+            "appcompat"                  : "androidx.appcompat:appcompat:${version["support"]}",
+            "core_ktx"                   : "androidx.core:core-ktx:${version["support"]}",
+            "material"                   : "com.google.android.material:material:${version["support"]}",
+
             "palette"                    : "androidx.palette:palette-ktx:${version["palette"]}",
-            "core_ktx"                   : "androidx.core:core-ktx:${version["core_ktx"]}",
+            "constraintlayout"           : "androidx.constraintlayout:constraintlayout:${version["constraintlayout"]}",
 
             //network
             "retrofit2"                  : "com.squareup.retrofit2:retrofit:${version["retrofit2"]}",
