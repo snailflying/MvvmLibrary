@@ -87,8 +87,11 @@ object StatusBarUtil {
                 val rootView = parent.getChildAt(0)
                 if (null != rootView) {
                     //进入页面时，状态栏文字颜色自动改变
-                    autoSetStatusBarTextColor(context,rootView)
+                    autoSetStatusBarTextColor(context, rootView)
                     rootView.fitsSystemWindows = true
+                    if (rootView is ViewGroup) {
+                        rootView.clipToPadding = true
+                    }
                 }
             }
         } else {
@@ -271,7 +274,7 @@ object StatusBarUtil {
             return null
         }
         //StatusBar获取的bitmap是透明的，所以取StatusBar下方相同高度区域代替
-        val bitmap: Bitmap = Bitmap.createBitmap(width, height*2, Bitmap.Config.ARGB_4444)
+        val bitmap: Bitmap = Bitmap.createBitmap(width, height * 2, Bitmap.Config.ARGB_4444)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
 
