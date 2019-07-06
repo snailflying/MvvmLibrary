@@ -27,6 +27,12 @@ import com.themone.core.base.impl.BaseApp
  */
 object StatusBarUtil {
 
+
+    /**
+     * 修改状态栏字体颜色
+     * @param context Context
+     * @param darkModeFlag Boolean 状态栏字体颜色
+     */
     @JvmStatic
     fun compat(context: Context, darkModeFlag: Boolean) {
         if (context is Activity) {
@@ -49,22 +55,40 @@ object StatusBarUtil {
 
 
     /**
+     * 设置透明状态栏
+     */
+    fun setTransparentForWindow(context: Context) {
+        if (context is Activity) {
+            val window = context.window
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                window.statusBarColor = Color.TRANSPARENT
+
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                val localLayoutParams = window.attributes
+                localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or localLayoutParams.flags
+            }
+        } else {
+            throw IllegalStateException("context is not instance activity")
+        }
+
+    }
+
+    /**
      * 设置填充状态栏高度
+     * rootView.fitsSystemWindows = true时，系统自动给rootView一个状态栏高度的paddingTop
      */
     fun setFitsSystemWindows(context: Context) {
         if (context is Activity) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 val parent = context.findViewById<ViewGroup>(android.R.id.content)
                 val rootView = parent.getChildAt(0)
-                //自动设置状态栏颜色
-                autoSetStatusBarTextColor(context, rootView)
                 if (null != rootView) {
-                    val statusBarHeight = getStatusBarHeight(context)
+                    //进入页面时，状态栏文字颜色自动改变
+                    autoSetStatusBarTextColor(context,rootView)
                     rootView.fitsSystemWindows = true
-                    rootView.setPadding(
-                        rootView.paddingLeft, rootView.paddingTop + statusBarHeight,
-                        rootView.paddingRight, rootView.paddingBottom
-                    )
                 }
             }
         } else {
@@ -86,27 +110,6 @@ object StatusBarUtil {
         }
     }
 
-    /**
-     * 设置透明状态栏
-     */
-    fun setTransparentForWindow(context: Context) {
-        if (context is Activity) {
-            val window = context.window
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                window.statusBarColor = Color.TRANSPARENT
-
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                val localLayoutParams = window.attributes
-                localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or localLayoutParams.flags
-            }
-        } else {
-            throw IllegalStateException("context is not instance activity")
-        }
-
-    }
 
     /**
      * 设置状态栏图标为深色和魅族特定的文字风格，Flyme4.0以上
@@ -206,23 +209,30 @@ object StatusBarUtil {
     }
 
 
+    /****************状态栏颜色自动改变 Start***********************/
+    /**
+     * 状态栏颜色自动改变
+     * @param activity Activity
+     * @param view View?
+     */
     @SuppressLint("StaticFieldLeak")
-    private fun autoSetStatusBarTextColor(activity: Activity, view: View?) {
+    fun autoSetStatusBarTextColor(activity: Activity, view: View?) {
+
         object : AsyncTask<View?, Void, Int>() {
             override fun doInBackground(vararg params: View?): Int {
-                try {
+                return try {
                     val statusBarBg =
                         getBitmapFromStatusBar(params[0], getAppScreenWidth(), getStatusBarHeight(BaseApp.application))
-                    return getColorFromBitmapSync(statusBarBg)
+                    getColorFromBitmapSync(statusBarBg)
                 } catch (e: Exception) {
                     Log.e("", "Exception thrown during async generate", e)
-                    return Color.WHITE
+                    Color.WHITE
                 }
 
             }
 
-            override fun onPostExecute(colorExtractor: Int) {
-                compat(activity, isDarkColor(colorExtractor))
+            override fun onPostExecute(bgColor: Int) {
+                compat(activity, !isDarkColor(bgColor))
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, view)
     }
@@ -256,15 +266,18 @@ object StatusBarUtil {
      * @param height Int
      * @return Bitmap?
      */
-    fun getBitmapFromStatusBar(view: View?, width: Int, height: Int): Bitmap? {
+    private fun getBitmapFromStatusBar(view: View?, width: Int, height: Int): Bitmap? {
         if (view == null) {
             return null
         }
-        val bitmap: Bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_4444)
+        //StatusBar获取的bitmap是透明的，所以取StatusBar下方相同高度区域代替
+        val bitmap: Bitmap = Bitmap.createBitmap(width, height*2, Bitmap.Config.ARGB_4444)
         val canvas = Canvas(bitmap)
         view.draw(canvas)
 
-        return bitmap
+        val result = Bitmap.createBitmap(bitmap, 0, height, width, height)
+        bitmap.recycle()
+        return result
     }
 
     /**
@@ -287,13 +300,13 @@ object StatusBarUtil {
     private fun getColorFromBitmapSync(bitmap: Bitmap?): Int {
         if (bitmap == null) return Color.WHITE
 
-        val swatch = if (Palette.from(bitmap).generate().vibrantSwatch == null) {
-            Palette.from(bitmap).generate().vibrantSwatch
-        } else if (Palette.from(bitmap).generate().darkVibrantSwatch == null) {
-            Palette.from(bitmap).generate().darkVibrantSwatch
-        } else {
-            Palette.from(bitmap).generate().dominantSwatch
+        val swatch = when {
+            Palette.from(bitmap).generate().vibrantSwatch != null -> Palette.from(bitmap).generate().vibrantSwatch
+            Palette.from(bitmap).generate().darkVibrantSwatch != null -> Palette.from(bitmap).generate().darkVibrantSwatch
+            else -> Palette.from(bitmap).generate().dominantSwatch
         }
         return swatch?.rgb ?: Color.WHITE
     }
+    /****************状态栏颜色自动改变 End***********************/
+
 }
