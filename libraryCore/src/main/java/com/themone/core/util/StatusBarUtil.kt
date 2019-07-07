@@ -1,7 +1,6 @@
 package com.themone.core.util
 
 import android.annotation.SuppressLint
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
@@ -19,6 +18,10 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
 import com.themone.core.base.impl.BaseApp
+import com.themone.core.util.StatusBarUtil.addStatusBarOffsetForView
+import com.themone.core.util.StatusBarUtil.compat
+import com.themone.core.util.StatusBarUtil.setFitsSystemWindows
+import com.themone.core.util.StatusBarUtil.setTransparentForWindow
 
 
 /**
@@ -86,7 +89,11 @@ object StatusBarUtil {
     @JvmStatic
     fun compat(context: Context, darkStatusBarText: Boolean) {
         if (context is Activity) {
-            if (!setStatusBarLightMode(context, darkStatusBarText) && !setMiuiStatusBarLightMode(context, darkStatusBarText)) {
+            if (!setStatusBarLightMode(context, darkStatusBarText) && !setMiuiStatusBarLightMode(
+                    context,
+                    darkStatusBarText
+                )
+            ) {
                 setFlymeStatusBarLightMode(context.window, darkStatusBarText)
             }
         } else {
@@ -117,7 +124,10 @@ object StatusBarUtil {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    /**
+     * 清除fitsSystemWindows等配置
+     * @param activity Activity
+     */
     private fun clearPreviousSetting(activity: Activity) {
         val rootView = (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
         if (rootView.getTag(HAS_SET_TOP_PADDING) as Boolean? == true) {
