@@ -1,6 +1,7 @@
 package com.themone.core.util
 
 import android.annotation.SuppressLint
+import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
@@ -27,18 +28,59 @@ import com.themone.core.base.impl.BaseApp
  */
 object StatusBarUtil {
 
+    const val HAS_SET_TOP_PADDING = 112343211
+
 
     /**
-     * 修改状态栏字体颜色
+     * 设置透明状态栏,[CoreActivity]内调用
+     */
+    internal fun setTransparentForWindow(activity: Activity) {
+        val window = activity.window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //兼容5.0及以上支持全透明
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor = Color.TRANSPARENT
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val localLayoutParams = window.attributes
+            localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or localLayoutParams.flags
+        }
+    }
+
+    /**
+     * 设置填充状态栏高度
+     * rootView.fitsSystemWindows = true时，系统自动给rootView一个状态栏高度的paddingTop
+     * 跟[addStatusBarOffsetForView]互斥
+     */
+    internal fun setFitsSystemWindows(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            val parent = activity.findViewById<ViewGroup>(android.R.id.content)
+            val rootView = parent.getChildAt(0)
+            if (null != rootView) {
+                rootView.fitsSystemWindows = true
+                if (rootView is ViewGroup) {
+                    rootView.clipToPadding = true
+                }
+                rootView.setTag(HAS_SET_TOP_PADDING, true)
+
+                //进入页面时，状态栏文字颜色自动改变
+                autoSetStatusBarTextColor(activity, rootView)
+            }
+        }
+    }
+
+    /**
+     * 手动修改状态栏字体颜色
      * @param context Context
-     * @param darkModeFlag Boolean 状态栏字体颜色
+     * @param darkStatusBarText Boolean 状态栏字体颜色
      */
     @JvmStatic
-    fun compat(context: Context, darkModeFlag: Boolean) {
+    fun compat(context: Context, darkStatusBarText: Boolean) {
         if (context is Activity) {
-            if (MIUISetStatusBarLightMode(context, darkModeFlag) || setStatusBarLightMode(context, darkModeFlag)) {
-            } else {
-                flymeSetStatusBarLightMode(context.window, darkModeFlag)
+            if (!setStatusBarLightMode(context, darkStatusBarText) && !setMiuiStatusBarLightMode(context, darkStatusBarText)) {
+                setFlymeStatusBarLightMode(context.window, darkStatusBarText)
             }
         } else {
             throw IllegalStateException("context is not instance activity")
@@ -53,66 +95,36 @@ object StatusBarUtil {
         return context.resources.getDimensionPixelSize(resourceId)
     }
 
-
     /**
-     * 设置透明状态栏
+     * 给具体view额外设置一个状态栏高度的padding
+     * 跟[setFitsSystemWindows]互斥
      */
-    fun setTransparentForWindow(context: Context) {
-        if (context is Activity) {
-            val window = context.window
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-                window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                window.statusBarColor = Color.TRANSPARENT
-
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                val localLayoutParams = window.attributes
-                localLayoutParams.flags = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or localLayoutParams.flags
-            }
-        } else {
-            throw IllegalStateException("context is not instance activity")
-        }
-
-    }
-
-    /**
-     * 设置填充状态栏高度
-     * rootView.fitsSystemWindows = true时，系统自动给rootView一个状态栏高度的paddingTop
-     */
-    fun setFitsSystemWindows(context: Context) {
-        if (context is Activity) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                val parent = context.findViewById<ViewGroup>(android.R.id.content)
-                val rootView = parent.getChildAt(0)
-                if (null != rootView) {
-                    //进入页面时，状态栏文字颜色自动改变
-                    autoSetStatusBarTextColor(context, rootView)
-                    rootView.fitsSystemWindows = true
-                    if (rootView is ViewGroup) {
-                        rootView.clipToPadding = true
-                    }
-                }
-            }
-        } else {
-            throw IllegalStateException("context is not instance activity")
-        }
-
-    }
-
-    /**
-     * 设置填充状态栏高度
-     */
-    fun setFitsSystemWindows(context: Context, offsetView: View) {
+    fun addStatusBarOffsetForView(activity: Activity?, offsetView: View, darkStatusBarText: Boolean? = null) {
+        if (activity == null) return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val statusBarHeight = getStatusBarHeight(context)
+            clearPreviousSetting(activity)
+            val statusBarHeight = getStatusBarHeight(activity)
             offsetView.setPadding(
                 offsetView.paddingLeft, offsetView.paddingTop + statusBarHeight,
                 offsetView.paddingRight, offsetView.paddingBottom
             )
         }
+
+        //进入页面时，状态栏文字颜色自动改变
+        if (darkStatusBarText == null) {
+            autoSetStatusBarTextColor(activity, offsetView)
+        } else {
+            compat(activity, darkStatusBarText)
+        }
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private fun clearPreviousSetting(activity: Activity) {
+        val rootView = (activity.findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0)
+        if (rootView.getTag(HAS_SET_TOP_PADDING) as Boolean? == true) {
+            rootView.fitsSystemWindows = false
+        }
+    }
 
     /**
      * 设置状态栏图标为深色和魅族特定的文字风格，Flyme4.0以上
@@ -123,7 +135,7 @@ object StatusBarUtil {
      * @return boolean 成功执行返回true
      */
     @JvmStatic
-    private fun flymeSetStatusBarLightMode(window: Window, dark: Boolean): Boolean {
+    private fun setFlymeStatusBarLightMode(window: Window, dark: Boolean): Boolean {
         var result = false
         try {
             val lp = window.attributes
@@ -157,7 +169,7 @@ object StatusBarUtil {
      * @return boolean 成功执行返回true
      */
     @JvmStatic
-    private fun MIUISetStatusBarLightMode(activity: Activity, dark: Boolean): Boolean {
+    private fun setMiuiStatusBarLightMode(activity: Activity, dark: Boolean): Boolean {
         var result = false
         val window = activity.window
         if (window != null) {
@@ -219,13 +231,13 @@ object StatusBarUtil {
      * @param view View?
      */
     @SuppressLint("StaticFieldLeak")
-    fun autoSetStatusBarTextColor(activity: Activity, view: View?) {
+    private fun autoSetStatusBarTextColor(context: Context, view: View?) {
 
         object : AsyncTask<View?, Void, Int>() {
             override fun doInBackground(vararg params: View?): Int {
                 return try {
                     val statusBarBg =
-                        getBitmapFromStatusBar(params[0], getAppScreenWidth(), getStatusBarHeight(BaseApp.application))
+                        getBitmapFromStatusBar(params[0], getStatusBarHeight(BaseApp.application))
                     getColorFromBitmapSync(statusBarBg)
                 } catch (e: Exception) {
                     Log.e("", "Exception thrown during async generate", e)
@@ -235,7 +247,7 @@ object StatusBarUtil {
             }
 
             override fun onPostExecute(bgColor: Int) {
-                compat(activity, !isDarkColor(bgColor))
+                compat(context, !isDarkColor(bgColor))
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, view)
     }
@@ -269,18 +281,28 @@ object StatusBarUtil {
      * @param height Int
      * @return Bitmap?
      */
-    private fun getBitmapFromStatusBar(view: View?, width: Int, height: Int): Bitmap? {
+    fun getBitmapFromStatusBar(view: View?, height: Int): Bitmap? {
         if (view == null) {
             return null
         }
-        //StatusBar获取的bitmap是透明的，所以取StatusBar下方相同高度区域代替
-        val bitmap: Bitmap = Bitmap.createBitmap(width, height * 2, Bitmap.Config.ARGB_4444)
+        var realHeight = height * 2
+        if (realHeight > view.height) {
+            realHeight = view.height
+        }
+        //取两个StatusBar高度区域
+        val bitmap: Bitmap = Bitmap.createBitmap(view.width, realHeight, Bitmap.Config.ARGB_4444)
         val canvas = Canvas(bitmap)
-        view.draw(canvas)
 
-        val result = Bitmap.createBitmap(bitmap, 0, height, width, height)
-        bitmap.recycle()
-        return result
+        val bgDrawable = view.background
+        if (bgDrawable != null) {
+            bgDrawable.draw(canvas)
+        } else {
+            canvas.drawColor(Color.WHITE)
+        }
+        view.draw(canvas)
+//        val result = Bitmap.createBitmap(bitmap, 0, height, width, height)
+//        bitmap.recycle()
+        return bitmap
     }
 
     /**

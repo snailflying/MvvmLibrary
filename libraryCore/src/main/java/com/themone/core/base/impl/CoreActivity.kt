@@ -25,6 +25,12 @@ open class CoreActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 1.statusBar的底色来自Imageview等元素，而非根部局
+     * 2.statusBar的底色Fragment
+     * 以上情况，isFitsSystemWindows()设置为false，且手动调用[StatusBarUtil.addStatusBarOffsetForView]
+     * @return Boolean
+     */
     open fun isFitsSystemWindows(): Boolean {
         return true
     }
