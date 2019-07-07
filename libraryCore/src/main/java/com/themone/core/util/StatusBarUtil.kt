@@ -25,6 +25,13 @@ import com.themone.core.base.impl.BaseApp
  * @author zhiqiang
  * @date 2019-06-04
  * @desc
+ * [com.themone.core.base.impl.CoreActivity]内如下调用：
+ * 1.[setTransparentForWindow]设置状态栏透明
+ * 2.[setFitsSystemWindows]将activity的rootView设置一个“系统padding”
+ * 额外需要处理的情况：
+ * 1.状态栏底色非rootView提供时，需要手动调用[addStatusBarOffsetForView]关闭“系统padding”，且给view提供一个statusBar高度padding
+ * 2.遇到scrollView等状态栏底色动态改变的，需要手动调用[compat]改变状态栏内容颜色。
+ *
  */
 object StatusBarUtil {
 
@@ -32,7 +39,7 @@ object StatusBarUtil {
 
 
     /**
-     * 设置透明状态栏,[CoreActivity]内调用
+     * 设置透明状态栏,[com.themone.core.base.impl.CoreActivity]内调用
      */
     internal fun setTransparentForWindow(activity: Activity) {
         val window = activity.window
@@ -50,7 +57,7 @@ object StatusBarUtil {
     }
 
     /**
-     * 设置填充状态栏高度
+     * 设置填充状态栏高度,[com.themone.core.base.impl.CoreActivity]内调用
      * rootView.fitsSystemWindows = true时，系统自动给rootView一个状态栏高度的paddingTop
      * 跟[addStatusBarOffsetForView]互斥
      */
@@ -88,14 +95,6 @@ object StatusBarUtil {
     }
 
     /**
-     * 获取 状态栏 高度
-     */
-    fun getStatusBarHeight(context: Context): Int {
-        val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
-        return context.resources.getDimensionPixelSize(resourceId)
-    }
-
-    /**
      * 给具体view额外设置一个状态栏高度的padding
      * 跟[setFitsSystemWindows]互斥
      */
@@ -124,6 +123,14 @@ object StatusBarUtil {
         if (rootView.getTag(HAS_SET_TOP_PADDING) as Boolean? == true) {
             rootView.fitsSystemWindows = false
         }
+    }
+
+    /**
+     * 获取 状态栏 高度
+     */
+    private fun getStatusBarHeight(context: Context): Int {
+        val resourceId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
+        return context.resources.getDimensionPixelSize(resourceId)
     }
 
     /**
