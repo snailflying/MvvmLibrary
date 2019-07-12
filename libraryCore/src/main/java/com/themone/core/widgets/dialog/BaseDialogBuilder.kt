@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.themone.theone.library.R
 
-import java.io.Serializable
-
 /**
  * @Author zhiqiang
  * @Email liuzhiqiang@theone.com
@@ -23,8 +21,7 @@ open class BaseDialogBuilder(
     private var mTargetFragment: Fragment? = null
 
     private var mTag: String
-    private var mRequestCode =
-        DEFAULT_REQUEST_CODE
+    private var mRequestCode = DEFAULT_REQUEST_CODE
 
     /**
      * 是否底部显示
@@ -45,7 +42,6 @@ open class BaseDialogBuilder(
     private var mCancelableOnTouchOutside =
         DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
     private var mCancelable = true
-    private var mDismissPreDialog: Boolean? = true
     /**
      * 主题
      */
@@ -65,7 +61,7 @@ open class BaseDialogBuilder(
         }
 
     init {
-        mTag = mClass.simpleName
+        mTag = mClass.name
     }
 
     /**
@@ -162,17 +158,6 @@ open class BaseDialogBuilder(
     }
 
     /**
-     * 如果设置了mTag则自动不会隐藏，否则可调用此方法不隐藏
-     *
-     * @param dismissPreDialog Boolean
-     * @return DialogBuilder
-     */
-    fun setDismissPreDialog(dismissPreDialog: Boolean?): BaseDialogBuilder {
-        mDismissPreDialog = dismissPreDialog
-        return this
-    }
-
-    /**
      * @param requestCode 返回值code
      * @return
      */
@@ -228,7 +213,7 @@ open class BaseDialogBuilder(
         if (mDialogFragment == null) {
             build()
         }
-        mDialogFragment!!.showWithDismissPreDialog(mFragmentManager, mTag, mDismissPreDialog)
+        mDialogFragment!!.showWithDismissPreDialog(mFragmentManager, mTag)
         return mDialogFragment!!
     }
 
@@ -239,14 +224,13 @@ open class BaseDialogBuilder(
         if (mDialogFragment == null) {
             build()
         }
-        mDialogFragment!!.showAllowingStateLoss(mFragmentManager, mTag, mDismissPreDialog)
+        mDialogFragment!!.showAllowingStateLoss(mFragmentManager, mTag)
         return mDialogFragment!!
     }
 
     companion object {
 
         internal val ARG_REQUEST_CODE = "request_code"
-        internal val ARG_FULL_SCREEN = "arg_full_screen"
         internal val ARG_SHOW_FROM_BOTTOM = "arg_show_from_bottom"
         internal val ARG_CANCELABLE_ON_TOUCH_OUTSIDE = "cancelable_oto"
         internal val ARG_USE_THEME = "arg_use_theme_type"

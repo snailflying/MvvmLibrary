@@ -104,7 +104,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initBundle()
+        initArguments()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -168,7 +168,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     /**
      * 因为setStyle()的原因，必须在onCreate()内调用
      */
-    private fun initBundle() {
+    private fun initArguments() {
         val targetFragment = targetFragment
         if (targetFragment != null) {
             mRequestCode = targetRequestCode
@@ -229,11 +229,18 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         return dm.widthPixels
     }
 
-    internal fun showAllowingStateLoss(manager: FragmentManager, tag: String, dismissPreDialog: Boolean?) {
+    /**
+     * 如果两个dialog的tag一致，则隐藏上一个dialog
+     *
+     * 报"IllegalStateException : Can not perform this action after onSaveInstanceState()"异常的时候使用此show
+     * @param manager FragmentManager
+     * @param tag String
+     */
+    internal fun showAllowingStateLoss(manager: FragmentManager, tag: String) {
         val ft = manager.beginTransaction()
         //将之前的dialog隐藏
         val targetFragment = manager.findFragmentByTag(tag)
-        if (dismissPreDialog!! && targetFragment is BaseDialogFragment) {
+        if (targetFragment is BaseDialogFragment) {
             ft.remove(targetFragment)
         }
 
@@ -241,12 +248,16 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         ft.commitAllowingStateLoss()
     }
 
-
-    internal fun showWithDismissPreDialog(manager: FragmentManager, tag: String, dismissPreDialog: Boolean?) {
+    /**
+     * 如果两个dialog的tag一致，则隐藏上一个dialog
+     * @param manager FragmentManager
+     * @param tag String
+     */
+    internal fun showWithDismissPreDialog(manager: FragmentManager, tag: String) {
         val ft = manager.beginTransaction()
         //将之前的dialog隐藏
         val targetFragment = manager.findFragmentByTag(tag)
-        if (dismissPreDialog!! && targetFragment is BaseDialogFragment) {
+        if (targetFragment is BaseDialogFragment) {
             ft.remove(targetFragment).commit()
         }
         show(manager, tag)
