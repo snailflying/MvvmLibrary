@@ -16,7 +16,6 @@
 
 package com.themone.core.widgets.dialog
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
@@ -77,7 +76,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     private var animStyle: Int = 0
 
 
-    protected var mContext: Activity? = null
+    protected var mContext: Context? = null
 
     protected val cancelListeners: List<IDialogCancelListener>
         get() = getDialogListeners(IDialogCancelListener::class.java)
@@ -107,8 +106,8 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         initArguments()
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         //放在onCreateDialog()不起作用
         initDialogParams(dialog)
     }
@@ -236,7 +235,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      * @param manager FragmentManager
      * @param tag String
      */
-    internal fun showAllowingStateLoss(manager: FragmentManager, tag: String) {
+    fun showAllowingStateLoss(manager: FragmentManager, tag: String) {
         val ft = manager.beginTransaction()
         //将之前的dialog隐藏
         val targetFragment = manager.findFragmentByTag(tag)
@@ -253,7 +252,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      * @param manager FragmentManager
      * @param tag String
      */
-    internal fun showWithDismissPreDialog(manager: FragmentManager, tag: String) {
+    fun showWithDismissPreDialog(manager: FragmentManager, tag: String) {
         val ft = manager.beginTransaction()
         //将之前的dialog隐藏
         val targetFragment = manager.findFragmentByTag(tag)
@@ -265,6 +264,6 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        mContext = activity
+        mContext = context
     }
 }
