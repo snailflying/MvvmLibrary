@@ -1,4 +1,4 @@
-package com.theone.framework.toast
+package com.theone.framework.widget.toast
 
 import android.app.AppOpsManager
 import android.app.Application
@@ -12,9 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import com.theone.framework.toast.style.IToastStyle
-import com.theone.framework.toast.style.ToastBlackStyle
-import com.theone.framework.toast.BaseToast
+import com.theone.framework.widget.toast.style.IToastStyle
+import com.theone.framework.widget.toast.style.ToastBlackStyle
 import java.lang.reflect.InvocationTargetException
 
 /**

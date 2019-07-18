@@ -1,4 +1,4 @@
-package com.theone.framework.toast.style
+package com.theone.framework.widget.toast.style
 
 import android.view.Gravity
 

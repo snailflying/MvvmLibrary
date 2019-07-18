@@ -1,4 +1,4 @@
-package com.theone.framework.toast
+package com.theone.framework.widget.toast
 
 import android.annotation.TargetApi
 import android.app.Activity

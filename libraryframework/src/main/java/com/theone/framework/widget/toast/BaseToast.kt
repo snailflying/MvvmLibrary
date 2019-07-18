@@ -1,4 +1,4 @@
-package com.theone.framework.toast
+package com.theone.framework.widget.toast
 
 import android.app.Application
 import android.view.View

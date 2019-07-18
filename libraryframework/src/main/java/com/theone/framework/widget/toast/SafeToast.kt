@@ -1,11 +1,10 @@
-package com.theone.framework.toast
+package com.theone.framework.widget.toast
 
 import android.app.Application
 import android.os.Handler
 import android.os.Message
 import android.view.WindowManager
 import android.widget.Toast
-import com.theone.framework.toast.BaseToast
 
 /**
  * @Author zhiqiang

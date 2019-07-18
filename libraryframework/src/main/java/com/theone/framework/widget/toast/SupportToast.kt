@@ -1,7 +1,6 @@
-package com.theone.framework.toast
+package com.theone.framework.widget.toast
 
 import android.app.Application
-import com.theone.framework.toast.BaseToast
 
 /**
  * @Author zhiqiang
