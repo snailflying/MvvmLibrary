@@ -12,7 +12,8 @@ import com.theone.framework.R
  * @Author zhiqiang
  * @Date 2019-07-18
  * @Email liuzhiqiang@moretickets.com
- * @Description https://github.com/lguipeng/BubbleView
+ * @Description 气泡TextView
+ * https://github.com/lguipeng/BubbleView
  */
 class BubbleTextView : AppCompatTextView {
     private var bubbleDrawable: BubbleDrawable? = null
