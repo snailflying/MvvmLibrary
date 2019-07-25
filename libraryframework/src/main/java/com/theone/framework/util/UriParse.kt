@@ -71,7 +71,7 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
      */
     val queryMap: LinkedHashMap<String, String>
         get() {
-            return queries?.toStringLinkedHashMap() ?: linkedMapOf()
+            return queries?.toMapWithSingleValue() ?: linkedMapOf()
         }
 
     private var queries: LinkedHashEntity? = LinkedHashEntity()
@@ -262,7 +262,7 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
      * @return 返回decode过的参数value
      */
     fun getQueryParameter(name: String?): String {
-        return toUri().getQueryParameter(name)?:""
+        return toUri().getQueryParameter(name) ?: ""
     }
 
 
@@ -439,7 +439,11 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
             }
         }
 
-        internal fun toStringLinkedHashMap(): LinkedHashMap<String, String> {
+        /**
+         * LinkedHashMap<String, LinkedHashEntity.Entity> -> LinkedHashMap<String, String>
+         * @return LinkedHashMap<String, String>
+         */
+        internal fun toMapWithSingleValue(): LinkedHashMap<String, String> {
             val result = linkedMapOf<String, String>()
             forEach { item ->
                 result[item.key] = item.value.getValues()[0]
