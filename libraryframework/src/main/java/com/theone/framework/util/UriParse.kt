@@ -71,10 +71,14 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
      */
     val queryMap: LinkedHashMap<String, String>
         get() {
-            return queries?.toMapWithSingleValue() ?: linkedMapOf()
+            return queries.toMapWithSingleValue()
         }
+    /**
+     * 获取Query的LinkedHashEntity（一个key可能对应多个value）
+     */
+    var queries: LinkedHashEntity = LinkedHashEntity()
+        private set
 
-    private var queries: LinkedHashEntity? = LinkedHashEntity()
     var userInfo: String? = null
         private set
 
@@ -152,10 +156,10 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
         }
         if (encode) {
             removeQuery(encode(name))
-            queries!!.putString(encode(name), encode(value))
+            queries.putString(encode(name), encode(value))
         } else {
             removeQuery(name)
-            queries!!.putString(name, value)
+            queries.putString(name, value)
         }
         return this
     }
@@ -175,14 +179,14 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
             for (name in input.keys) {
                 removeQuery(encode(name))
                 val value = encode(input[name])
-                queries!!.putString(encode(name), value)
+                queries.putString(encode(name), value)
 
             }
         } else {
             for (name in input.keys) {
                 removeQuery(name)
                 val value = input[name]
-                queries!!.putString(name, value)
+                queries.putString(name, value)
             }
         }
 
@@ -203,9 +207,9 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
             return this
         }
         if (encode) {
-            queries!!.putString(encode(name), encode(value))
+            queries.putString(encode(name), encode(value))
         } else {
-            queries!!.putString(name, value)
+            queries.putString(name, value)
         }
         return this
     }
@@ -224,13 +228,13 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
         if (encode) {
             for (name in input.keys) {
                 val value = encode(input[name])
-                queries!!.putString(encode(name), value)
+                queries.putString(encode(name), value)
 
             }
         } else {
             for (name in input.keys) {
                 val value = input[name]
-                queries!!.putString(name, value)
+                queries.putString(name, value)
             }
         }
 
@@ -248,8 +252,8 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
         if (name == null) {
             return this
         }
-        if (queries!!.remove(name) == null) {
-            queries!!.remove(encode(name))
+        if (queries.remove(name) == null) {
+            queries.remove(encode(name))
         }
         return this
     }
@@ -316,12 +320,12 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
     }
 
     private fun createQueryString(): String {
-        if (this.queries == null || this.queries!!.isEmpty()) {
+        if (this.queries.isEmpty()) {
             return ""
         }
         val sb = StringBuilder()
-        for (name in this.queries!!.keys) {
-            val values = this.queries!!.getValues(name)
+        for (name in this.queries.keys) {
+            val values = this.queries.getValues(name)
             for (item in values) {
                 if (sb.isNotBlank()) {
                     sb.append("&")
@@ -414,7 +418,7 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
     /**
      * 用来存储encode过的参数跟value
      */
-    private inner class LinkedHashEntity : LinkedHashMap<String, LinkedHashEntity.Entity>() {
+    inner class LinkedHashEntity : LinkedHashMap<String, LinkedHashEntity.Entity>() {
 
         fun putString(key: String, value: String?): Entity? {
             val entity = get(key)
@@ -430,7 +434,7 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
          * @param name String?
          * @return List<String>
          */
-        internal fun getValues(name: String?): List<String> {
+        fun getValues(name: String?): List<String> {
             val entity = get(name)
             return if (name != null && entity != null) {
                 entity.getValues()
@@ -443,7 +447,7 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
          * LinkedHashMap<String, LinkedHashEntity.Entity> -> LinkedHashMap<String, String>
          * @return LinkedHashMap<String, String>
          */
-        internal fun toMapWithSingleValue(): LinkedHashMap<String, String> {
+        fun toMapWithSingleValue(): LinkedHashMap<String, String> {
             val result = linkedMapOf<String, String>()
             forEach { item ->
                 result[item.key] = item.value.getValues()[0]
@@ -451,7 +455,7 @@ class UriParse @JvmOverloads constructor(url: String?, charset: String? = null) 
             return result
         }
 
-        internal inner class Entity internal constructor(value: String?) {
+        inner class Entity internal constructor(value: String?) {
             /**
              * 数据不重复,且不为Null
              */
