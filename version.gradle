@@ -36,7 +36,6 @@ ext {
             kotlinx_coroutines   : "1.1.1",
             lifecycle_extensions : "2.0.0",
             recyclerview         : "1.0.0",
-            material             : "1.0.0",
             //第三方
             bga_qrcode_zxing     : "1.3.6",
             disklrucache         : "2.0.2",
@@ -89,6 +88,20 @@ ext {
             "junit"                      : "junit:junit:4.12",
             "androidJUnitRunner"         : "android.support.test.runner.AndroidJUnitRunner",
             "runner"                     : 'androidx.test:runner:1.1.0',
+            //robolectric 规避限定在 Android 模拟器或真机跑的问题，提供Android代码的运行环境
+            "robolectric"                : 'org.robolectric:robolectric:4.2',
+            //多 dex 模拟
+            "robolectric_multidex"       : 'org.robolectric:shadows-multidex:4.2',
+            "mockito"                    : 'org.mockito:mockito-core:2.24.5',
+            //用于 mock final 类或方法
+            "mockito_inline"             : 'org.mockito:mockito-inline:2.24.5',
+            //powermock
+            "powermock_junit4"           : 'org.powermock:powermock-module-junit4:2.0.2',
+            "powermock_junit4_rule"      : 'org.powermock:powermock-module-junit4-rule:2.0.2',
+            "powermock_mockito2"         : 'org.powermock:powermock-api-mockito2:2.0.2',
+            "powermock_xstream"          : 'org.powermock:powermock-classloading-xstream:2.0.2',
+            //测试 end
+
             "espresso_core"              : 'androidx.test.espresso:espresso-core:3.1.0',
             //二维码扫描
             "bga_qrcode_zxing"           : "cn.theone:bga-qrcode-zxing:${version["bga_qrcode_zxing"]}",
@@ -101,7 +114,6 @@ ext {
             "room_testing"               : "androidx.room:room-testing:${version["room"]}",
             //sopport
             "recyclerview"               : "androidx.recyclerview:recyclerview:${version["recyclerview"]}",
-            "material"                   : "com.google.android.material:material:${version["material"]}",
             //recyclerview adapter帮助类
             "recyclerview_adapter_helper": "com.github.CymChad:BaseRecyclerViewAdapterHelper:${version["RecyclerAdapterHelper"]}",
             "ChipsLayoutManager"         : "com.beloo.widget:ChipsLayoutManager:0.3.7@aar",
