@@ -15,12 +15,12 @@ abstract class CoreMvvmActivity<VM : IViewModel> : CoreActivity() {
 
     private val TAG = "CoreMvvmActivity"
 
-    protected var mViewModel: VM? = null
+    protected var viewModel: VM? = null
         private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mViewModel = onCreateViewModel()
+        viewModel = onCreateViewModel()
         initLifecycleObserver(lifecycle)
     }
 
@@ -32,14 +32,14 @@ abstract class CoreMvvmActivity<VM : IViewModel> : CoreActivity() {
     protected abstract fun onCreateViewModel(): VM
 
     /**
-     * 初使化 lifeCycle 跟 mViewModel 绑定生命周期
+     * 初使化 lifeCycle 跟 viewModel 绑定生命周期
      *
      * @param lifecycle
      */
     @MainThread
     protected fun initLifecycleObserver(lifecycle: Lifecycle) {
-        if (null != mViewModel) {
-            lifecycle.addObserver(mViewModel!!)
+        if (null != viewModel) {
+            lifecycle.addObserver(viewModel!!)
         }
     }
 

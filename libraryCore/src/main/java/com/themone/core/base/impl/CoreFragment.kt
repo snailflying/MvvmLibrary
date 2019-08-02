@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import com.themone.core.util.LogUtil
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * @author zhiqiang
@@ -13,10 +14,16 @@ import com.themone.core.util.LogUtil
  */
 open class CoreFragment : Fragment() {
 
+    /**
+     * 跟[getContext]区分，尽量避免为空
+     */
     protected var mContext: Context? = null
-    private var mIsFirstVisible = true
+
+    private var isFirstVisible = true
     private var isViewCreated = false
     private var isSupportVisible = false
+
+    protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private val isParentInvisible: Boolean
         get() {
@@ -58,7 +65,7 @@ open class CoreFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        if (!this.mIsFirstVisible && !this.isHidden && !this.isSupportVisible && this.userVisibleHint) {
+        if (!this.isFirstVisible && !this.isHidden && !this.isSupportVisible && this.userVisibleHint) {
             this.dispatchUserVisibleHint(true)
         }
 
@@ -81,8 +88,8 @@ open class CoreFragment : Fragment() {
             if (this.isSupportVisible != visible) {
                 this.isSupportVisible = visible
                 if (visible) {
-                    if (this.mIsFirstVisible) {
-                        this.mIsFirstVisible = false
+                    if (this.isFirstVisible) {
+                        this.isFirstVisible = false
                         this.onFragmentFirstVisible()
                     }
 
@@ -125,10 +132,15 @@ open class CoreFragment : Fragment() {
         LogUtil.i(TAG, this.javaClass.simpleName + "  对用户不可见")
     }
 
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         this.isViewCreated = false
-        this.mIsFirstVisible = true
+        this.isFirstVisible = true
     }
 
     override fun onAttach(context: Context?) {

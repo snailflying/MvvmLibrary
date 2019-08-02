@@ -13,7 +13,7 @@ import com.theone.framework.util.I18NUtil
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-abstract class BaseMvvmActivity<VM : IViewModel> : CoreMvvmActivity<VM>() {
+abstract class BaseMvvmActivity<VM : IViewModel> : CoreMvvmActivity<VM>(),IFrameworkActivity {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(I18NUtil.updateResource(newBase))

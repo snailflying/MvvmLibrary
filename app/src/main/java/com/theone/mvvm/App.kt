@@ -1,6 +1,6 @@
 package com.theone.mvvm
 
-import com.themone.core.base.impl.BaseApp
+import com.themone.core.base.impl.CoreApp
 
 /**
  * @Author zhiqiang
@@ -8,4 +8,4 @@ import com.themone.core.base.impl.BaseApp
  * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-class App: BaseApp()
+class App: CoreApp()

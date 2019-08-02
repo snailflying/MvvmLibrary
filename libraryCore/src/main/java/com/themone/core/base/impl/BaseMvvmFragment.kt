@@ -11,7 +11,7 @@ import com.themone.core.base.IViewModel
  * @date 2019-06-05
  * @desc
  */
-abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
+abstract class BaseMvvmFragment<VM : IViewModel> : CoreFragment() {
 
     protected var mViewModel: VM? = null
         private set
@@ -31,7 +31,7 @@ abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
     protected abstract fun onCreateViewModel(): VM
 
     /**
-     * 初使化 lifeCycle 跟 mViewModel 绑定生命周期
+     * 初使化 lifeCycle 跟 viewModel 绑定生命周期
      *
      * @param lifecycle
      */

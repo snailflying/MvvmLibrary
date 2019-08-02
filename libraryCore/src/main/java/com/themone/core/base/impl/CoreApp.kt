@@ -8,17 +8,17 @@ import kotlin.properties.Delegates
  * @date 2019-06-05
  * @desc
  */
-open class BaseApp : Application() {
+open class CoreApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        application = this
+        APPLICATION = this
     }
 
     companion object {
 
         @get:Synchronized
-        var application: BaseApp by Delegates.notNull()
+        var APPLICATION: CoreApp by Delegates.notNull()
             private set
     }
 }

@@ -17,7 +17,7 @@ import android.view.WindowManager
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
-import com.themone.core.base.impl.BaseApp
+import com.themone.core.base.impl.CoreApp
 import com.themone.core.util.StatusBarUtil.addStatusBarOffsetForView
 import com.themone.core.util.StatusBarUtil.compat
 import com.themone.core.util.StatusBarUtil.setFitsSystemWindows
@@ -254,7 +254,7 @@ object StatusBarUtil {
             override fun doInBackground(vararg params: View?): Int {
                 return try {
                     val statusBarBg =
-                        getBitmapFromStatusBar(params[0], getStatusBarHeight(BaseApp.application))
+                        getBitmapFromStatusBar(params[0], getStatusBarHeight(CoreApp.APPLICATION))
                     getColorFromBitmapSync(statusBarBg)
                 } catch (e: Exception) {
                     Log.e("", "Exception thrown during async generate", e)
@@ -328,7 +328,7 @@ object StatusBarUtil {
      * @return the application's width of screen, in pixel
      */
     private fun getAppScreenWidth(): Int {
-        val wm = BaseApp.application.getSystemService(Context.WINDOW_SERVICE) as WindowManager? ?: return -1
+        val wm = CoreApp.APPLICATION.getSystemService(Context.WINDOW_SERVICE) as WindowManager? ?: return -1
         val point = Point()
         wm.defaultDisplay.getSize(point)
         return point.x

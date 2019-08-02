@@ -1,7 +1,7 @@
 package com.theone.framework.base
 
 import com.themone.core.base.IViewModel
-import com.themone.core.base.impl.CoreMvvmFragment
+import com.themone.core.base.impl.BaseMvvmFragment
 
 
 /**
@@ -10,4 +10,4 @@ import com.themone.core.base.impl.CoreMvvmFragment
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-abstract class BaseMvvmFragment<VM : IViewModel> : CoreMvvmFragment<VM>()
+abstract class BaseMvvmFragment<VM : IViewModel> : BaseMvvmFragment<VM>(),IFrameworkFragment

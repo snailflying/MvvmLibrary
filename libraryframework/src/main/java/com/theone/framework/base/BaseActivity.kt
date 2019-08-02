@@ -11,9 +11,9 @@ import com.theone.framework.util.I18NUtil
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-open class BaseActivity : CoreActivity() {
+open class BaseActivity : CoreActivity(),IFrameworkActivity {
 
-    override fun attachBaseContext(newBase: Context?) {
+    override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(I18NUtil.updateResource(newBase))
     }
 }

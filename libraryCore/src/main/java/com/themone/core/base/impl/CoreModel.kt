@@ -9,7 +9,7 @@ import com.themone.core.util.LogUtil
  * @date 2019-06-04
  * @desc
  */
-open class BaseModel<T>(clazz: Class<T>) : IModel {
+open class CoreModel<T>(clazz: Class<T>) : IModel {
 
     /**
      * apiService

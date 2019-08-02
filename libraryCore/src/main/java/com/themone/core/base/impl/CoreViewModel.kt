@@ -7,26 +7,24 @@ import com.themone.core.base.IModel
 import com.themone.core.base.IViewModel
 import com.themone.core.util.LogUtil
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 
 /**
  * @author zhiqiang
  * @date 2019-06-04
  * @desc
  */
-abstract class BaseViewModel<M : IModel> : ViewModel(), IViewModel {
+abstract class CoreViewModel<M : IModel> : ViewModel(), IViewModel {
     /**
      * 初始化 model
      *
      * @return model
      */
-    protected abstract var mModel: M?
+    protected abstract var model: M?
 
     /**
      * 为了方便kotlin引用
      */
-    protected var mCompositeDisposable: CompositeDisposable? = CompositeDisposable()
-        private set
+    protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     @MainThread
     override fun onResume(owner: LifecycleOwner) {
@@ -40,24 +38,16 @@ abstract class BaseViewModel<M : IModel> : ViewModel(), IViewModel {
 
 
     override fun onCleared() {
-        mModel?.onDestroy()
-        mModel = null
+        model?.onDestroy()
+        model = null
         unSubscribe()
         LogUtil.i(Companion.TAG, "onCleared")
     }
 
     private fun unSubscribe() {
-        if (null != mCompositeDisposable) {
-            mCompositeDisposable!!.clear()
-        }
+        compositeDisposable.clear()
     }
 
-    protected fun addSubscribe(subscription: Disposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = CompositeDisposable()
-        }
-        mCompositeDisposable!!.add(subscription)
-    }
 
     companion object {
         private const val TAG = "BaseViewModel"

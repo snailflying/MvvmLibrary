@@ -1,4 +1,4 @@
-package com.themone.core.base
+package com.theone.framework.base.multi
 
 import android.view.View
 
