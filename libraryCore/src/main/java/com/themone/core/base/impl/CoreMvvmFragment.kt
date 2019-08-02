@@ -11,7 +11,7 @@ import com.themone.core.base.IViewModel
  * @date 2019-06-05
  * @desc
  */
-abstract class BaseMvvmFragment<VM : IViewModel> : CoreFragment() {
+abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
 
     protected var mViewModel: VM? = null
         private set

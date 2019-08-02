@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.annotation.Nullable
 import com.themone.core.base.IViewModel
-import com.themone.core.base.impl.BaseMvvmFragment
 import com.theone.framework.R
 import com.theone.framework.base.multi.IMultiStateProvider
 import com.theone.framework.base.multi.MultiViewState
