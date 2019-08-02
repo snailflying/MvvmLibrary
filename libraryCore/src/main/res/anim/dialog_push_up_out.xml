@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <set xmlns:android="http://schemas.android.com/apk/res/android">
-    <translate android:fromYDelta="0" android:toYDelta="100%p" android:duration="@integer/dialog_animation_time"/>
-    <alpha android:fromAlpha="1.0" android:toAlpha="0.0" android:duration="@integer/dialog_animation_time"/>
+    <translate
+            android:duration="150"
+            android:fromYDelta="0"
+            android:toYDelta="100%p"/>
+    <alpha
+            android:duration="150"
+            android:fromAlpha="1.0"
+            android:toAlpha="0.0"/>
 </set>

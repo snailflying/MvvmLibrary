@@ -46,12 +46,12 @@ abstract class BaseMultiViewFragment<VM : IViewModel> : BaseMvvmFragment<VM>(),
     var contentLayoutParams: ViewGroup.LayoutParams? = null
 
     @LayoutRes
-    protected open val errorLayout: Int = R.layout.view_error
+    protected open val errorLayout: Int = R.layout.multi_view_error
 
     @LayoutRes
-    protected open val emptyLayout: Int = R.layout.view_error
+    protected open val emptyLayout: Int = R.layout.multi_view_error
     @LayoutRes
-    protected open val loadingLayout: Int = R.layout.view_loading
+    protected open val loadingLayout: Int = R.layout.multi_view_loading
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
