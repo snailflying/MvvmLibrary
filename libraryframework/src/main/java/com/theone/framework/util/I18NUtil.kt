@@ -86,7 +86,6 @@ object I18NUtil {
     fun saveSelectLanguage(context: Context, select: Int) {
         SpUtil.getSpSetting(context)
             .edit().putInt(SELECTED_LANGUAGE, select).apply()
-        updateResource(context)
     }
 
     /**
