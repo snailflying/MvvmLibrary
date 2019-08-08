@@ -47,6 +47,8 @@ class UriParseTest {
     private val WITH_QUERY_HAN_KEY = "http://host?key1=刘&姓名=志强"
     private val OTHER_SCHEME = "other://host/path?key1=value1"
     private val WITH_QUERY3 = "http://host/path?key1=value1&key1=value2&key1=大强&key2=value2"
+    private val QUERY_UNNORMAL = "https://mp.weixin.qq.com/s?__biz=MzU3NDUxODIzNg==&mid=2247484722"
+    private val QUERY_UNNORMAL1 = "https://mp.weixin.qq.com/s?__biz=MzU3NDUxODIzNg==&"
 
     private val WITH_PORT = "http://host:8080"
     private val IPV6 = "http://[2001:db8::dead:e1f]/"
@@ -159,7 +161,8 @@ class UriParseTest {
         Assert.assertEquals(UriParse(OTHER_SCHEME).query, "key1=value1")
         Assert.assertEquals(UriParse(WITH_PORT).query, "")
         Assert.assertEquals(UriParse(WITH_QUERY3).query, "key1=value1&key1=value2&key1=大强&key2=value2")
-
+        Assert.assertEquals(UriParse(QUERY_UNNORMAL).query, "__biz=MzU3NDUxODIzNg==&mid=2247484722")
+        Assert.assertEquals(UriParse(QUERY_UNNORMAL1).query, "__biz=MzU3NDUxODIzNg==")
     }
 
     @Test
@@ -197,6 +200,17 @@ class UriParseTest {
         result5["key1"]="value1"
         result5["key2"]="value2"
         Assert.assertEquals(UriParse(WITH_QUERY3).queryMap, result5)
+
+        val utils6 = UriParse.from(QUERY_UNNORMAL)
+        val result6 = linkedMapOf<String,String>()
+        result6["__biz"]="MzU3NDUxODIzNg=="
+        result6["mid"]="2247484722"
+        Assert.assertEquals(utils6.queryMap, result6)
+
+        val utils7 = UriParse.from(QUERY_UNNORMAL1)
+        val result7 = linkedMapOf<String,String>()
+        result7["__biz"]="MzU3NDUxODIzNg=="
+        Assert.assertEquals(utils7.queryMap, result7)
 
     }
 
@@ -253,6 +267,18 @@ class UriParseTest {
         val value1 = ArrayList<String>()
         value1.add("大强")
         Assert.assertEquals(utils4.getQueryParameters("key1"), value1)
+
+        val utils5 = UriParse.from(QUERY_UNNORMAL)
+        Assert.assertEquals(utils5.getQueryParameter("__biz"), "MzU3NDUxODIzNg==")
+        val value5 = ArrayList<String>()
+        value5.add("MzU3NDUxODIzNg==")
+        Assert.assertEquals(utils5.getQueryParameters("__biz"), value5)
+
+        val utils6 = UriParse.from(QUERY_UNNORMAL1)
+        Assert.assertEquals(utils6.getQueryParameter("__biz"), "MzU3NDUxODIzNg==")
+        val value6 = ArrayList<String>()
+        value6.add("MzU3NDUxODIzNg==")
+        Assert.assertEquals(utils6.getQueryParameters("__biz"), value6)
     }
 
     @Test
