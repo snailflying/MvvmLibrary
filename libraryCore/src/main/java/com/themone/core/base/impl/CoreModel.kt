@@ -9,21 +9,16 @@ import com.themone.core.util.LogUtil
  * @date 2019-06-04
  * @desc
  */
-open class CoreModel<T>(clazz: Class<T>) : IModel {
+open class CoreModel<T> : IModel {
 
     /**
      * apiService
      * 用于 retrofit 请求网络
      */
-    protected var mApiService: T? = null
+    protected inline fun <reified T> getApiService(): T? = HttpClient.create(T::class.java)
 
-    init {
-        this.mApiService = HttpClient.create(clazz)
-    }
 
     override fun onDestroy() {
-        LogUtil.i("BaseModel", "onDestroy")
-        mApiService = null
     }
 
 }
