@@ -8,5 +8,5 @@ import com.themone.core.base.impl.CoreModel
  * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-open class BaseModel<T> : CoreModel<T>(), IFrameworkModel {
+open class BaseModel<T>(clazz: Class<T>) : CoreModel<T>(clazz), IFrameworkModel {
 }
