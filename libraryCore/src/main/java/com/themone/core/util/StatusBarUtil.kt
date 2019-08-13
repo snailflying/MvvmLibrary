@@ -254,7 +254,7 @@ object StatusBarUtil {
             override fun doInBackground(vararg params: View?): Int {
                 return try {
                     val statusBarBg =
-                        getBitmapFromStatusBar(params[0], getStatusBarHeight(CoreApp.APPLICATION))
+                        getBitmapFromStatusBar(params[0], getStatusBarHeight(CoreApp.application))
                     getColorFromBitmapSync(statusBarBg)
                 } catch (e: Exception) {
                     Log.e("", "Exception thrown during async generate", e)
@@ -328,7 +328,7 @@ object StatusBarUtil {
      * @return the application's width of screen, in pixel
      */
     private fun getAppScreenWidth(): Int {
-        val wm = CoreApp.APPLICATION.getSystemService(Context.WINDOW_SERVICE) as WindowManager? ?: return -1
+        val wm = CoreApp.application.getSystemService(Context.WINDOW_SERVICE) as WindowManager? ?: return -1
         val point = Point()
         wm.defaultDisplay.getSize(point)
         return point.x

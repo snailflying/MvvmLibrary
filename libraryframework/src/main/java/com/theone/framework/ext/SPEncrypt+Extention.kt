@@ -131,7 +131,7 @@ fun SharedPreferences.Editor.putEncryptStringSet(
  * encrypt function
  * @return cipherText base64
  */
-private fun encryptPreference(context: Context = CoreApp.APPLICATION, plainText: String, pwd: String? = null): String {
+private fun encryptPreference(context: Context = CoreApp.application, plainText: String, pwd: String? = null): String {
 
     return AesRsaEncrypt.getInstance(context).encrypt(pwd, plainText)
 }
@@ -140,6 +140,6 @@ private fun encryptPreference(context: Context = CoreApp.APPLICATION, plainText:
  * decrypt function
  * @return plainText
  */
-private fun decryptPreference(context: Context = CoreApp.APPLICATION, cipherText: String, pwd: String? = null): String {
+private fun decryptPreference(context: Context = CoreApp.application, cipherText: String, pwd: String? = null): String {
     return AesRsaEncrypt.getInstance(context).decrypt(pwd, cipherText)
 }

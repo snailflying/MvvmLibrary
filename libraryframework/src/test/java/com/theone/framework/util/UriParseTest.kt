@@ -136,10 +136,6 @@ class UriParseTest {
     }
 
     @Test
-    fun getUserInfo() {
-    }
-
-    @Test
     fun getQuery() {
         Assert.assertEquals(UriParse(EXC_NULL).query, "")
         Assert.assertEquals(UriParse(EXC_EMPTY).query, "")
@@ -167,49 +163,49 @@ class UriParseTest {
 
     @Test
     fun getQueryMap() {
-        Assert.assertEquals(UriParse(EXC_NULL).queryMap, linkedMapOf<String,String>())
-        Assert.assertEquals(UriParse(EXC_EMPTY).queryMap, linkedMapOf<String,String>())
-        Assert.assertEquals(UriParse(EXC_ONLY_SCHEME).queryMap, linkedMapOf<String,String>())
-        Assert.assertEquals(UriParse(EXC_ONLY_HOST).queryMap, linkedMapOf<String,String>())
-        Assert.assertEquals(UriParse(EXC_SCHEME_LESS_SLASH).queryMap, linkedMapOf<String,String>())
-        val result = linkedMapOf<String,String>()
-        result["key1"]="value1"
+        Assert.assertEquals(UriParse(EXC_NULL).queryMap, linkedMapOf<String, String>())
+        Assert.assertEquals(UriParse(EXC_EMPTY).queryMap, linkedMapOf<String, String>())
+        Assert.assertEquals(UriParse(EXC_ONLY_SCHEME).queryMap, linkedMapOf<String, String>())
+        Assert.assertEquals(UriParse(EXC_ONLY_HOST).queryMap, linkedMapOf<String, String>())
+        Assert.assertEquals(UriParse(EXC_SCHEME_LESS_SLASH).queryMap, linkedMapOf<String, String>())
+        val result = linkedMapOf<String, String>()
+        result["key1"] = "value1"
         Assert.assertEquals(UriParse(EXC_UNNECESSARY_SLASH_BEFORE_HOST).queryMap, result)
         Assert.assertEquals(UriParse(EXC_UNNECESSARY_SLASH_BEFORE_PATH).queryMap, result)
         Assert.assertEquals(UriParse(EXC_UNNECESSARY_SLASH_BEFORE_QUERY).queryMap, result)
         Assert.assertEquals(UriParse(EXC_UNNECESSARY_SLASH_ONLY_HOST).queryMap, result)
 
-        Assert.assertEquals(UriParse(ONLY_HOST).queryMap, linkedMapOf<String,String>())
-        Assert.assertEquals(UriParse(ONLY_PATH).queryMap, linkedMapOf<String,String>())
+        Assert.assertEquals(UriParse(ONLY_HOST).queryMap, linkedMapOf<String, String>())
+        Assert.assertEquals(UriParse(ONLY_PATH).queryMap, linkedMapOf<String, String>())
         Assert.assertEquals(UriParse(WITH_QUERY).queryMap, result)
         Assert.assertEquals(UriParse(HTTPS_WITH_QUERY).queryMap, result)
-        val result2 = linkedMapOf<String,String>()
-        result2["key1"]="value1"
-        result2["key2"]="value2"
+        val result2 = linkedMapOf<String, String>()
+        result2["key1"] = "value1"
+        result2["key2"] = "value2"
         Assert.assertEquals(UriParse(WITH_QUERY2).queryMap, result2)
-        val result3 = linkedMapOf<String,String>()
-        result3["key1"]="刘"
+        val result3 = linkedMapOf<String, String>()
+        result3["key1"] = "刘"
         Assert.assertEquals(UriParse(WITH_QUERY_HAN).queryMap, result3)
-        val result4 = linkedMapOf<String,String>()
-        result4["key1"]="刘"
-        result4["姓名"]="志强"
+        val result4 = linkedMapOf<String, String>()
+        result4["key1"] = "刘"
+        result4["姓名"] = "志强"
         Assert.assertEquals(UriParse(WITH_QUERY_HAN_KEY).queryMap, result4)
         Assert.assertEquals(UriParse(OTHER_SCHEME).queryMap, result)
-        Assert.assertEquals(UriParse(WITH_PORT).queryMap, linkedMapOf<String,String>())
-        val result5 = linkedMapOf<String,String>()
-        result5["key1"]="value1"
-        result5["key2"]="value2"
+        Assert.assertEquals(UriParse(WITH_PORT).queryMap, linkedMapOf<String, String>())
+        val result5 = linkedMapOf<String, String>()
+        result5["key1"] = "value1"
+        result5["key2"] = "value2"
         Assert.assertEquals(UriParse(WITH_QUERY3).queryMap, result5)
 
         val utils6 = UriParse.from(QUERY_UNNORMAL)
-        val result6 = linkedMapOf<String,String>()
-        result6["__biz"]="MzU3NDUxODIzNg=="
-        result6["mid"]="2247484722"
+        val result6 = linkedMapOf<String, String>()
+        result6["__biz"] = "MzU3NDUxODIzNg=="
+        result6["mid"] = "2247484722"
         Assert.assertEquals(utils6.queryMap, result6)
 
         val utils7 = UriParse.from(QUERY_UNNORMAL1)
-        val result7 = linkedMapOf<String,String>()
-        result7["__biz"]="MzU3NDUxODIzNg=="
+        val result7 = linkedMapOf<String, String>()
+        result7["__biz"] = "MzU3NDUxODIzNg=="
         Assert.assertEquals(utils7.queryMap, result7)
 
     }
@@ -388,7 +384,7 @@ class UriParseTest {
     fun others() {
         val map = hashMapOf<String, String>()
         map.forEach {
-//            LogUtil.logDebug("UriPasheTest", "it$it")
+            //            LogUtil.logDebug("UriPasheTest", "it$it")
         }
     }
 }

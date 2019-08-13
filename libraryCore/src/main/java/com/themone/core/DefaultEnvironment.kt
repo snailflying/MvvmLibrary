@@ -1,7 +1,6 @@
 package com.themone.core
 
 import com.themone.core.base.impl.CoreApp
-import com.themone.core.http.interceptor.CacheInterceptor
 import com.themone.core.util.LogUtil
 import com.themone.theone.library.BuildConfig
 import okhttp3.Cache
@@ -86,14 +85,11 @@ open class DefaultEnvironment : IAppEnvironment {
 
     override val networkInterceptors: MutableList<Interceptor>
         get() {
-            val interceptors = ArrayList<Interceptor>()
-            val cacheInterceptor = CacheInterceptor()
-            interceptors.add(cacheInterceptor)
-            return interceptors
+            return ArrayList()
         }
 
     override val cache: Cache
-        get() = Cache(CoreApp.APPLICATION.cacheDir, (10240 * 1024).toLong())
+        get() = Cache(CoreApp.application.cacheDir, (10240 * 1024).toLong())
 
     companion object {
         /**

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">MvvmLibrary</string>
+    <!--app_name在gradle内定义-->
+    <!--<string name="app_name">MvvmLibrary</string>-->
 </resources>

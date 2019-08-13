@@ -13,9 +13,37 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true          // 取代runProguard
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    flavorDimensions "mvvm"
+    productFlavors {
+        qa {
+            dimension "mvvm"
+            applicationIdSuffix ".qa"
+            versionNameSuffix ".qa"
+            resValue "string", "app_name", "MVVM-QA"
+            buildConfigField 'String', 'PRODUCT_FLAVORS', '"qa"'
+        }
+        dev {
+            dimension "mvvm"
+            //使用的第三方ID和qa包名的相同
+            applicationIdSuffix ".qa"
+            versionNameSuffix ".dev"
+            resValue "string", "app_name", "MVVM_DEV"
+            buildConfigField 'String', 'PRODUCT_FLAVORS', '"dev"'
+        }
+        online {
+            dimension "mvvm"
+            resValue "string", "app_name", "MVVM"
+            buildConfigField 'String', 'PRODUCT_FLAVORS', '"online"'
         }
     }
 }
@@ -40,4 +68,11 @@ dependencies {
     implementation rootProject.ext.dependencies["rxkotlin"]
     implementation project(':libraryCore')
     implementation project(':libraryframework')
+
+    //network
+    implementation rootProject.ext.dependencies["okhttp3"]
+    implementation rootProject.ext.dependencies["retrofit2"]
+    implementation rootProject.ext.dependencies["retrofit2:converter_gson"]
+    implementation rootProject.ext.dependencies["retrofit2:adapter_rxjava2"]
+    implementation rootProject.ext.dependencies["logging_interceptor"]
 }

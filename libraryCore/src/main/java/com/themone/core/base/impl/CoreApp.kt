@@ -12,13 +12,13 @@ open class CoreApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        APPLICATION = this
+        application = this
     }
 
     companion object {
 
         @get:Synchronized
-        var APPLICATION: CoreApp by Delegates.notNull()
+        var application: CoreApp by Delegates.notNull()
             private set
     }
 }
