@@ -46,7 +46,6 @@ ext {
 
             //动态权限
             rxpermissions        : "0.10.2",
-            //juqitech
             rxdownload3          : "1.3.4",
 
             //react-native
@@ -125,7 +124,6 @@ ext {
             "calendarView"               : "com.github.prolificinteractive:material-calendarview:${version["calendarView"]}",
             //动态权限
             "rxpermissions"              : "com.github.tbruyelle:rxpermissions:${version["rxpermissions"]}",
-            //juqitech
             "rxdownload3"                : "zlc.season:rxdownload3:${version["rxdownload3"]}",
 
             "multidex"                   : "com.android.support:multidex:${version["multidex"]}",
