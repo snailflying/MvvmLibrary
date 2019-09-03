@@ -99,7 +99,7 @@ object LogUtil {
      */
     private fun getMsgWithStackTrace(msg: String?): String {
 
-        val builder = StringBuilder().append(msg).append("|")
+        val builder = StringBuilder().append(msg).append("\n")
 
         val ste = Thread.currentThread().stackTrace
         val stackOffset = getStackOffset(ste)
@@ -130,7 +130,7 @@ object LogUtil {
             val e = trace[i]
             val name = e.className
             if (name == LogUtil::class.java.name) {
-                //LogUtil内有两次调用 LogUtil.e()和getMsgWithStackTrace()
+                //LogUtil内通过两次调用：LogUtil.e()和getMsgWithStackTrace()才能进入此函数
                 return i + 2
             }
             i++
