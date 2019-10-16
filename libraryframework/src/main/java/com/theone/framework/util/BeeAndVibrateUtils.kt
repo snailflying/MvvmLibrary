@@ -225,6 +225,7 @@ class BeeAndVibrateUtils private constructor(context: Context) {
         private var SOUND_SUCCESS = 1;
         private var SOUND_ERROR = 2;
 
+        @Volatile
         private var instance: BeeAndVibrateUtils? = null
 
         fun getInstance(context: Context): BeeAndVibrateUtils {
