@@ -39,22 +39,6 @@ class BeeAndVibrateUtils private constructor(context: Context) {
      */
     var mediaPlayer: MediaPlayer? = null
 
-    fun getInstance(context: Context): BeeAndVibrateUtils {
-        if (instance == null) {
-            synchronized(BeeAndVibrateUtils::class) {
-                if (instance == null) {
-                    instance = BeeAndVibrateUtils(context)
-                }
-            }
-        }
-        return instance!!
-    }
-
-
-    init {
-        initSoundPool(context)
-    }
-
     /**
      * 一次振动
      * @param context      Context实例
@@ -138,7 +122,7 @@ class BeeAndVibrateUtils private constructor(context: Context) {
 
     /**
      * 声音播放，轻量，适合播放较短提示音。
-     *  左\右声道的音量控制, 0.0 到 1.0
+     *
      * @param number Int 音频的序号(load到SoundPool的顺序，从1开始)
      */
     private fun playSound(number: Int): SoundPool? {
@@ -242,6 +226,22 @@ class BeeAndVibrateUtils private constructor(context: Context) {
         private var SOUND_ERROR = 2;
 
         private var instance: BeeAndVibrateUtils? = null
+
+        fun getInstance(context: Context): BeeAndVibrateUtils {
+            if (instance == null) {
+                synchronized(BeeAndVibrateUtils::class) {
+                    if (instance == null) {
+                        instance = BeeAndVibrateUtils(context)
+                    }
+                }
+            }
+            return instance!!
+        }
+
+    }
+
+    init {
+        initSoundPool(context)
     }
 
 }
