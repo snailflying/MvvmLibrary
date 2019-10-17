@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 /**
  * @author zhiqiang
  * @date 2019-06-05
- * @desc
+ * @desc 带懒加载
  */
 open class CoreFragment : Fragment() {
 

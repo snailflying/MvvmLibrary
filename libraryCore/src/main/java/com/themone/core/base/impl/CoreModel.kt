@@ -14,11 +14,7 @@ open class CoreModel<T>(clazz: Class<T>) : IModel {
      * apiService
      * 用于 retrofit 请求网络
      */
-    protected val apiService: T
-
-    init {
-        this.apiService = HttpClient.create(clazz)
-    }
+    protected val apiService: T = HttpClient.create(clazz)
 
     override fun onDestroy() {
     }
