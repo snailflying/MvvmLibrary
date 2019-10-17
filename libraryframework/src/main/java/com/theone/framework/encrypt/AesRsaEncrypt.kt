@@ -35,6 +35,7 @@ class AesRsaEncrypt
 private constructor(context: Context) : IEncrypt {
     private val mContext: Context = context.applicationContext
     private var keyStore: KeyStore? = null
+    //存储secretKeySpec，防止RSA多次调用以优化性能
     private var secretKeySpec: SecretKeySpec? = null
 
     private val ivParameterSpec: IvParameterSpec
