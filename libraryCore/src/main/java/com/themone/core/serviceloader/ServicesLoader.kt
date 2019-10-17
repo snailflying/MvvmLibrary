@@ -33,7 +33,7 @@ object ServicesLoader {
     }
 
     fun <T> getService(clz: Class<T>, clzDefault: Class<out T>?): T? {
-        val t = servers[clz.name] as T?
+        val t = servers[clz.name] as? T
         return t ?: load.load(clz, clzDefault)
     }
 
