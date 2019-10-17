@@ -18,7 +18,9 @@ import com.theone.framework.base.multi.MultiViewState.*
  * @author zhiqiang
  * @date 2019-06-06
  * @desc 提供默认的 loading、error、empty 等状态 UI
- * 需要更改状态的 view Id 强制规定命名 为 id=@+id/multiStateView
+ * 1.需要更改状态的 view Id 强制规定命名 为 id=@+id/multiStateView
+ * 2.同一个页面只支持一个多状态view。如果需要多个，请使用{MultiStateView}
+ *
  * 参考：https://github.com/Kennyc1012/MultiStateView
  */
 abstract class BaseMultiViewFragment<VM : IViewModel> : BaseMvvmFragment<VM>(),
