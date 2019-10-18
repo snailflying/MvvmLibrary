@@ -8,6 +8,7 @@ import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.text.TextUtils
+import com.themone.core.util.LogUtil
 import java.math.BigInteger
 import java.security.*
 import java.security.spec.RSAKeyGenParameterSpec
@@ -33,6 +34,8 @@ class AesRsaEncrypt
  * @param context 上下文
  */
 private constructor(context: Context) : IEncrypt {
+
+    private val TAG = "AesRsaEncrypt"
     private val mContext: Context = context.applicationContext
     private var keyStore: KeyStore? = null
     //存储secretKeySpec，防止RSA多次调用以优化性能
@@ -63,16 +66,22 @@ private constructor(context: Context) : IEncrypt {
     }
 
     @Throws(Exception::class)
-    override fun getEncryptCipher(key: String?): Cipher {
+    override fun getEncryptCipher(pwd: String?): Cipher {
+        LogUtil.i("aaron $TAG getEncryptCipher time1:${System.currentTimeMillis()}")
         val cipher = Cipher.getInstance(AES_GCM_NO_PADDING)
-        cipher.init(Cipher.ENCRYPT_MODE, getAESKeySpec(key), ivParameterSpec)
+        LogUtil.i("aaron $TAG getEncryptCipher time2:${System.currentTimeMillis()}")
+        cipher.init(Cipher.ENCRYPT_MODE, getAESKeySpec(pwd), ivParameterSpec)
+        LogUtil.i("aaron $TAG getEncryptCipher time3:${System.currentTimeMillis()}")
         return cipher
     }
 
     @Throws(Exception::class)
-    override fun getDecryptCipher(key: String?): Cipher {
+    override fun getDecryptCipher(pwd: String?): Cipher {
+        LogUtil.i("aaron $TAG getDecryptCipher time1:${System.currentTimeMillis()}")
         val cipher = Cipher.getInstance(AES_GCM_NO_PADDING)
-        cipher.init(Cipher.DECRYPT_MODE, getAESKeySpec(key), ivParameterSpec)
+        LogUtil.i("aaron $TAG getDecryptCipher time2:${System.currentTimeMillis()}")
+        cipher.init(Cipher.DECRYPT_MODE, getAESKeySpec(pwd), ivParameterSpec)
+        LogUtil.i("aaron $TAG getDecryptCipher time3:${System.currentTimeMillis()}")
         return cipher
     }
 
@@ -83,10 +92,13 @@ private constructor(context: Context) : IEncrypt {
      * @return Base64格式的加密字符串.
      */
     @Throws(Exception::class)
-    override fun encrypt(key: String?, plainText: String): String {
-        val cipher = getEncryptCipher(key)
+    override fun encrypt(pwd: String?, plainText: String): String {
+        LogUtil.i("aaron $TAG encrypt time1:${System.currentTimeMillis()}")
+        val cipher = getEncryptCipher(pwd)
+        LogUtil.i("aaron $TAG encrypt time2:${System.currentTimeMillis()}")
 
         val encryptedBytes = cipher.doFinal(plainText.toByteArray())
+        LogUtil.i("aaron $TAG encrypt time3:${System.currentTimeMillis()}")
 
         //将byte转为Base64编码格式
         return Base64Util.encode(encryptedBytes)
@@ -99,11 +111,14 @@ private constructor(context: Context) : IEncrypt {
      * @return 解密后字符串.
      */
     @Throws(Exception::class)
-    override fun decrypt(key: String?, encryptedText: String): String {
+    override fun decrypt(pwd: String?, encryptedText: String): String {
+        LogUtil.i("aaron $TAG decrypt time1:${System.currentTimeMillis()}")
         //将Base64编码格式字符串解码为byte
         val decodedBytes = Base64Util.decode(encryptedText)
+        LogUtil.i("aaron $TAG decrypt time2:${System.currentTimeMillis()}")
 
-        val cipher = getDecryptCipher(key)
+        val cipher = getDecryptCipher(pwd)
+        LogUtil.i("aaron $TAG encrypt time3:${System.currentTimeMillis()}")
 
         return String(cipher.doFinal(decodedBytes))
     }

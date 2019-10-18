@@ -87,6 +87,8 @@ ext {
             "junit"                      : "junit:junit:4.12",
             "androidJUnitRunner"         : "android.support.test.runner.AndroidJUnitRunner",
             "runner"                     : 'androidx.test:runner:1.1.0',
+            "test_rules"                 : 'androidx.test:rules:1.1.0',
+            "test_ext"                   : 'androidx.test.ext:junit:1.1.0',
             //robolectric 规避限定在 Android 模拟器或真机跑的问题，提供Android代码的运行环境
             "robolectric"                : 'org.robolectric:robolectric:4.2',
             //多 dex 模拟

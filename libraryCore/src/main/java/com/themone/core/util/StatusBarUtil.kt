@@ -76,7 +76,7 @@ object StatusBarUtil {
                 rootView.setTag(HAS_SET_TOP_PADDING, true)
 
                 //进入页面时，状态栏文字颜色自动改变
-                autoSetStatusBarTextColor(activity, rootView)
+//                autoSetStatusBarTextColor(activity, rootView)
             }
         }
     }
@@ -118,7 +118,7 @@ object StatusBarUtil {
 
         //进入页面时，状态栏文字颜色自动改变
         if (darkStatusBarText == null) {
-            autoSetStatusBarTextColor(activity, offsetView)
+//            autoSetStatusBarTextColor(activity, offsetView)
         } else {
             compat(activity, darkStatusBarText)
         }
