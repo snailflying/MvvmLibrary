@@ -42,18 +42,18 @@ open class CoreActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean = if (KeyEvent.KEYCODE_BACK == keyCode) {
-        if (supportFragmentManager.backStackEntryCount == 0) {
-            finish()
-            true
-        } else {
-            try {
-                supportFragmentManager.popBackStackImmediate()
-            } catch (e: Exception) {
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean =
+        if (KeyEvent.KEYCODE_BACK == keyCode) {
+            if (supportFragmentManager.backStackEntryCount == 0) {
+                super.onKeyDown(keyCode, event)
+            } else {
+                try {
+                    supportFragmentManager.popBackStackImmediate()
+                } catch (e: Exception) {
+                }
+                true
             }
-            true
+        } else {
+            super.onKeyDown(keyCode, event)
         }
-    } else {
-        super.onKeyDown(keyCode, event)
-    }
 }

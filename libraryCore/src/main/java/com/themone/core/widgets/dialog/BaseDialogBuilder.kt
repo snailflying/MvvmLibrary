@@ -26,8 +26,11 @@ open class BaseDialogBuilder(
     /**
      * 是否底部显示
      */
-    private var mShowFromBottom =
-        DEFAULT_SHOW_FROM_BOTTOM
+    private var mShowFromBottom = DEFAULT_SHOW_FROM_BOTTOM
+    /**
+     * 当Dialog为BottomSheet时，是否完全展开
+     */
+    private var mExpandBottomSheet = DEFAULT_EXPAND_BOTTOM_SHEET
     /**
      * 灰度深浅
      */
@@ -130,6 +133,16 @@ open class BaseDialogBuilder(
      */
     fun setShowFromBottom(fromBottom: Boolean): BaseDialogBuilder {
         mShowFromBottom = fromBottom
+        return this
+    }
+
+    /**
+     * 当Dialog从底部弹出时，是否完全展开，默认为完全展开
+     * @param fromBottom 是否完全展开
+     * @return
+     */
+    fun setExpandBottomSheet(expand: Boolean): BaseDialogBuilder {
+        mExpandBottomSheet = expand
         return this
     }
 
@@ -245,5 +258,6 @@ open class BaseDialogBuilder(
         internal val DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE = true
         internal val DEFAULT_REQUEST_CODE = -42
         internal val DEFAULT_SHOW_FROM_BOTTOM = false
+        internal const val DEFAULT_EXPAND_BOTTOM_SHEET = true
     }
 }

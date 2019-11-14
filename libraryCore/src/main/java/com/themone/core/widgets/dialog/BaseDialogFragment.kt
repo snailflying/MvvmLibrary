@@ -23,13 +23,17 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Gravity
+import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_DIM_AMOUNT
+import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_EXPAND_BOTTOM_SHEET
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_REQUEST_CODE
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_SCALE
 import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_SHOW_FROM_BOTTOM
@@ -67,6 +71,10 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      */
     private var showFromBottom = DEFAULT_SHOW_FROM_BOTTOM
     /**
+     * 当Dialog为BottomSheet时，是否完全展开
+     */
+    private var expandBottomSheet = DEFAULT_EXPAND_BOTTOM_SHEET
+    /**
      * 主题
      */
     private var mTheme: Int = R.style.Dialog
@@ -101,13 +109,34 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     protected val negativeListeners: List<IDialogNegativeListener>
         get() = getDialogListeners(IDialogNegativeListener::class.java)
 
+
+    /**
+     * 步骤1
+     * @param savedInstanceState Bundle?
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initArguments()
     }
 
-    override fun onStart() {
-        super.onStart()
+    /**
+     * 步骤2
+     * 支持BottomSheetDialog
+     */
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return (if (showFromBottom) {
+            BottomSheetDialog(this.context!!, this.theme)
+        } else {
+            Dialog(activity!!, theme)
+        })
+    }
+
+    /**
+     * 步骤3
+     * @param savedInstanceState Bundle?
+     */
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
         //放在onCreateDialog()不起作用
         initDialogParams(dialog)
     }
@@ -131,17 +160,6 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         for (listener in cancelListeners) {
             listener.onCancelled(mRequestCode)
         }
-    }
-
-    /**
-     * 支持BottomSheetDialog
-     */
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return (if (showFromBottom) {
-            BottomSheetDialog(this.context!!, this.theme)
-        } else {
-            Dialog(activity!!, theme)
-        })
     }
 
     /**
@@ -206,6 +224,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
                 if (animStyle == 0) {
                     animStyle = R.style.Dialog_Animation
                 }
+                expandBottomSheet(dialog)
             }
             //占用屏幕宽度一定比例
             if (scale > 1) {
@@ -221,6 +240,28 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
             window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
             window.attributes = lp
         }
+    }
+
+
+    /**
+     * BottomSheetDialog的默认高度为256dp，所以要处理一下全部展开。
+     * @param dialog Dialog
+     */
+    private fun expandBottomSheet(dialog: Dialog) {
+        if (expandBottomSheet && dialog is BottomSheetDialog) {
+            view?.run {
+                if (this is CoordinatorLayout) {
+                    val child = this.getChildAt(0)
+                    BottomSheetBehavior.from((child))
+                        .state = BottomSheetBehavior.STATE_EXPANDED
+                } else {
+                    BottomSheetBehavior.from(this.parent as View)
+                        .state = BottomSheetBehavior.STATE_EXPANDED
+                }
+
+            }
+        }
+
     }
 
     private fun getScreenWidth(context: Context): Int {
