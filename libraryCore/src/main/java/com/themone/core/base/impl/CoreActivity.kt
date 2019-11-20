@@ -42,18 +42,17 @@ open class CoreActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean =
-        if (KeyEvent.KEYCODE_BACK == keyCode) {
-            if (supportFragmentManager.backStackEntryCount == 0) {
-                super.onKeyDown(keyCode, event)
-            } else {
-                try {
-                    supportFragmentManager.popBackStackImmediate()
-                } catch (e: Exception) {
-                }
-                true
-            }
+    /**
+     * Fragment返回键处理，见[CoreFragment.onBackPressed]
+     */
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount == 0) {
+            super.onBackPressed()
         } else {
-            super.onKeyDown(keyCode, event)
+            try {
+                supportFragmentManager.popBackStackImmediate()
+            } catch (e: Exception) {
+            }
         }
+    }
 }

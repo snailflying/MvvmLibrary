@@ -1,6 +1,5 @@
 package com.theone.framework.ext
 
-import com.theone.framework.ext.then
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -55,15 +54,16 @@ fun String.formatNumber(
 ): String =
     this.toBigDecimalWithNull().formatNumber(addComma, modeFloor, decimalNum)
 
-fun String?.toBigDecimalWithNull(default: BigDecimal = BigDecimal.ZERO) = this.isNullOrBlank().not().then({
-    try {
-        this!!.toBigDecimal()
-    } catch (e: NumberFormatException) {
-        default
-    }
-}, default)
+fun String?.toBigDecimalWithNull(default: BigDecimal = BigDecimal.ZERO): BigDecimal =
+    this.runNotNull({
+        try {
+            this!!.toBigDecimal()
+        } catch (e: NumberFormatException) {
+            default
+        }
+    }, default)
 
-fun String?.toIntWithNull(default: Int = 0) = this.isNullOrBlank().not().then({
+fun String?.toIntWithNull(default: Int = 0): Int = this.runNotNull({
     try {
         this!!.toInt()
     } catch (e: NumberFormatException) {
@@ -71,7 +71,7 @@ fun String?.toIntWithNull(default: Int = 0) = this.isNullOrBlank().not().then({
     }
 }, default)
 
-fun String?.toFloatWithNull(default: Float = 0F) = this.isNullOrBlank().not().then({
+fun String?.toFloatWithNull(default: Float = 0F): Float = this.runNotNull({
     try {
         this!!.toFloat()
     } catch (e: NumberFormatException) {
@@ -79,7 +79,7 @@ fun String?.toFloatWithNull(default: Float = 0F) = this.isNullOrBlank().not().th
     }
 }, default)
 
-fun String?.toDoubleWithNull(default: Double = 0.toDouble()) = this.isNullOrBlank().not().then({
+fun String?.toDoubleWithNull(default: Double = 0.toDouble()): Double = this.runNotNull({
     try {
         this!!.toDouble()
     } catch (e: NumberFormatException) {

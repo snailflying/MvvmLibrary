@@ -149,11 +149,11 @@ open class CoreFragment : Fragment() {
     }
 
     /**
-     * 触发返回键
+     * Fragment返回键处理
+     * 见[CoreActivity.onBackPressed]
      */
     protected fun onBackPressed() {
-        val keyEvent = KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK)
-        activity?.onKeyDown(KeyEvent.KEYCODE_BACK, keyEvent)
+        activity?.onBackPressed()
     }
 
     companion object {

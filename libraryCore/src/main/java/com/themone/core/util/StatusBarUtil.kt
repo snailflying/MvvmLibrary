@@ -116,8 +116,8 @@ object StatusBarUtil {
             )
         }
 
-        //进入页面时，状态栏文字颜色自动改变
         if (darkStatusBarText == null) {
+            //进入页面时，状态栏文字颜色自动改变[TODO:性能问题需要再看一下]
 //            autoSetStatusBarTextColor(activity, offsetView)
         } else {
             compat(activity, darkStatusBarText)

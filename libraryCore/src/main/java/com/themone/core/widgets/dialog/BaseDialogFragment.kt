@@ -183,7 +183,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     }
 
     /**
-     * 因为setStyle()的原因，必须在onCreate()内调用
+     * 因为setStyle()的原因，必须在必须在[onCreate]或[onStart]或[onResume]内调用
      */
     private fun initArguments() {
         val targetFragment = targetFragment
