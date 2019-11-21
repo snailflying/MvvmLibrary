@@ -16,40 +16,69 @@ class Standard_ExtensionKtTest {
     fun setUp() {
     }
 
+    val nullString: String? = null
+    val testString: String? = "test"
+
     @Test
-    fun isNotNull() {
+    fun alsoNotNull() {
+        testString.alsoNotNull {
+            Assert.assertEquals(it, testString)
+        }
+        nullString.alsoNotNull {
+
+        }
     }
 
     @Test
     fun elvis() {
-    }
-
-    @Test
-    fun elvis1() {
+        val a = nullString.elvis("a")
+        val b = testString.elvis("notB")
+        val c = nullString.elvis { "c" }
+        val d = testString.elvis { "notD" }
+        Assert.assertEquals(a, "a")
+        Assert.assertEquals(b, "test")
+        Assert.assertEquals(c, "c")
+        Assert.assertEquals(d, "test")
     }
 
     @Test
     fun runNotNull() {
+        val equals1 = testString.runNotNull({
+            1
+        }, 2)
+        val equals2 = nullString.runNotNull({
+            1
+        }, 2)
+        val equals3 = testString.runNotNull({
+            3
+        }, { 4 })
+        val equals4 = nullString.runNotNull({
+            3
+        }, { 4 })
+
+        Assert.assertEquals(equals1, 1)
+        Assert.assertEquals(equals2, 2)
+        Assert.assertEquals(equals3, 3)
+        Assert.assertEquals(equals4, 4)
+
+
     }
 
+    /**
+     * 高阶函数结果不影响返回值
+     */
     @Test
-    fun runNotNull1() {
-    }
+    fun runNullThen() {
+        val test = testString.alsoNotNull {
+            "无关紧要"
+        }.thenNull { "result" }
+        val isNull = nullString.alsoNotNull {
+            "无关紧要"
+        }.thenNull { "result" }
 
-    @Test
-    fun alsoNotNull() {
-        val test: String? = null
-        val test1: String? = "test1"
-        test.alsoNotNull {
-            System.out.println("testName:$it")
-        }.thenNull {
-            println("test is null")
-        }
-        test1.alsoNotNull {
-            Assert.assertEquals(it,"test1")
-        }.thenNull {
-            println("test1 is null")
-        }
+
+        Assert.assertEquals(test, "test")
+        Assert.assertEquals(isNull, null)
     }
 
     @Test
