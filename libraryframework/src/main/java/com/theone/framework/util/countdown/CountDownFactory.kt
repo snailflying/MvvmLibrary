@@ -1,7 +1,6 @@
 package com.theone.framework.util.countdown
 
 import android.text.TextUtils
-import com.theone.framework.ext.alsoNotNull
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -9,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap
  * @Date 2019-11-19
  * @Description 倒计时工具类，工厂类。对外只提供[createTimeLimiter]
  */
-class CountDownHelper private constructor() {
+class CountDownFactory private constructor() {
 
     private val countDownList: ConcurrentHashMap<String,CountDown> = ConcurrentHashMap()
 
@@ -60,8 +59,8 @@ class CountDownHelper private constructor() {
     }
 
     companion object {
-        val instance: CountDownHelper by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
-            CountDownHelper()
+        val INSTANCE: CountDownFactory by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+            CountDownFactory()
         }
     }
 }

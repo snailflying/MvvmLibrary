@@ -78,7 +78,7 @@ class CountDown internal constructor(val name: String, val listener: CountDownLi
         mExitPageRemindTime = -1
 
         if (isKeepDestroy) {
-            CountDownHelper.instance.keeperDestroy(this)
+            CountDownFactory.INSTANCE.keeperDestroy(this)
         } else {
             cancel()
         }
@@ -106,7 +106,7 @@ class CountDown internal constructor(val name: String, val listener: CountDownLi
         mCancelled = true
         mStopTimeInFuture = DEFAULT_MILLS_IN_FUTURE
         timeHandler.removeMessages(COUNT_DOWN)
-        CountDownHelper.instance.removeLimiter(this)
+        CountDownFactory.INSTANCE.removeLimiter(this)
     }
 
 
