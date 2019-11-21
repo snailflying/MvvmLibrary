@@ -1,6 +1,7 @@
 package com.theone.framework.util.countdown
 
 import android.text.TextUtils
+import com.theone.framework.ext.alsoNotNull
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -10,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class CountDownHelper private constructor() {
 
-    private var countDownList: ConcurrentHashMap<String, CountDown> = ConcurrentHashMap()
+    private val countDownList: ConcurrentHashMap<String,CountDown> = ConcurrentHashMap()
 
     /**
      *
@@ -34,31 +35,28 @@ class CountDownHelper private constructor() {
     }
 
     private fun addLimiter(countDown: CountDown?) {
-        if (countDown == null) {
-            return
+        countDown?.also {
+            if (countDownList.contains(it)) {
+                return
+            }
+            countDownList[it.name] = it
         }
-        if (countDownList.contains(countDown)) {
-            return
-        }
-        countDownList.put(countDown.name,countDown)
     }
 
     internal fun keeperDestroy(countDown: CountDown?) {
-        if (countDown == null) {
-            return
-        }
-        if (countDown.checkCountDownOver()) {
-            countDownList.remove(countDown.name)
-        } else {
-            countDown.countDownListener = null
+        countDown?.also {
+            if (it.checkCountDownOver()) {
+                countDownList.remove(it.name)
+            } else {
+                it.countDownListener = null
+            }
         }
     }
 
     internal fun removeLimiter(countDown: CountDown?) {
-        if (countDown == null) {
-            return
+        countDown?.also {
+            countDownList.remove(it.name)
         }
-        countDownList.remove(countDown.name)
     }
 
     companion object {

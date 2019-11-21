@@ -10,20 +10,24 @@ import java.lang.ref.WeakReference
  * @Date 2019-11-19
  * @Description 倒计时工具类，具体实现类
  */
-class CountDown {
-    private constructor()
-    internal constructor(name: String, listener: CountDownListener, millisInFuture: Long, countdownInterval: Long) {
-        this.name = name
-        this.countDownListener = listener
-        this.mMillisInFuture = millisInFuture
-        mCountdownInterval = countdownInterval
-    }
+class CountDown internal constructor(val name: String, val listener: CountDownListener, private val millisInFuture: Long = DEFAULT_MILLS_IN_FUTURE, val countdownInterval: Long = DEFAULT_INTERVAL) {
 
-    lateinit var name: String
-    private var mMillisInFuture: Long = 0
-    var countDownListener: CountDownListener? = null
+    /**
+     * 回调接口
+     */
+    var countDownListener: CountDownListener? = listener
+    /**
+     * 剩余时间
+     */
+    private var mStopTimeInFuture: Long = 0
+        set(value) {
+            field = if (millisInFuture == NEVER_STOP) {
+                NEVER_STOP
+            } else {
+                value
+            }
+        }
 
-    private val timeHandler = TimeHandler(this)
     /**
      * 退出当前页面时的时间点
      */
@@ -32,6 +36,15 @@ class CountDown {
      * 退出当前页面时，倒计时剩余时间
      */
     private var mExitPageRemindTime: Long = -1
+
+    private val timeHandler = TimeHandler(this)
+        get() {
+            if (!field.isAvailable) {
+                field.removeMessages(COUNT_DOWN)
+                return TimeHandler(this)
+            }
+            return field
+        }
 
     /**
      * 绑定宿主的生命周期
@@ -82,8 +95,8 @@ class CountDown {
     fun restart(): CountDown {
         countDownListener?.onCountDownStart(name)
 
-        mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisInFuture
-        timeHandler.sendEmptyMessageDelayed(COUNT_DOWN, mCountdownInterval)
+        mStopTimeInFuture = SystemClock.elapsedRealtime() + millisInFuture
+        timeHandler.sendEmptyMessageDelayed(COUNT_DOWN, countdownInterval)
         return this
     }
 
@@ -93,7 +106,6 @@ class CountDown {
         mCancelled = true
         mStopTimeInFuture = DEFAULT_MILLS_IN_FUTURE
         timeHandler.removeMessages(COUNT_DOWN)
-        timeHandler.removeMessages(COUNT_DOWN_OVER)
         CountDownHelper.instance.removeLimiter(this)
     }
 
@@ -111,7 +123,9 @@ class CountDown {
      */
     private class TimeHandler internal constructor(countDown: CountDown) : Handler() {
 
-        internal var wrCountDown: WeakReference<CountDown> = WeakReference(countDown)
+        internal val wrCountDown: WeakReference<CountDown> = WeakReference(countDown)
+
+        internal val isAvailable: Boolean = wrCountDown.get() != null
 
         override fun handleMessage(msg: Message) {
             val countDown = wrCountDown.get() ?: return
@@ -119,12 +133,12 @@ class CountDown {
                 if (mCancelled) {
                     return
                 }
-                if (mStopTimeInFuture == NEVER_STOP) {
+                if (countDown.mStopTimeInFuture == NEVER_STOP) {
                     countDown.countDownListener?.onCountDownTick(countDown.name, NEVER_STOP)
                     return
                 }
 
-                val millisLeft = mStopTimeInFuture - SystemClock.elapsedRealtime()
+                val millisLeft = countDown.mStopTimeInFuture - SystemClock.elapsedRealtime()
 
                 if (millisLeft <= 0) {
                     countDown.countDownListener?.onCountDownFinish(countDown.name)
@@ -136,7 +150,7 @@ class CountDown {
                     val lastTickDuration = SystemClock.elapsedRealtime() - lastTickStart
                     var delay: Long
 
-                    if (millisLeft < mCountdownInterval) {
+                    if (millisLeft < countDown.countdownInterval) {
                         // just delay until done
                         delay = millisLeft - lastTickDuration
 
@@ -146,12 +160,12 @@ class CountDown {
                             delay = 0
                         }
                     } else {
-                        delay = mCountdownInterval - lastTickDuration
+                        delay = countDown.countdownInterval - lastTickDuration
 
                         // special case: user's onCountDownTick took more than interval to
                         // complete, skip to next interval
                         while (delay < 0) {
-                            delay += mCountdownInterval
+                            delay += countDown.countdownInterval
                         }
                     }
 
@@ -164,22 +178,20 @@ class CountDown {
     companion object {
 
         private const val COUNT_DOWN = 1
-        private const val COUNT_DOWN_OVER = 2
 
         /**
-         * 剩余时间如果是1123，则表示永不停止。除非被destroy
+         * 剩余时间如果是1123，则表示永不停止。除非被destroy或cancel
          */
         internal const val NEVER_STOP: Long = -1123
+        /**
+         * 默认剩余时间，-1表示已结束
+         */
         private const val DEFAULT_MILLS_IN_FUTURE: Long = -1
         /**
          * 倒计时间隔，默认1秒
          */
         internal const val DEFAULT_INTERVAL: Long = 1000
-        /**
-         * 剩余时间
-         */
-        private var mStopTimeInFuture: Long = DEFAULT_MILLS_IN_FUTURE
-        private var mCountdownInterval: Long = DEFAULT_INTERVAL
+
         private var mCancelled = false
     }
 
