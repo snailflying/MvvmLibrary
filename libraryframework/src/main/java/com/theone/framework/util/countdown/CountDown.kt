@@ -70,17 +70,12 @@ class CountDown internal constructor(val name: String, val listener: CountDownLi
     /**
      * 绑定宿主的生命周期
      */
-    fun onDestroy(isKeepDestroy: Boolean) {
+    fun onDestroy() {
         //重置exit page状态位
         mExitPageTime = -1
         mExitPageRemindTime = -1
 
-        if (isKeepDestroy) {
-            CountDownFactory.INSTANCE.keeperDestroy(this)
-        } else {
-            cancel()
-        }
-
+        cancel()
     }
 
     fun start(): CountDown {

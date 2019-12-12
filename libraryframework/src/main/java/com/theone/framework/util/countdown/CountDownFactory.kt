@@ -42,16 +42,6 @@ class CountDownFactory private constructor() {
         }
     }
 
-    internal fun keeperDestroy(countDown: CountDown?) {
-        countDown?.also {
-            if (it.checkCountDownOver()) {
-                countDownList.remove(it.name)
-            } else {
-                it.countDownListener = null
-            }
-        }
-    }
-
     internal fun removeLimiter(countDown: CountDown?) {
         countDown?.also {
             countDownList.remove(it.name)
