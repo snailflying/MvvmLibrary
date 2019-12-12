@@ -24,7 +24,7 @@ class CountDownFactory private constructor() {
         if (TextUtils.isEmpty(countDownName)) {
             throw RuntimeException("countDownName can not be empty")
         }
-        return if (countDownList.contains(countDownName)) {
+        return if (countDownList.containsKey(countDownName)) {
             countDownList[countDownName]!!
         } else{
             val limiter = CountDown(countDownName, countDownListener, millisInFuture, countDownInterval)
