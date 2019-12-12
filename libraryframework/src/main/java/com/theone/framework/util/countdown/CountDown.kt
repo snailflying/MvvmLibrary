@@ -20,12 +20,10 @@ class CountDown internal constructor(val name: String, val listener: CountDownLi
      * 剩余时间
      */
     private var mStopTimeInFuture: Long = 0
-        set(value) {
-            field = if (millisInFuture == NEVER_STOP) {
-                NEVER_STOP
-            } else {
-                value
-            }
+        get() = if (millisInFuture == NEVER_STOP) {
+            NEVER_STOP
+        } else {
+            field
         }
 
     /**
