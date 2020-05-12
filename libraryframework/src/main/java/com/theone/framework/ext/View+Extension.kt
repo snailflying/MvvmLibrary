@@ -38,27 +38,6 @@ fun View.showKeyboard(): Boolean {
 }
 
 /***************************延迟点击相关 Start******************************/
-/***
- * 设置延迟时间的View扩展
- * @param delay Long 延迟时间，默认600毫秒
- * @return T
- */
-fun <T : View> T.withTrigger(delay: Long = 600): T {
-    triggerDelay = delay
-    return this
-}
-
-/***
- * 点击事件的View扩展
- * @param block: (T) -> Unit 函数
- * @return Unit
- */
-fun <T : View> T.click(block: (T) -> Unit) = setOnClickListener {
-
-    if (clickEnable()) {
-        block(it as T)
-    }
-}
 
 /***
  * 带延迟过滤的点击事件View扩展

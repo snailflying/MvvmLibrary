@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.themone.core.util.LogUtil
 import com.theone.framework.base.BaseActivity
 import com.theone.framework.encrypt.AesRsaEncrypt
-import com.theone.framework.ext.click
+import com.theone.framework.ext.clickWithTrigger
 import com.theone.mvvm.R
 import io.reactivex.Single
 import io.reactivex.rxkotlin.addTo
@@ -18,7 +18,7 @@ class HomeActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        tvHello.click {
+        tvHello.clickWithTrigger {
             tes1t()
         }
         test()
