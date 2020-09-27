@@ -5,6 +5,7 @@
         <attr name="msv_loadingView" format="reference" />
         <attr name="msv_emptyView" format="reference" />
         <attr name="msv_errorView" format="reference" />
+        <attr name="msv_otherView" format="reference" />
         <attr name="msv_viewState" format="enum">
             <enum name="content" value="0" />
             <enum name="error" value="1" />

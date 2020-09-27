@@ -3,7 +3,7 @@ package com.themone.core.util
 import android.text.TextUtils
 import android.util.Log
 
-import com.themone.theone.library.BuildConfig
+import com.themone.core.BuildConfig
 
 
 /**

@@ -1,4 +1,4 @@
-package com.themone.theone.library
+package com.themone.core
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4

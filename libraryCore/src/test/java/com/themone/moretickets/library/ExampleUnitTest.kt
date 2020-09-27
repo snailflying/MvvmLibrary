@@ -1,4 +1,4 @@
-package com.themone.theone.library
+package com.themone.core
 
 import org.junit.Test
 

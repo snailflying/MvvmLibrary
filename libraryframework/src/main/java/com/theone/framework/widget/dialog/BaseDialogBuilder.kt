@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.themone.theone.library.R
+import com.theone.framework.R
 
 /**
  * @Author zhiqiang
@@ -28,18 +28,22 @@ open class BaseDialogBuilder(
      * 是否底部显示
      */
     private var mShowFromBottom = DEFAULT_SHOW_FROM_BOTTOM
+
     /**
      * 当Dialog为BottomSheet时，是否完全展开
      */
     private var mExpandBottomSheet = DEFAULT_EXPAND_BOTTOM_SHEET
+
     /**
      * 灰度深浅
      */
     private var mDimAmount = DEFAULT_DIM_AMOUNT
+
     /**
      * 占用屏幕宽度一定比例
      */
     private var mScale = DEFAULT_SCALE
+
     /**
      * 默认点击屏幕取消dialog
      */
@@ -47,10 +51,12 @@ open class BaseDialogBuilder(
         DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
     private var mCancelable = true
     private var mDismissPreDialog: Boolean? = true
+
     /**
      * 主题
      */
     private var mTheme: Int = R.style.Dialog
+
     /**
      * 动画
      */
@@ -258,6 +264,7 @@ open class BaseDialogBuilder(
         internal const val ARG_DIM_AMOUNT = "arg_dim_amount"
         internal const val ARG_ANIM_STYLE = "arg_anim_style"
         internal const val ARG_SCALE = "arg_scale"
+
         /**
          * 默认值
          */

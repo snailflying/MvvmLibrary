@@ -31,6 +31,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.theone.framework.R
 import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
 import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_DIM_AMOUNT
 import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_EXPAND_BOTTOM_SHEET
@@ -41,7 +42,6 @@ import com.theone.framework.widget.dialog.iface.IDialogCancelListener
 import com.theone.framework.widget.dialog.iface.IDialogDismissListener
 import com.theone.framework.widget.dialog.iface.IDialogNegativeListener
 import com.theone.framework.widget.dialog.iface.IDialogPositiveListener
-import com.themone.theone.library.R
 import java.util.*
 
 /**
