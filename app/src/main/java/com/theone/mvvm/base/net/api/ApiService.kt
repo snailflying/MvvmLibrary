@@ -1,7 +1,7 @@
 package com.theone.mvvm.base.net.api
 
 import com.theone.mvvm.home.entity.HomeEn
-import io.reactivex.Observable
+import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

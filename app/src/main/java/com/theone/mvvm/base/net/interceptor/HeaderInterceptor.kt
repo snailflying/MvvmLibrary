@@ -29,8 +29,8 @@ class HeaderInterceptor : Interceptor {
         // 新的请求
         val requestBuilder = oldRequest.newBuilder()
         requestBuilder.method(
-            oldRequest.method(),
-            oldRequest.body()
+            oldRequest.method,
+            oldRequest.body
         )
         //添加公共参数,添加到header中
         refreshHeader(requestBuilder)

@@ -1,4 +1,4 @@
-package com.themone.core
+package com.theone.framework.http
 
 import java.io.IOException
 import java.net.InetAddress

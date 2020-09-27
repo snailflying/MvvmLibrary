@@ -1,4 +1,4 @@
-package com.themone.core
+package com.theone.framework.http
 
 import com.themone.core.serviceloader.ServicesLoader
 

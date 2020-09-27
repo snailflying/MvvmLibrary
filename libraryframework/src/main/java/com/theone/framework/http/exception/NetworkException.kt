@@ -1,4 +1,4 @@
-package com.themone.core.exception
+package com.theone.framework.http.exception
 
 /**
  * @Author zhiqiang

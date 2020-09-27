@@ -1,8 +1,7 @@
 package com.theone.mvvm.base.user
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
-import com.themone.core.base.impl.CoreApp
+import com.theone.framework.base.CoreApp
 import com.theone.framework.ext.getEncryptString
 import com.theone.framework.ext.putEncryptString
 import com.theone.framework.util.SpUtil
@@ -13,10 +12,9 @@ import com.theone.framework.util.SpUtil
  * @Date 2019-06-11
  * @Description User类的保存
  */
-class Settings private constructor(
-    private val prefs: SharedPreferences = SpUtil.getSpSetting(CoreApp.application)
-) {
+class Settings private constructor() {
 
+    private val prefs by lazy { SpUtil.getSpSetting(CoreApp.application) }
 
     var accessToken = prefs.getEncryptString(SP_ACCESS_TOKEN)
         set(value) {
@@ -52,6 +50,7 @@ class Settings private constructor(
         const val SP_MOBILE = "sp_mobile"
         const val SP_USER_ID = "sp_user_id"
         const val SP_NAME = "sp_name"
+
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var defaultInstance: Settings? = null

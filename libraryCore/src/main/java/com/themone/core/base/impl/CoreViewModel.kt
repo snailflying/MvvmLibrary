@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.themone.core.base.IModel
 import com.themone.core.base.IViewModel
 import com.themone.core.util.LogUtil
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * @author zhiqiang

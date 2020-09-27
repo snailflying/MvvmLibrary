@@ -1,4 +1,4 @@
-package com.themone.core.http.interceptor
+package com.theone.framework.http.interceptor
 
 import android.text.TextUtils
 

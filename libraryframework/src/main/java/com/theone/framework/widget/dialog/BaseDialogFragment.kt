@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.themone.core.widgets.dialog
+package com.theone.framework.widget.dialog
 
 import android.app.Dialog
 import android.content.Context
@@ -31,16 +31,16 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
-import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_DIM_AMOUNT
-import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_EXPAND_BOTTOM_SHEET
-import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_REQUEST_CODE
-import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_SCALE
-import com.themone.core.widgets.dialog.BaseDialogBuilder.Companion.DEFAULT_SHOW_FROM_BOTTOM
-import com.themone.core.widgets.dialog.iface.IDialogCancelListener
-import com.themone.core.widgets.dialog.iface.IDialogDismissListener
-import com.themone.core.widgets.dialog.iface.IDialogNegativeListener
-import com.themone.core.widgets.dialog.iface.IDialogPositiveListener
+import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
+import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_DIM_AMOUNT
+import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_EXPAND_BOTTOM_SHEET
+import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_REQUEST_CODE
+import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_SCALE
+import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_SHOW_FROM_BOTTOM
+import com.theone.framework.widget.dialog.iface.IDialogCancelListener
+import com.theone.framework.widget.dialog.iface.IDialogDismissListener
+import com.theone.framework.widget.dialog.iface.IDialogNegativeListener
+import com.theone.framework.widget.dialog.iface.IDialogPositiveListener
 import com.themone.theone.library.R
 import java.util.*
 
@@ -50,17 +50,27 @@ import java.util.*
  * @Date 2019/2/16
  * @Description dialog的基类
  */
+
+/**
+ * @Author zhiqiang
+ * @Email liuzhiqiang@moretickets.com
+ * @Date 2019/2/16
+ * @Description dialog的基类
+ */
 abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     protected var mRequestCode = DEFAULT_REQUEST_CODE
+
     /**
      * 点击外部隐藏dialog，默认开启
      */
     private var canceledOnTouchOutside = DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
+
     /**
      * 灰度深浅
      */
     private var dimAmount = DEFAULT_DIM_AMOUNT
+
     /**
      * 宽度缩放
      */
@@ -70,21 +80,24 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      * 是否底部显示
      */
     private var showFromBottom = DEFAULT_SHOW_FROM_BOTTOM
+
     /**
      * 当Dialog为BottomSheet时，是否完全展开
      */
     private var expandBottomSheet = DEFAULT_EXPAND_BOTTOM_SHEET
+
     /**
      * 主题
      */
     private var mTheme: Int = R.style.Dialog
+
     /**
      * 动画
      */
     private var animStyle: Int = 0
 
 
-    protected var mContext: Context? = null
+    protected lateinit var mContext: Context
 
     protected val cancelListeners: List<IDialogCancelListener>
         get() = getDialogListeners(IDialogCancelListener::class.java)
@@ -108,7 +121,6 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      */
     protected val negativeListeners: List<IDialogNegativeListener>
         get() = getDialogListeners(IDialogNegativeListener::class.java)
-
 
     /**
      * 步骤1
@@ -143,24 +155,25 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     override fun onDestroyView() {
         if (dialog != null && retainInstance) {
-            dialog.setDismissMessage(null)
+            dialog?.setDismissMessage(null)
         }
         super.onDestroyView()
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
-        super.onDismiss(dialog)
+    override fun onDismiss(dialog: DialogInterface) {
         for (listener in dismissListeners) {
             listener.onDismissed(mRequestCode)
         }
+        super.onDismiss(dialog)
     }
 
-    override fun onCancel(dialog: DialogInterface?) {
-        super.onCancel(dialog)
+    override fun onCancel(dialog: DialogInterface) {
         for (listener in cancelListeners) {
             listener.onCancelled(mRequestCode)
         }
+        super.onCancel(dialog)
     }
+
 
     /**
      * 采用fragment interface pattern方式传递callback回调
@@ -198,20 +211,30 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
         val args = arguments
         if (args != null) {
-            canceledOnTouchOutside =
-                args.getBoolean(BaseDialogBuilder.ARG_CANCELABLE_ON_TOUCH_OUTSIDE, DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE)
-            showFromBottom = args.getBoolean(BaseDialogBuilder.ARG_SHOW_FROM_BOTTOM, DEFAULT_SHOW_FROM_BOTTOM)
+            canceledOnTouchOutside = args.getBoolean(
+                BaseDialogBuilder.ARG_CANCELABLE_ON_TOUCH_OUTSIDE,
+                DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
+            )
+            showFromBottom = args.getBoolean(
+                BaseDialogBuilder.ARG_SHOW_FROM_BOTTOM,
+                DEFAULT_SHOW_FROM_BOTTOM
+            )
+            expandBottomSheet = args.getBoolean(
+                BaseDialogBuilder.ARG_EXPAND_BOTTOM_SHEET,
+                DEFAULT_EXPAND_BOTTOM_SHEET
+            )
             dimAmount = args.getFloat(BaseDialogBuilder.ARG_DIM_AMOUNT, DEFAULT_DIM_AMOUNT)
             scale = args.getDouble(BaseDialogBuilder.ARG_SCALE, DEFAULT_SCALE)
             animStyle = args.getInt(BaseDialogBuilder.ARG_ANIM_STYLE)
             val defaultTheme = if (theme == 0) -1 else theme
             mTheme = args.getInt(BaseDialogBuilder.ARG_USE_THEME, R.style.Dialog)
         }
-        //必须在onCreate()内调用
+        //必须在onCreate()内调用才起作用
         setStyle(DialogFragment.STYLE_NO_TITLE, mTheme)
     }
 
-    private fun initDialogParams(dialog: Dialog) {
+    private fun initDialogParams(dialog: Dialog?) {
+        if (dialog == null) return
         dialog.setCanceledOnTouchOutside(canceledOnTouchOutside)
         val window = dialog.window
         if (window != null) {
@@ -230,7 +253,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
             if (scale > 1) {
                 scale = 1.0
             }
-            lp.width = (getScreenWidth(mContext!!) * scale).toInt()
+            lp.width = (getScreenWidth(mContext) * scale).toInt()
             //设置dialog高度
             lp.height = WindowManager.LayoutParams.WRAP_CONTENT
             //设置dialog进入、退出的动画
@@ -241,7 +264,6 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
             window.attributes = lp
         }
     }
-
 
     /**
      * BottomSheetDialog的默认高度为256dp，所以要处理一下全部展开。
@@ -276,11 +298,11 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      * @param manager FragmentManager
      * @param tag String
      */
-    fun showAllowingStateLoss(manager: FragmentManager, tag: String) {
+    fun showAllowingStateLoss(manager: FragmentManager, tag: String, dismissPreDialog: Boolean?) {
         val ft = manager.beginTransaction()
         //将之前的dialog隐藏
         val targetFragment = manager.findFragmentByTag(tag)
-        if (targetFragment is BaseDialogFragment) {
+        if (dismissPreDialog!! && targetFragment is BaseDialogFragment) {
             ft.remove(targetFragment)
         }
 
@@ -288,22 +310,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         ft.commitAllowingStateLoss()
     }
 
-    /**
-     * 如果两个dialog的tag一致，则隐藏上一个dialog
-     * @param manager FragmentManager
-     * @param tag String
-     */
-    fun showWithDismissPreDialog(manager: FragmentManager, tag: String) {
-        val ft = manager.beginTransaction()
-        //将之前的dialog隐藏
-        val targetFragment = manager.findFragmentByTag(tag)
-        if (targetFragment is BaseDialogFragment) {
-            ft.remove(targetFragment).commit()
-        }
-        show(manager, tag)
-    }
-
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
     }

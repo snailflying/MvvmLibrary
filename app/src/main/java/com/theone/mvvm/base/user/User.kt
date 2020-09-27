@@ -1,6 +1,6 @@
 package com.theone.mvvm.base.user
 
-import com.themone.core.http.HttpClient
+import com.theone.framework.http.HttpClient
 import com.theone.mvvm.base.user.entity.LoginEn
 import java.io.Serializable
 
@@ -93,7 +93,7 @@ class User private constructor() : Serializable {
         currentUser = User()
 
         //退出登录时删除网络缓存
-        HttpClient.okHttpClient.cache()?.delete()
+        HttpClient.okHttpClient.cache?.delete()
     }
 
     /**

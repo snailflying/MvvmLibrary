@@ -4,7 +4,7 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
-import com.themone.core.base.impl.CoreApp
+import com.theone.framework.base.CoreApp
 import java.util.*
 
 

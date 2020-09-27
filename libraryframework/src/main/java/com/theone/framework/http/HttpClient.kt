@@ -1,4 +1,4 @@
-package com.themone.core.http
+package com.theone.framework.http
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

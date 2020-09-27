@@ -1,11 +1,11 @@
 package com.theone.mvvm.utils
 
 import com.themone.core.entity.ApiResponse
-import com.themone.core.exception.NetworkException
-import io.reactivex.MaybeTransformer
-import io.reactivex.ObservableTransformer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import com.theone.framework.http.exception.NetworkException
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.MaybeTransformer
+import io.reactivex.rxjava3.core.ObservableTransformer
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * @Author zhiqiang

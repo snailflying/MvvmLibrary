@@ -1,4 +1,4 @@
-package com.themone.core.widgets.dialog
+package com.theone.framework.widget.dialog
 
 import android.content.Context
 import android.os.Bundle
@@ -13,7 +13,7 @@ import com.themone.theone.library.R
  */
 open class BaseDialogBuilder(
     val mContext: Context,
-    protected val mFragmentManager: FragmentManager,
+    private val mFragmentManager: FragmentManager,
     private val mClass: Class<out BaseDialogFragment>
 ) {
 
@@ -21,7 +21,8 @@ open class BaseDialogBuilder(
     private var mTargetFragment: Fragment? = null
 
     private var mTag: String
-    private var mRequestCode = DEFAULT_REQUEST_CODE
+    private var mRequestCode =
+        DEFAULT_REQUEST_CODE
 
     /**
      * 是否底部显示
@@ -45,6 +46,7 @@ open class BaseDialogBuilder(
     private var mCancelableOnTouchOutside =
         DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
     private var mCancelable = true
+    private var mDismissPreDialog: Boolean? = true
     /**
      * 主题
      */
@@ -137,7 +139,7 @@ open class BaseDialogBuilder(
     }
 
     /**
-     * 当Dialog从底部弹出时，是否完全展开，默认为完全展开
+     * 当Dialog为BottomSheet时，是否完全展开
      * @param fromBottom 是否完全展开
      * @return
      */
@@ -167,6 +169,17 @@ open class BaseDialogBuilder(
     fun setTargetFragment(fragment: Fragment, requestCode: Int): BaseDialogBuilder {
         mTargetFragment = fragment
         mRequestCode = requestCode
+        return this
+    }
+
+    /**
+     * 如果设置了mTag则自动不会隐藏，否则可调用此方法不隐藏
+     *
+     * @param dismissPreDialog Boolean
+     * @return DialogBuilder
+     */
+    fun setDismissPreDialog(dismissPreDialog: Boolean?): BaseDialogBuilder {
+        mDismissPreDialog = dismissPreDialog
         return this
     }
 
@@ -203,6 +216,8 @@ open class BaseDialogBuilder(
         args.putBoolean(ARG_CANCELABLE_ON_TOUCH_OUTSIDE, mCancelableOnTouchOutside)
         //显示底部
         args.putBoolean(ARG_SHOW_FROM_BOTTOM, mShowFromBottom)
+        //完全展开BottomSheetDialog
+        args.putBoolean(ARG_EXPAND_BOTTOM_SHEET, mExpandBottomSheet)
         //设置主题
         args.putInt(ARG_USE_THEME, mTheme)
         //透明度
@@ -222,14 +237,6 @@ open class BaseDialogBuilder(
         return this
     }
 
-    fun show(): BaseDialogFragment {
-        if (mDialogFragment == null) {
-            build()
-        }
-        mDialogFragment!!.showWithDismissPreDialog(mFragmentManager, mTag)
-        return mDialogFragment!!
-    }
-
     /**
      * 报"IllegalStateException : Can not perform this action after onSaveInstanceState()"异常的时候使用此show
      */
@@ -237,27 +244,28 @@ open class BaseDialogBuilder(
         if (mDialogFragment == null) {
             build()
         }
-        mDialogFragment!!.showAllowingStateLoss(mFragmentManager, mTag)
+        mDialogFragment!!.showAllowingStateLoss(mFragmentManager, mTag, mDismissPreDialog)
         return mDialogFragment!!
     }
 
     companion object {
 
-        internal val ARG_REQUEST_CODE = "request_code"
-        internal val ARG_SHOW_FROM_BOTTOM = "arg_show_from_bottom"
-        internal val ARG_CANCELABLE_ON_TOUCH_OUTSIDE = "cancelable_oto"
-        internal val ARG_USE_THEME = "arg_use_theme_type"
-        internal val ARG_DIM_AMOUNT = "arg_dim_amount"
-        internal val ARG_ANIM_STYLE = "arg_anim_style"
-        internal val ARG_SCALE = "arg_scale"
+        internal const val ARG_REQUEST_CODE = "request_code"
+        internal const val ARG_SHOW_FROM_BOTTOM = "arg_show_from_bottom"
+        internal const val ARG_EXPAND_BOTTOM_SHEET = "arg_expand_bottom_sheet"
+        internal const val ARG_CANCELABLE_ON_TOUCH_OUTSIDE = "cancelable_oto"
+        internal const val ARG_USE_THEME = "arg_use_theme_type"
+        internal const val ARG_DIM_AMOUNT = "arg_dim_amount"
+        internal const val ARG_ANIM_STYLE = "arg_anim_style"
+        internal const val ARG_SCALE = "arg_scale"
         /**
          * 默认值
          */
-        internal val DEFAULT_DIM_AMOUNT = 0.5f
-        internal val DEFAULT_SCALE = 0.75
-        internal val DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE = true
-        internal val DEFAULT_REQUEST_CODE = -42
-        internal val DEFAULT_SHOW_FROM_BOTTOM = false
+        internal const val DEFAULT_DIM_AMOUNT = 0.9f
+        internal const val DEFAULT_SCALE = 0.75
+        internal const val DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE = true
+        internal const val DEFAULT_REQUEST_CODE = -42
+        internal const val DEFAULT_SHOW_FROM_BOTTOM = false
         internal const val DEFAULT_EXPAND_BOTTOM_SHEET = true
     }
 }

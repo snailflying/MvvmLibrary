@@ -1,4 +1,4 @@
-package com.themone.core.widgets.dialog.iface
+package com.theone.framework.widget.dialog.iface
 
 /**
  * @Author zhiqiang

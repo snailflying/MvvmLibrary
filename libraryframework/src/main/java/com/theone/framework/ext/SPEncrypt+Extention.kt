@@ -2,7 +2,7 @@ package com.theone.framework.ext
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.themone.core.base.impl.CoreApp
+import com.theone.framework.base.CoreApp
 import com.theone.framework.encrypt.AesRsaEncrypt
 
 /**

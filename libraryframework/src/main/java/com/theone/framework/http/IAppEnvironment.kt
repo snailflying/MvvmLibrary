@@ -1,4 +1,4 @@
-package com.themone.core
+package com.theone.framework.http
 
 import okhttp3.Cache
 import okhttp3.Interceptor

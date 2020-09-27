@@ -6,9 +6,9 @@ import com.theone.framework.base.BaseActivity
 import com.theone.framework.encrypt.AesRsaEncrypt
 import com.theone.framework.ext.clickWithTrigger
 import com.theone.mvvm.R
-import io.reactivex.Single
-import io.reactivex.rxkotlin.addTo
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity() {

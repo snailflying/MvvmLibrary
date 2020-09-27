@@ -1,7 +1,6 @@
 package com.theone.mvvm
 
-import android.text.TextUtils
-import com.themone.core.DefaultEnvironment
+import com.theone.framework.http.DefaultEnvironment
 import com.theone.mvvm.base.net.api.ApiService
 import com.theone.mvvm.base.net.interceptor.HeaderInterceptor
 import okhttp3.Interceptor

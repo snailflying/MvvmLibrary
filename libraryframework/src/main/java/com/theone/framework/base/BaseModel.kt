@@ -1,6 +1,7 @@
 package com.theone.framework.base
 
 import com.themone.core.base.impl.CoreModel
+import com.theone.framework.http.HttpClient
 
 /**
  * @Author zhiqiang
@@ -8,5 +9,10 @@ import com.themone.core.base.impl.CoreModel
  * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-open class BaseModel<T>(clazz: Class<T>) : CoreModel<T>(clazz), IFrameworkModel {
+open class BaseModel<T>(clazz: Class<T>) : CoreModel<T>(), IFrameworkModel {
+    /**
+     * apiService
+     * 用于 retrofit 请求网络
+     */
+    protected val apiService: T = HttpClient.create(clazz)
 }

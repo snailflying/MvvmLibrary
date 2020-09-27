@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import com.themone.core.util.StatusBarUtil
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * @author zhiqiang
@@ -17,11 +17,13 @@ open class CoreActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        StatusBarUtil.setTransparentForWindow(this)
+        //状态栏透明
+        StatusBarUtil.transparentStatusBar(this)
     }
 
     override fun setContentView(layoutResID: Int) {
         super.setContentView(layoutResID)
+        //状态栏偏移
         if (isFitsSystemWindows()) {
             StatusBarUtil.setFitsSystemWindows(this)
         }

@@ -17,7 +17,7 @@ abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
         private set
 
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mViewModel = onCreateViewModel()
         initLifecycleObserver(lifecycle)

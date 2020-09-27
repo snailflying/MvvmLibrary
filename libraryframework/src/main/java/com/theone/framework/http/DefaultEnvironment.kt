@@ -1,6 +1,6 @@
-package com.themone.core
+package com.theone.framework.http
 
-import com.themone.core.base.impl.CoreApp
+import com.theone.framework.base.CoreApp
 import com.themone.core.util.LogUtil
 import com.themone.theone.library.BuildConfig
 import okhttp3.Cache
@@ -10,7 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.security.KeyStore
 import java.util.*
@@ -70,7 +70,7 @@ open class DefaultEnvironment : IAppEnvironment {
         get() = GsonConverterFactory.create()
 
     override val callAdapterFactory: CallAdapter.Factory
-        get() = RxJava2CallAdapterFactory.create()
+        get() = RxJava3CallAdapterFactory.create()
 
     override val interceptors: MutableList<Interceptor>
         get() {
@@ -96,6 +96,7 @@ open class DefaultEnvironment : IAppEnvironment {
          * 连接超时时间
          */
         private const val DEFAULT_TIME_OUT = 10
+
         /**
          * 读操作超时时间
          */

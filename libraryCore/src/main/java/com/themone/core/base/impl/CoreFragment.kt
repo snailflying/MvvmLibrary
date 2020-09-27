@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import com.themone.core.util.LogUtil
-import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * @author zhiqiang
@@ -143,7 +143,7 @@ open class CoreFragment : Fragment() {
         this.isFirstVisible = true
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
     }

@@ -1,7 +1,4 @@
-package com.themone.core.http
-
-import com.themone.core.EnvironmentManager
-import com.themone.core.IAppEnvironment
+package com.theone.framework.http
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

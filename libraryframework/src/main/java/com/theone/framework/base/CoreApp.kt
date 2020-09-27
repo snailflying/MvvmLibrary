@@ -1,4 +1,4 @@
-package com.themone.core.base.impl
+package com.theone.framework.base
 
 import android.app.Application
 import kotlin.properties.Delegates
@@ -17,7 +17,6 @@ open class CoreApp : Application() {
 
     companion object {
 
-        @get:Synchronized
         var application: CoreApp by Delegates.notNull()
             private set
     }
