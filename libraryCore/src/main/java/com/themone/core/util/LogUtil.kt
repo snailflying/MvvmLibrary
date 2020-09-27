@@ -13,10 +13,11 @@ import com.themone.theone.library.BuildConfig
  */
 object LogUtil {
 
-    private val isDebug = BuildConfig.DEBUG
+    val isDebug = BuildConfig.DEBUG
 
     private const val MIN_STACK_OFFSET = 2
     private const val DEFAULT_TAG = "LogUtil"
+
     @JvmStatic
     fun e(message: String?) {
         if (isDebug) {

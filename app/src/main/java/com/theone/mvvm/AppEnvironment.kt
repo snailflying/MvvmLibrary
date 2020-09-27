@@ -1,5 +1,6 @@
 package com.theone.mvvm
 
+import com.themone.core.util.LogUtil
 import com.theone.framework.http.DefaultEnvironment
 import com.theone.mvvm.base.net.api.ApiService
 import com.theone.mvvm.base.net.interceptor.HeaderInterceptor
@@ -40,7 +41,7 @@ class AppEnvironment : DefaultEnvironment() {
 
 
             interceptors.add(headerInterceptor)
-            if (BuildConfig.DEBUG) {
+            if (LogUtil.isDebug) {
                 val logging = HttpLoggingInterceptor()
                 logging.level = HttpLoggingInterceptor.Level.BODY
                 interceptors.add(logging)

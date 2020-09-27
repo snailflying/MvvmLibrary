@@ -1,4 +1,4 @@
-package com.themone.core.entity
+package com.theone.framework.http
 
 import java.io.Serializable
 

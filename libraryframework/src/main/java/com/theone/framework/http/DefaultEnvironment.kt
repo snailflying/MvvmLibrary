@@ -46,7 +46,7 @@ open class DefaultEnvironment : IAppEnvironment {
                 builder.addNetworkInterceptor(interceptor)
             }
 
-            if (BuildConfig.DEBUG) {
+            if (LogUtil.isDebug) {
                 var ssl: SSLSocketFactoryImp? = null
                 try {
                     ssl = SSLSocketFactoryImp(KeyStore.getInstance(KeyStore.getDefaultType()))
@@ -75,7 +75,7 @@ open class DefaultEnvironment : IAppEnvironment {
     override val interceptors: MutableList<Interceptor>
         get() {
             val interceptors = ArrayList<Interceptor>()
-            if (BuildConfig.DEBUG) {
+            if (LogUtil.isDebug) {
                 val logging = HttpLoggingInterceptor()
                 logging.level = HttpLoggingInterceptor.Level.BODY
                 interceptors.add(logging)
