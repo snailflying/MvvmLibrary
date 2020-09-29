@@ -1,191 +1,215 @@
 package com.theone.framework.util.countdown
 
-import android.os.Handler
-import android.os.Message
-import android.os.SystemClock
+import android.annotation.SuppressLint
+import android.os.*
 import java.lang.ref.WeakReference
 
 /**
  * @Author zhiqiang
- * @Date 2019-11-19
- * @Description 倒计时工具类，具体实现类
+ * @Date 2019-12-12
+ * @Description 在[android.os.CountDownTimer]基础上:
+ * 1.解耦onTick和onFinish回调
+ * 2.增加[onCountDownStart]和[onCountDownCancel]回调,且[onCountDownTick]在[start]调用时不会立即触发
+ * 3.增加[onPause]暂停倒计时回调（不暂停倒计时）
+ * 4.支持线程内调用（未详细测试）
+ *
+ * @param [mMillisInFuture]Millis since epoch when alarm should stop.
+ * @param [mCountdownInterval]The interval in millis that the user receives callbacks
  */
-class CountDown internal constructor(val name: String, val listener: CountDownListener, private val millisInFuture: Long = DEFAULT_MILLS_IN_FUTURE, val countdownInterval: Long = DEFAULT_INTERVAL) {
-
-    /**
-     * 回调接口
-     */
-    var countDownListener: CountDownListener? = listener
-    /**
-     * 剩余时间
-     */
+class CountDown(private val mMillisInFuture: Long, private val mCountdownInterval: Long) {
+    private lateinit var mHandler: Handler
     private var mStopTimeInFuture: Long = 0
-        get() = if (millisInFuture == NEVER_STOP) {
-            NEVER_STOP
-        } else {
-            field
-        }
 
     /**
-     * 退出当前页面时的时间点
+     * 回调
      */
-    private var mExitPageTime: Long = -1
-    /**
-     * 退出当前页面时，倒计时剩余时间
-     */
-    private var mExitPageRemindTime: Long = -1
-
-    private val timeHandler = TimeHandler(this)
-        get() {
-            if (!field.isAvailable) {
-                field.removeMessages(COUNT_DOWN)
-                return TimeHandler(this)
-            }
-            return field
-        }
+    private var countDownListener: CountDownListener? = null
 
     /**
-     * 绑定宿主的生命周期
+     * 用来实现线程内调用
      */
-    fun onStart() {
-        //定时器时间检测,判断之前是否有存在
-        val startTime = System.currentTimeMillis()
-        if (reenterPage()) {
-            val outOfTime = startTime - mExitPageTime
-            mStopTimeInFuture = mExitPageRemindTime - outOfTime
-            mExitPageTime = -1
-        }
-    }
+    private lateinit var mHandlerThread: HandlerThread
+
 
     /**
-     * 绑定宿主的生命周期
+     * boolean representing if the timer was cancelled
      */
-    fun onStop() {
-        if (!reenterPage()) {
-            mExitPageTime = System.currentTimeMillis()
-            mExitPageRemindTime = mStopTimeInFuture
-        }
-    }
+    private var mCancelled = false
 
     /**
-     * 绑定宿主的生命周期
+     * 是否已经倒计时结束，为[onPause]功能服务
      */
-    fun onDestroy() {
-        //重置exit page状态位
-        mExitPageTime = -1
-        mExitPageRemindTime = -1
+    private var mFinished = false
 
-        cancel()
-    }
 
-    fun start(): CountDown {
-        if (timeHandler.hasMessages(COUNT_DOWN)) {
-            return this
-        }
-        return restart()
-    }
-
-    fun restart(): CountDown {
-        countDownListener?.onCountDownStart(name)
-
-        mStopTimeInFuture = SystemClock.elapsedRealtime() + millisInFuture
-        timeHandler.sendEmptyMessageDelayed(COUNT_DOWN, countdownInterval)
+    /**
+     * 设置回调
+     *
+     * @param countDownListener
+     * @return
+     */
+    fun setCountDownListener(countDownListener: CountDownListener?): CountDown {
+        this.countDownListener = countDownListener
         return this
     }
 
-    fun cancel() {
-        countDownListener?.onCountDownCancel(name)
-
-        mCancelled = true
-        mStopTimeInFuture = DEFAULT_MILLS_IN_FUTURE
-        timeHandler.removeMessages(COUNT_DOWN)
-        CountDownFactory.INSTANCE.removeLimiter(this)
-    }
-
-
-    internal fun checkCountDownOver(): Boolean {
-        return mStopTimeInFuture != NEVER_STOP && mStopTimeInFuture <= 0
-    }
-
-    private fun reenterPage(): Boolean {
-        return mExitPageTime != -1L
+    /**
+     * Start the countdown.
+     */
+    @Synchronized
+    fun start(): CountDown {
+        if (countDownListener == null) {
+            throw NullPointerException("setCountDownListener() must be called")
+        }
+        if (mHandler.hasMessages(MSG)) {
+            return this
+        }
+        mCancelled = false
+        if (isNeverStop()) {
+            mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG), mCountdownInterval)
+            countDownListener!!.onCountDownStart(mMillisInFuture)
+            return this
+        } else if (mMillisInFuture <= 0) {
+            mFinished = true
+            countDownListener!!.onCountDownFinish()
+            return this
+        }
+        mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisInFuture
+        mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG), mCountdownInterval)
+        countDownListener!!.onCountDownStart(mMillisInFuture)
+        return this
     }
 
     /**
-     * 参考[android.os.CountDownTimer]
+     * Cancel the countdown.
      */
-    private class TimeHandler internal constructor(countDown: CountDown) : Handler() {
+    @Synchronized
+    fun cancel() {
+        mCancelled = true
+        countDownListener?.onCountDownCancel()
+        mHandler.removeMessages(MSG)
+    }
 
-        internal val wrCountDown: WeakReference<CountDown> = WeakReference(countDown)
+    /**
+     * 如果退出页面需要停止倒计时回调（倒计时时间依旧消耗），则调用
+     */
+    fun onResume() {
+        if (!isPaused() || mHandler.hasMessages(MSG)) return
 
-        internal val isAvailable: Boolean = wrCountDown.get() != null
+        if (isNeverStop()) {
+            resendMessage()
+            return
+        }
+        if (mFinished) return
 
-        override fun handleMessage(msg: Message) {
-            val countDown = wrCountDown.get() ?: return
-            synchronized(CountDown::class.java) {
+        val millisLeft = mStopTimeInFuture - SystemClock.elapsedRealtime()
+        if (millisLeft <= 0) {
+            countDownListener?.onCountDownFinish()
+            mCancelled = true
+            mHandler.removeMessages(MSG)
+        } else {
+            resendMessage()
+        }
+    }
+
+    /**
+     * 如果退出页面需要停止倒计时回调（倒计时时间依旧消耗），则调用
+     */
+    fun onPause() {
+        CURRENT_TIME = SystemClock.elapsedRealtime()
+        mCancelled = true
+        mHandler.removeMessages(MSG)
+    }
+
+    private fun isPaused(): Boolean {
+        return CURRENT_TIME != 0L
+    }
+
+    private fun isNeverStop(): Boolean {
+        return mMillisInFuture == NEVER_STOP
+    }
+
+
+    private fun resendMessage() {
+        var delay = mCountdownInterval + CURRENT_TIME - SystemClock.elapsedRealtime()
+        if (delay < 0) delay = 0
+        mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG), delay)
+    }
+
+    // handles counting down
+    @SuppressLint("HandlerLeak")
+    private val mCallback: Handler.Callback = object : Handler.Callback {
+        override fun handleMessage(msg: Message): Boolean {
+            synchronized(this@CountDown) {
                 if (mCancelled) {
-                    return
+                    return true
                 }
-                if (countDown.mStopTimeInFuture == NEVER_STOP) {
-                    countDown.countDownListener?.onCountDownTick(countDown.name, NEVER_STOP)
-                    return
+                if (isNeverStop()) {
+                    countDownListener?.onCountDownTick(mMillisInFuture)
+                    mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG), mCountdownInterval)
+                    return false;
                 }
-
-                val millisLeft = countDown.mStopTimeInFuture - SystemClock.elapsedRealtime()
-
+                val millisLeft = mStopTimeInFuture - SystemClock.elapsedRealtime()
                 if (millisLeft <= 0) {
-                    countDown.countDownListener?.onCountDownFinish(countDown.name)
+                    mFinished = true
+                    countDownListener?.onCountDownFinish()
                 } else {
                     val lastTickStart = SystemClock.elapsedRealtime()
-                    countDown.countDownListener?.onCountDownTick(countDown.name, millisLeft)
-
-                    // take into account user's onCountDownTick taking time to execute
+                    countDownListener?.onCountDownTick(millisLeft)
+                    // take into account user's onTick taking time to execute
                     val lastTickDuration = SystemClock.elapsedRealtime() - lastTickStart
                     var delay: Long
-
-                    if (millisLeft < countDown.countdownInterval) {
-                        // just delay until done
+                    if (millisLeft < mCountdownInterval) { // just delay until done
                         delay = millisLeft - lastTickDuration
-
-                        // special case: user's onCountDownTick took more than interval to
-                        // complete, trigger onCountDownFinish without delay
-                        if (delay < 0) {
-                            delay = 0
-                        }
+                        // special case: user's onTick took more than interval to
+// complete, trigger onFinish without delay
+                        if (delay < 0) delay = 0
                     } else {
-                        delay = countDown.countdownInterval - lastTickDuration
-
-                        // special case: user's onCountDownTick took more than interval to
-                        // complete, skip to next interval
-                        while (delay < 0) {
-                            delay += countDown.countdownInterval
-                        }
+                        delay = mCountdownInterval - lastTickDuration
+                        // special case: user's onTick took more than interval to
+// complete, skip to next interval
+                        while (delay < 0) delay += mCountdownInterval
                     }
-
-                    sendMessageDelayed(obtainMessage(COUNT_DOWN), delay)
+                    mHandler.sendMessageDelayed(mHandler.obtainMessage(MSG), delay)
                 }
             }
+            return false;
+        }
+
+    }
+
+    private fun isMainThread(): Boolean {
+        return Looper.getMainLooper().thread == Thread.currentThread()
+    }
+
+    init {
+        if (!isMainThread()) {
+            mHandlerThread = HandlerThread("CountDownThread")
+            mHandlerThread.start()
+            mHandler = Handler(mHandlerThread.looper, mCallback)
+        } else {
+            mHandler = Handler(mCallback)
+        }
+    }
+
+    open class SimpleCountDownListener : CountDownListener {
+        override fun onCountDownStart(millisLeft: Long) {
+        }
+
+        override fun onCountDownCancel() {
+        }
+
+        override fun onCountDownTick(millisLeft: Long) {
+        }
+
+        override fun onCountDownFinish() {
         }
     }
 
     companion object {
-
-        private const val COUNT_DOWN = 1
-
-        /**
-         * 剩余时间如果是1123，则表示永不停止。除非被destroy或cancel
-         */
-        internal const val NEVER_STOP: Long = -1123
-        /**
-         * 默认剩余时间，-1表示已结束
-         */
-        private const val DEFAULT_MILLS_IN_FUTURE: Long = -1
-        /**
-         * 倒计时间隔，默认1秒
-         */
-        internal const val DEFAULT_INTERVAL: Long = 1000
-
-        private var mCancelled = false
+        private const val MSG = 1
+        const val NEVER_STOP: Long = -1
+        private var CURRENT_TIME: Long = 0L
     }
 
 }
