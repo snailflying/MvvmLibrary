@@ -9,5 +9,5 @@ import com.theone.mvvm.home.model.HomeModel
  * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-class HomeViewModel(override var model: HomeModel? = HomeModel()) : BaseViewModel<HomeModel>() {
+class HomeViewModel(override var model: HomeModel = HomeModel()) : BaseViewModel<HomeModel>() {
 }
