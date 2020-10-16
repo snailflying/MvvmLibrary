@@ -1,7 +1,7 @@
 package com.theone.mvvm.base.user
 
 import android.annotation.SuppressLint
-import com.theone.framework.base.CoreApp
+import com.theone.framework.base.BaseApp
 import com.theone.framework.ext.getEncryptString
 import com.theone.framework.ext.putEncryptString
 import com.theone.framework.util.SpUtil
@@ -14,7 +14,7 @@ import com.theone.framework.util.SpUtil
  */
 class Settings private constructor() {
 
-    private val prefs by lazy { SpUtil.getSpSetting(CoreApp.application) }
+    private val prefs by lazy { SpUtil.getSp(BaseApp.application) }
 
     var accessToken = prefs.getEncryptString(SP_ACCESS_TOKEN)
         set(value) {

@@ -13,13 +13,13 @@ import com.themone.core.base.IViewModel
  */
 abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
 
-    protected var mViewModel: VM? = null
+    protected lateinit var viewModel: VM
         private set
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        mViewModel = onCreateViewModel()
+        viewModel = onCreateViewModel()
         initLifecycleObserver(lifecycle)
     }
 
@@ -37,9 +37,7 @@ abstract class CoreMvvmFragment<VM : IViewModel> : CoreFragment() {
      */
     @MainThread
     protected fun initLifecycleObserver(lifecycle: Lifecycle) {
-        if (null != mViewModel) {
-            lifecycle.addObserver(mViewModel!!)
-        }
+        lifecycle.addObserver(viewModel)
     }
 
 }

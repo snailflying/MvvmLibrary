@@ -2,6 +2,7 @@ package com.theone.framework.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.theone.framework.base.BaseApp
 
 /**
  * @author zhiqiang
@@ -13,20 +14,19 @@ object SpUtil {
     /**
      * 用户个人信息相关sp
      */
-    private const val USER_INFO = "user_info"
+    const val USER_INFO = "user_info"
+
     /**
      * 手机设置信息 相关sp
      */
-    private const val SETTING_INFO = "setting_info"
+    const val SETTING_INFO = "setting_info"
 
     @JvmStatic
-    fun getSpUser(context: Context): SharedPreferences {
-        return context.getSharedPreferences(USER_INFO, Context.MODE_PRIVATE)
-    }
-
-    @JvmStatic
-    fun getSpSetting(context: Context): SharedPreferences {
-        return context.getSharedPreferences(SETTING_INFO, Context.MODE_PRIVATE)
+    fun getSp(
+        context: Context = BaseApp.application,
+        spName: String = SETTING_INFO
+    ): SharedPreferences {
+        return context.getSharedPreferences(spName, Context.MODE_PRIVATE)
     }
 
 }

@@ -2,7 +2,7 @@ package com.theone.mvvm
 
 import android.content.Context
 import androidx.multidex.MultiDex
-import com.theone.framework.base.CoreApp
+import com.theone.framework.base.BaseApp
 
 /**
  * @Author zhiqiang
@@ -10,7 +10,7 @@ import com.theone.framework.base.CoreApp
  * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-class App : CoreApp() {
+class App : BaseApp() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)

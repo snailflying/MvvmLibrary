@@ -1,7 +1,7 @@
 package com.theone.framework.http
 
 import com.themone.core.util.LogUtil
-import com.theone.framework.base.CoreApp
+import com.theone.framework.base.BaseApp
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -88,7 +88,7 @@ open class DefaultEnvironment : IAppEnvironment {
         }
 
     override val cache: Cache
-        get() = Cache(CoreApp.application.cacheDir, (10240 * 1024).toLong())
+        get() = Cache(BaseApp.application.cacheDir, (10240 * 1024).toLong())
 
     companion object {
         /**

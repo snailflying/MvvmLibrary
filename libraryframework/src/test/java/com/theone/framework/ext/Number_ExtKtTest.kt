@@ -9,7 +9,7 @@ import java.math.BigDecimal
  * @Date 2019-06-19
  * @Description
  */
-class Number_ExtensionKtTest {
+class Number_ExtKtTest {
 
     @Test
     fun formatNumber() {

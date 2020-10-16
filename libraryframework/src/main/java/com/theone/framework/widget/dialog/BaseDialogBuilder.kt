@@ -12,8 +12,7 @@ import com.theone.framework.R
  * @Date 2019/2/16
  */
 open class BaseDialogBuilder(
-    val mContext: Context,
-    private val mFragmentManager: FragmentManager,
+    private val mContext: Context,
     private val mClass: Class<out BaseDialogFragment>
 ) {
 
@@ -62,18 +61,6 @@ open class BaseDialogBuilder(
      */
     private var mAnimStyle: Int = 0
     private var args: Bundle? = null
-
-    val fragment: BaseDialogFragment?
-        get() {
-            if (mDialogFragment == null) {
-                build()
-            }
-            return mDialogFragment
-        }
-
-    init {
-        mTag = mClass.name
-    }
 
     /**
      * 如果要增加额外传递参数的方法，需要重载此方法添加
@@ -216,7 +203,14 @@ open class BaseDialogBuilder(
         return this
     }
 
-    fun build(): BaseDialogBuilder {
+    open fun getFragment(): BaseDialogFragment? {
+        if (mDialogFragment == null) {
+            build()
+        }
+        return mDialogFragment
+    }
+
+    open fun build(): BaseDialogBuilder {
         val args = prepareArguments()
         val fragment = Fragment.instantiate(mContext, mClass.name, args) as BaseDialogFragment
         args.putBoolean(ARG_CANCELABLE_ON_TOUCH_OUTSIDE, mCancelableOnTouchOutside)
@@ -246,12 +240,16 @@ open class BaseDialogBuilder(
     /**
      * 报"IllegalStateException : Can not perform this action after onSaveInstanceState()"异常的时候使用此show
      */
-    fun showAllowingStateLoss(): BaseDialogFragment {
+    fun showAllowingStateLoss(fragmentManager: FragmentManager): BaseDialogFragment {
         if (mDialogFragment == null) {
             build()
         }
-        mDialogFragment!!.showAllowingStateLoss(mFragmentManager, mTag, mDismissPreDialog)
+        mDialogFragment!!.showAllowingStateLoss(fragmentManager, mTag, mDismissPreDialog)
         return mDialogFragment!!
+    }
+
+    init {
+        mTag = mClass.name
     }
 
     companion object {
@@ -268,7 +266,7 @@ open class BaseDialogBuilder(
         /**
          * 默认值
          */
-        internal const val DEFAULT_DIM_AMOUNT = 0.9f
+        internal const val DEFAULT_DIM_AMOUNT = 0.5f
         internal const val DEFAULT_SCALE = 0.75
         internal const val DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE = true
         internal const val DEFAULT_REQUEST_CODE = -42

@@ -13,8 +13,8 @@ import java.lang.ref.WeakReference
  * 3.增加[onPause]暂停倒计时回调（不暂停倒计时）
  * 4.支持线程内调用（未详细测试）
  *
- * @param [mMillisInFuture]Millis since epoch when alarm should stop.
- * @param [mCountdownInterval]The interval in millis that the user receives callbacks
+ * @param [mMillisInFuture]倒计时. 单位ms
+ * @param [mCountdownInterval]倒计时间隔. 单位ms
  */
 class CountDown(private val mMillisInFuture: Long, private val mCountdownInterval: Long) {
     private lateinit var mHandler: Handler

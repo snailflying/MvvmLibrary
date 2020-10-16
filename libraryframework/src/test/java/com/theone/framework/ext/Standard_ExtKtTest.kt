@@ -10,7 +10,7 @@ import org.junit.Test
  * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-class Standard_ExtensionKtTest {
+class Standard_ExtKtTest {
 
     @Before
     fun setUp() {

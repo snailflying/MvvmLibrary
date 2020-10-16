@@ -2,6 +2,8 @@ package com.themone.core.base.impl
 
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.themone.core.util.StatusBarUtil
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -29,6 +31,22 @@ open class CoreActivity : AppCompatActivity() {
         }
     }
 
+    override fun setContentView(view: View?) {
+        super.setContentView(view)
+        //状态栏偏移
+        if (isFitsSystemWindows()) {
+            StatusBarUtil.setFitsSystemWindows(this)
+        }
+    }
+
+    override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {
+        super.setContentView(view, params)
+        //状态栏偏移
+        if (isFitsSystemWindows()) {
+            StatusBarUtil.setFitsSystemWindows(this)
+        }
+    }
+
     override fun onDestroy() {
         compositeDisposable.clear()
         super.onDestroy()
@@ -41,7 +59,7 @@ open class CoreActivity : AppCompatActivity() {
      * @return Boolean
      */
     open fun isFitsSystemWindows(): Boolean {
-        return true
+        return false
     }
 
     /**

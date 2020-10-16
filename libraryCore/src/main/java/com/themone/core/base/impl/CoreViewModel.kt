@@ -19,7 +19,7 @@ abstract class CoreViewModel<M : IModel> : ViewModel(), IViewModel {
      *
      * @return model
      */
-    protected abstract var model: M?
+    protected abstract var model: M
 
     /**
      * 为了方便kotlin引用
@@ -38,8 +38,7 @@ abstract class CoreViewModel<M : IModel> : ViewModel(), IViewModel {
 
 
     override fun onCleared() {
-        model?.onDestroy()
-        model = null
+        model.onDestroy()
         unSubscribe()
         LogUtil.i(Companion.TAG, "onCleared")
     }

@@ -2,7 +2,7 @@ package com.theone.framework.ext
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.theone.framework.base.CoreApp
+import com.theone.framework.base.BaseApp
 import com.theone.framework.encrypt.AesRsaEncrypt
 
 /**
@@ -132,7 +132,7 @@ fun SharedPreferences.Editor.putEncryptStringSet(
  * encrypt function
  * @return cipherText base64
  */
-private fun encryptPreference(context: Context = CoreApp.application, plainText: String, pwd: String? = null): String {
+private fun encryptPreference(context: Context = BaseApp.application, plainText: String, pwd: String? = null): String {
 
     return AesRsaEncrypt.getInstance(context).encrypt(pwd, plainText)
 }
@@ -141,7 +141,7 @@ private fun encryptPreference(context: Context = CoreApp.application, plainText:
  * decrypt function
  * @return plainText
  */
-private fun decryptPreference(context: Context = CoreApp.application, cipherText: String, pwd: String? = null): String {
+private fun decryptPreference(context: Context = BaseApp.application, cipherText: String, pwd: String? = null): String {
     return AesRsaEncrypt.getInstance(context).decrypt(pwd, cipherText)
 }
 

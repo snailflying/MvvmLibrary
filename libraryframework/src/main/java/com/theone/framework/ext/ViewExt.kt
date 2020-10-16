@@ -1,8 +1,13 @@
 package com.theone.framework.ext
 
+import android.annotation.TargetApi
 import android.content.Context
+import android.graphics.Outline
+import android.os.Build
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 
 /**
  * @Author zhiqiang
@@ -35,6 +40,40 @@ fun View.showKeyboard(): Boolean {
         this,
         InputMethodManager.SHOW_IMPLICIT
     )
+}
+
+
+/**
+ * 带显示状态的 TextView setText 扩展
+ * @param char text
+ */
+fun <T : TextView> T.setTextWithVisible(char: CharSequence?) {
+    text = char
+    visibility = if (char.isNullOrEmpty()) View.GONE else View.VISIBLE
+}
+
+/**
+ * 设置 shadow 阴影
+ * @param elevation Z 轴偏移
+ * @param alpha outline 透明度
+ */
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+fun <T : View> T.setShadow(elevation: Float = 30f, alpha: Float = 0.3f) {
+    if (Build.VERSION.SDK_INT >= 21) {
+        setElevation(elevation)
+        outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline?) {
+                val background = view.background
+                if (background != null) {
+                    background.getOutline(outline!!)
+                    outline.alpha = alpha
+                } else {
+                    outline!!.setRect(0, 0, view.width, view.height)
+                    outline.alpha = 0.0f
+                }
+            }
+        }
+    }
 }
 
 /***************************延迟点击相关 Start******************************/

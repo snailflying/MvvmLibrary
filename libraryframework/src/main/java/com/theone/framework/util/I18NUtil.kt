@@ -4,7 +4,7 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
-import com.theone.framework.base.CoreApp
+import com.theone.framework.base.BaseApp
 import java.util.*
 
 
@@ -25,8 +25,8 @@ object I18NUtil {
      * 获取选择的语言模式
      * 例如 auto=AUTO，Chinese=zh_CN，English=en
      */
-    fun getSelectedLanguage(context: Context = CoreApp.application): String {
-        return SpUtil.getSpSetting(context).getString(SELECTED_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
+    fun getSelectedLanguage(context: Context = BaseApp.application): String {
+        return SpUtil.getSp(context).getString(SELECTED_LANGUAGE, DEFAULT_LANGUAGE) ?: DEFAULT_LANGUAGE
     }
 
     /**
@@ -34,8 +34,8 @@ object I18NUtil {
      * @param context Context
      * @return Currency 例如 USD
      */
-    fun getSelectedCurrency(context: Context = CoreApp.application): String {
-        return SpUtil.getSpSetting(context).getString(SELECTED_CURRENCY, DEFAULT_CURRENCY) ?: DEFAULT_CURRENCY
+    fun getSelectedCurrency(context: Context = BaseApp.application): String {
+        return SpUtil.getSp(context).getString(SELECTED_CURRENCY, DEFAULT_CURRENCY) ?: DEFAULT_CURRENCY
     }
 
     /**
@@ -43,23 +43,23 @@ object I18NUtil {
      * @param select 语言列表中的索引
      * @return true 选择的语言与App语言不一致，需要切换
      */
-    fun needChange(select: String) = select != getSelectedLanguage(CoreApp.application)
+    fun needChange(select: String) = select != getSelectedLanguage(BaseApp.application)
 
     /**
      * 保存当前货币
      * @param context Context
      * @param select Int
      */
-    fun saveSelectCurrency(context: Context = CoreApp.application, select: String?) {
-        SpUtil.getSpSetting(context).edit().putString(SELECTED_CURRENCY, select).apply()
+    fun saveSelectCurrency(context: Context = BaseApp.application, select: String?) {
+        SpUtil.getSp(context).edit().putString(SELECTED_CURRENCY, select).apply()
     }
 
     /**
      * 根据索引保存用户选择的语言环境
      * @param select 语言列表中的索引
      */
-    fun saveSelectLanguage(context: Context = CoreApp.application, select: String?) {
-        SpUtil.getSpSetting(context).edit().putString(SELECTED_LANGUAGE, select).apply()
+    fun saveSelectLanguage(context: Context = BaseApp.application, select: String?) {
+        SpUtil.getSp(context).edit().putString(SELECTED_LANGUAGE, select).apply()
 //        updateResource(context)
     }
 
@@ -69,7 +69,7 @@ object I18NUtil {
      */
     @JvmStatic
     fun updateResource(context: Context?): Context {
-        val ctx = context ?: CoreApp.application
+        val ctx = context ?: BaseApp.application
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             updateResources(ctx)
         } else {

@@ -8,7 +8,7 @@ import kotlin.properties.Delegates
  * @date 2019-06-05
  * @desc
  */
-open class CoreApp : Application() {
+open class BaseApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -17,7 +17,7 @@ open class CoreApp : Application() {
 
     companion object {
 
-        var application: CoreApp by Delegates.notNull()
+        var application: BaseApp by Delegates.notNull()
             private set
     }
 }
