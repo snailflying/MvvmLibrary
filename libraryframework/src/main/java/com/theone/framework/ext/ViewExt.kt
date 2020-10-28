@@ -110,8 +110,8 @@ private fun <T : View> T.clickEnable(): Boolean {
     val currentClickTime = System.currentTimeMillis()
     if (currentClickTime - triggerLastTime >= triggerDelay) {
         flag = true
+        triggerLastTime = currentClickTime
     }
-    triggerLastTime = currentClickTime
     return flag
 }
 
