@@ -6,10 +6,10 @@ import com.theone.framework.http.HttpClient
 /**
  * @Author zhiqiang
  * @Date 2019-08-02
- * @Email liuzhiqiang@moretickets.com
+
  * @Description
  */
-open class BaseModel<T>(clazz: Class<T>) : CoreModel<T>(), IFrameworkModel {
+open class BaseModel<T>(clazz: Class<T>) : CoreModel<T>() {
     /**
      * apiService
      * 用于 retrofit 请求网络

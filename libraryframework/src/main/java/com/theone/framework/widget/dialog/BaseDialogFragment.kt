@@ -32,12 +32,6 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.theone.framework.R
-import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
-import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_DIM_AMOUNT
-import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_EXPAND_BOTTOM_SHEET
-import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_REQUEST_CODE
-import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_SCALE
-import com.theone.framework.widget.dialog.BaseDialogBuilder.Companion.DEFAULT_SHOW_FROM_BOTTOM
 import com.theone.framework.widget.dialog.iface.IDialogCancelListener
 import com.theone.framework.widget.dialog.iface.IDialogDismissListener
 import com.theone.framework.widget.dialog.iface.IDialogNegativeListener
@@ -46,20 +40,13 @@ import java.util.*
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@theone.com
+
  * @Date 2019/2/16
  * @Description dialog的基类
  */
+open class BaseDialogFragment : AppCompatDialogFragment() {
 
-/**
- * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
- * @Date 2019/2/16
- * @Description dialog的基类
- */
-abstract class BaseDialogFragment : AppCompatDialogFragment() {
-
-    protected var mRequestCode = DEFAULT_REQUEST_CODE
+    private var mRequestCode = DEFAULT_REQUEST_CODE
 
     /**
      * 点击外部隐藏dialog，默认开启
@@ -67,9 +54,9 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     private var canceledOnTouchOutside = DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
 
     /**
-     * 灰度深浅
+     * 背景灰度深浅
      */
-    private var dimAmount = DEFAULT_DIM_AMOUNT
+    private var bgAlphaDimAmount: Float = DEFAULT_DIM_AMOUNT
 
     /**
      * 宽度缩放
@@ -96,6 +83,66 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      */
     private var animStyle: Int = 0
 
+    fun setRequestCode(value: Int) {
+        mRequestCode = value
+        arguments?.putInt(ARG_REQUEST_CODE, value)
+    }
+
+    /**
+     * 背景灰度深浅
+     */
+    fun setBgAlphaDimAmount(value: Float) {
+        bgAlphaDimAmount = value
+        arguments?.putFloat(ARG_DIM_AMOUNT, value)
+    }
+
+    /**
+     * 宽度缩放
+     */
+    fun setScale(value: Double) {
+        scale = value
+        arguments?.putDouble(ARG_SCALE, value)
+    }
+
+    /**
+     * 点击外部隐藏dialog，默认开启
+     */
+    fun setCanceledOnTouchOutside(value: Boolean) {
+        canceledOnTouchOutside = value
+        arguments?.putBoolean(ARG_CANCELABLE_ON_TOUCH_OUTSIDE, value)
+    }
+
+    /**
+     * 是否底部显示
+     */
+    fun setShowFromBottom(value: Boolean) {
+        showFromBottom = value
+        arguments?.putBoolean(ARG_SHOW_FROM_BOTTOM, value)
+    }
+
+    /**
+     * 当Dialog为BottomSheet时，是否完全展开
+     */
+    fun setExpandBottomSheet(value: Boolean) {
+        expandBottomSheet = value
+        arguments?.putBoolean(ARG_EXPAND_BOTTOM_SHEET, value)
+    }
+
+    /**
+     * 主题
+     */
+    fun setTheme(value: Int) {
+        mTheme = value
+        arguments?.putInt(ARG_USE_THEME, value)
+    }
+
+    /**
+     * 动画
+     */
+    fun setAnimStyle(value: Int) {
+        animStyle = value
+        arguments?.putInt(ARG_ANIM_STYLE, value)
+    }
 
     protected lateinit var mContext: Context
 
@@ -104,7 +151,6 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     protected val dismissListeners: List<IDialogDismissListener>
         get() = getDialogListeners(IDialogDismissListener::class.java)
-
 
     /**
      * positive 按钮事件，可能不止一个（activity嵌套fragment）
@@ -177,7 +223,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     /**
      * 采用fragment interface pattern方式传递callback回调
-     * targetFragment需要配合[BaseDialogBuilder.setTargetFragment]
+     * targetFragment需要配合[setTargetFragment]
      *
      * @param listenerInterface
      * @param <T>
@@ -205,29 +251,29 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         } else {
             val args = arguments
             if (args != null) {
-                mRequestCode = args.getInt(BaseDialogBuilder.ARG_REQUEST_CODE, DEFAULT_REQUEST_CODE)
+                mRequestCode = args.getInt(ARG_REQUEST_CODE, DEFAULT_REQUEST_CODE)
             }
         }
 
         val args = arguments
         if (args != null) {
             canceledOnTouchOutside = args.getBoolean(
-                BaseDialogBuilder.ARG_CANCELABLE_ON_TOUCH_OUTSIDE,
+                ARG_CANCELABLE_ON_TOUCH_OUTSIDE,
                 DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE
             )
             showFromBottom = args.getBoolean(
-                BaseDialogBuilder.ARG_SHOW_FROM_BOTTOM,
+                ARG_SHOW_FROM_BOTTOM,
                 DEFAULT_SHOW_FROM_BOTTOM
             )
             expandBottomSheet = args.getBoolean(
-                BaseDialogBuilder.ARG_EXPAND_BOTTOM_SHEET,
+                ARG_EXPAND_BOTTOM_SHEET,
                 DEFAULT_EXPAND_BOTTOM_SHEET
             )
-            dimAmount = args.getFloat(BaseDialogBuilder.ARG_DIM_AMOUNT, DEFAULT_DIM_AMOUNT)
-            scale = args.getDouble(BaseDialogBuilder.ARG_SCALE, DEFAULT_SCALE)
-            animStyle = args.getInt(BaseDialogBuilder.ARG_ANIM_STYLE)
+            bgAlphaDimAmount = args.getFloat(ARG_DIM_AMOUNT, DEFAULT_DIM_AMOUNT)
+            scale = args.getDouble(ARG_SCALE, DEFAULT_SCALE)
+            animStyle = args.getInt(ARG_ANIM_STYLE)
             val defaultTheme = if (theme == 0) -1 else theme
-            mTheme = args.getInt(BaseDialogBuilder.ARG_USE_THEME, R.style.Dialog)
+            mTheme = args.getInt(ARG_USE_THEME, R.style.Dialog)
         }
         //必须在onCreate()内调用才起作用
         setStyle(DialogFragment.STYLE_NO_TITLE, mTheme)
@@ -240,7 +286,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         if (window != null) {
             val lp = window.attributes
             //调节灰色背景透明度[0-1]，默认0.5f
-            lp.dimAmount = dimAmount
+            lp.dimAmount = bgAlphaDimAmount
             //是否在底部显示
             if (showFromBottom) {
                 lp.gravity = Gravity.BOTTOM
@@ -298,7 +344,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
      * @param manager FragmentManager
      * @param tag String
      */
-    fun showAllowingStateLoss(manager: FragmentManager, tag: String, dismissPreDialog: Boolean?) {
+    fun showAllowingStateLoss(manager: FragmentManager, tag: String, dismissPreDialog: Boolean? = true) {
         val ft = manager.beginTransaction()
         //将之前的dialog隐藏
         val targetFragment = manager.findFragmentByTag(tag)
@@ -313,5 +359,27 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+    }
+
+    companion object {
+
+        internal const val ARG_REQUEST_CODE = "request_code"
+        internal const val ARG_SHOW_FROM_BOTTOM = "arg_show_from_bottom"
+        internal const val ARG_EXPAND_BOTTOM_SHEET = "arg_expand_bottom_sheet"
+        internal const val ARG_CANCELABLE_ON_TOUCH_OUTSIDE = "cancelable_oto"
+        internal const val ARG_USE_THEME = "arg_use_theme_type"
+        internal const val ARG_DIM_AMOUNT = "arg_dim_amount"
+        internal const val ARG_ANIM_STYLE = "arg_anim_style"
+        internal const val ARG_SCALE = "arg_scale"
+
+        /**
+         * 默认值
+         */
+        internal const val DEFAULT_DIM_AMOUNT = 0.5f
+        internal const val DEFAULT_SCALE = 0.75
+        internal const val DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE = true
+        internal const val DEFAULT_REQUEST_CODE = -42
+        internal const val DEFAULT_SHOW_FROM_BOTTOM = false
+        internal const val DEFAULT_EXPAND_BOTTOM_SHEET = true
     }
 }

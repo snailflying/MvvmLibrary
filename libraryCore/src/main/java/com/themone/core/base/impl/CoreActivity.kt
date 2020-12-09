@@ -59,7 +59,7 @@ open class CoreActivity : AppCompatActivity() {
      * @return Boolean
      */
     open fun isFitsSystemWindows(): Boolean {
-        return false
+        return true
     }
 
     /**

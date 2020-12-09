@@ -11,7 +11,7 @@ import java.util.*
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+
  * @Date 2019/3/7
  * @Description
  * 1.scheme、host、path、encodedPath、query、encodedQuery、queryMap默认不为空

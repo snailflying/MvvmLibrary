@@ -3,6 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file("../keyStore") // 签名文件存放路径
+            storePassword "theEyePwd"
+            keyAlias "theEye"
+            keyPassword "theEyePwd"
+        }
+    }
+
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     defaultConfig {
         applicationId "com.theone.mvvm"
@@ -11,6 +20,7 @@ android {
         versionCode rootProject.ext.android["versionCode"]
         versionName rootProject.ext.android["versionName"]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
         multiDexEnabled true
     }
     buildTypes {
@@ -55,6 +65,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -67,23 +81,21 @@ dependencies {
     implementation project(':libraryframework')
 
     //kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.version["kotlin_stdlib_jdk7"]}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext.version["kotlinx_coroutines"]}"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.version["kotlinx_coroutines"]}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_stdlib_jdk7}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext.kotlinx_coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${rootProject.ext.kotlinx_coroutines}"
 
-    implementation "androidx.appcompat:appcompat:${rootProject.ext.version["appcompat"]}"
-    implementation "androidx.core:core-ktx:${rootProject.ext.version["core_ktx"]}"
-    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.version["constraintlayout"]}"
-
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompat}"
+    implementation "androidx.core:core-ktx:${rootProject.ext.core_ktx}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayout}"
+    //bottomsheet ViewPager2
+    implementation "com.google.android.material:material:${rootProject.ext.material}"
     //rxjava
-    implementation "io.reactivex.rxjava3:rxjava:${rootProject.ext.version["rxjava"]}"
-    implementation "io.reactivex.rxjava3:rxandroid:${rootProject.ext.version["rxandroid"]}"
-    implementation "io.reactivex.rxjava3:rxkotlin:${rootProject.ext.version["rxkotlin"]}"
+    implementation "io.reactivex.rxjava3:rxjava:${rootProject.ext.rxjava}"
+    implementation "io.reactivex.rxjava3:rxandroid:${rootProject.ext.rxandroid}"
+    implementation "io.reactivex.rxjava3:rxkotlin:${rootProject.ext.rxkotlin}"
+    implementation "com.hjq:titlebar:${rootProject.ext.titlebar}"
 
-    //network
-    implementation "com.squareup.okhttp3:okhttp:${rootProject.ext.version["okhttp3"]}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.version["okhttp3"]}"
-    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.version["retrofit2"]}"
-    implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.version["retrofit2"]}"
-    implementation "com.squareup.retrofit2:adapter-rxjava3:${rootProject.ext.version["retrofit2"]}"
+    implementation "com.drakeet.multitype:multitype:${rootProject.ext.multitype}"
+
 }

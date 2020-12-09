@@ -3,7 +3,7 @@ package com.theone.framework.ext
 /**
  * @Author zhiqiang
  * @Date 2019-06-19
- * @Email liuzhiqiang@moretickets.com
+
  * @Description 拓展Standard.kt
  */
 

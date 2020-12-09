@@ -23,8 +23,8 @@ import com.theone.framework.base.BaseActivity
  * @param backStackName String?
  */
 fun AppCompatActivity.toFragment(
-    fragment: Fragment,
     @IdRes containerViewId: Int,
+    fragment: Fragment,
     addToBackStack: Boolean = false,
     backStackName: String? = null
 ) {
@@ -43,8 +43,8 @@ fun AppCompatActivity.toFragment(
  * @param backStackName String?
  */
 fun Fragment.toFragment(
-    fragment: Fragment,
     @IdRes containerViewId: Int,
+    fragment: Fragment,
     addToBackStack: Boolean = true,
     backStackName: String? = null
 ) {
@@ -63,8 +63,8 @@ fun Fragment.toFragment(
 fun FragmentManager.fragmentTransaction(): FragmentTransaction {
     return beginTransaction().setCustomAnimations(
         R.anim.in_from_right,
-        R.anim.out_to_left,
-        R.anim.in_from_left,
+        R.anim.stay,
+        R.anim.nothing,
         R.anim.out_to_right
     )
 }

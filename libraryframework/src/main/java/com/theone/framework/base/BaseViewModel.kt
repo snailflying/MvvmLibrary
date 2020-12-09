@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.disposables.Disposable
 /**
  * @Author zhiqiang
  * @Date 2019-08-02
- * @Email liuzhiqiang@moretickets.com
  * @Description
  */
 abstract class BaseViewModel<M : IModel>: CoreViewModel<M>(),IFrameworkViewModel {
