@@ -1,12 +1,12 @@
 package cn.magicwindow.core.ext
 
+import android.app.Activity
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.theone.framework.R
-import com.theone.framework.base.BaseActivity
 
 /**
  * @author Zhiqiang
@@ -73,7 +73,7 @@ fun FragmentManager.fragmentTransaction(): FragmentTransaction {
  * 带Anim的结束finish
  * @receiver BaseActivity
  */
-fun BaseActivity.finishWithAnim() {
+fun Activity.finishWithAnim() {
     finish()
     overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right)
 }
