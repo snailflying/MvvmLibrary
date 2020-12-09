@@ -45,6 +45,7 @@ import java.util.*
  * @Description dialog的基类
  */
 open class BaseDialogFragment : AppCompatDialogFragment() {
+    protected lateinit var mContext: Context
 
     private var mRequestCode = DEFAULT_REQUEST_CODE
 
@@ -59,6 +60,11 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
     private var bgAlphaDimAmount: Float = DEFAULT_DIM_AMOUNT
 
     /**
+     * 是否全屏
+     */
+    private var fullScreen: Boolean = DEFAULT_FULLSCREEN
+
+    /**
      * 宽度缩放
      */
     private var scale = DEFAULT_SCALE
@@ -66,12 +72,12 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
     /**
      * 是否底部显示
      */
-    private var showFromBottom = DEFAULT_SHOW_FROM_BOTTOM
+    private var showFromBottom: Boolean = DEFAULT_SHOW_FROM_BOTTOM
 
     /**
      * 当Dialog为BottomSheet时，是否完全展开
      */
-    private var expandBottomSheet = DEFAULT_EXPAND_BOTTOM_SHEET
+    private var expandBottomSheet: Boolean = DEFAULT_EXPAND_BOTTOM_SHEET
 
     /**
      * 主题
@@ -83,68 +89,108 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      */
     private var animStyle: Int = 0
 
-    fun setRequestCode(value: Int) {
+    fun setRequestCode(value: Int): BaseDialogFragment {
         mRequestCode = value
         arguments?.putInt(ARG_REQUEST_CODE, value)
+        return this
     }
 
     /**
      * 背景灰度深浅
      */
-    fun setBgAlphaDimAmount(value: Float) {
+    fun setBgAlphaDimAmount(value: Float): BaseDialogFragment {
         bgAlphaDimAmount = value
         arguments?.putFloat(ARG_DIM_AMOUNT, value)
+        return this
+    }
+
+    /**
+     * 是否全屏
+     */
+    fun setFullscreen(value: Boolean): BaseDialogFragment {
+        fullScreen = value
+        arguments?.putBoolean(ARG_FULLSCREEN, value)
+        return this
     }
 
     /**
      * 宽度缩放
      */
-    fun setScale(value: Double) {
+    fun setScale(value: Double): BaseDialogFragment {
         scale = value
         arguments?.putDouble(ARG_SCALE, value)
+        return this
     }
 
     /**
      * 点击外部隐藏dialog，默认开启
      */
-    fun setCanceledOnTouchOutside(value: Boolean) {
+    fun setCanceledOnTouchOutside(value: Boolean): BaseDialogFragment {
         canceledOnTouchOutside = value
         arguments?.putBoolean(ARG_CANCELABLE_ON_TOUCH_OUTSIDE, value)
+        return this
     }
 
     /**
      * 是否底部显示
      */
-    fun setShowFromBottom(value: Boolean) {
+    fun setShowFromBottom(value: Boolean): BaseDialogFragment {
         showFromBottom = value
         arguments?.putBoolean(ARG_SHOW_FROM_BOTTOM, value)
+        return this
     }
 
     /**
      * 当Dialog为BottomSheet时，是否完全展开
      */
-    fun setExpandBottomSheet(value: Boolean) {
+    fun setExpandBottomSheet(value: Boolean): BaseDialogFragment {
         expandBottomSheet = value
         arguments?.putBoolean(ARG_EXPAND_BOTTOM_SHEET, value)
+        return this
     }
 
     /**
      * 主题
      */
-    fun setTheme(value: Int) {
+    fun setTheme(value: Int): BaseDialogFragment {
         mTheme = value
         arguments?.putInt(ARG_USE_THEME, value)
+        return this
     }
 
     /**
      * 动画
      */
-    fun setAnimStyle(value: Int) {
+    fun setAnimStyle(value: Int): BaseDialogFragment {
         animStyle = value
         arguments?.putInt(ARG_ANIM_STYLE, value)
+        return this
     }
 
-    protected lateinit var mContext: Context
+    /**
+     * 如果两个dialog的tag一致，则隐藏上一个dialog
+     *
+     * 报"IllegalStateException : Can not perform this action after onSaveInstanceState()"异常的时候使用此show
+     * @param manager FragmentManager
+     * @param tag String
+     */
+    @JvmOverloads
+    fun showAllowingStateLoss(
+        manager: FragmentManager?,
+        tag: String? = null,
+        dismissPreDialog: Boolean? = true
+    ): BaseDialogFragment {
+        val ft = manager?.beginTransaction()
+        //将之前的dialog隐藏
+        val targetFragment = manager?.findFragmentByTag(tag)
+        if (dismissPreDialog!! && targetFragment is BaseDialogFragment) {
+            ft?.remove(targetFragment)
+        }
+
+        ft?.add(this, tag)
+        ft?.commitAllowingStateLoss()
+        return this
+    }
 
     protected val cancelListeners: List<IDialogCancelListener>
         get() = getDialogListeners(IDialogCancelListener::class.java)
@@ -265,6 +311,7 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
                 ARG_SHOW_FROM_BOTTOM,
                 DEFAULT_SHOW_FROM_BOTTOM
             )
+            fullScreen = args.getBoolean(ARG_FULLSCREEN, DEFAULT_FULLSCREEN)
             expandBottomSheet = args.getBoolean(
                 ARG_EXPAND_BOTTOM_SHEET,
                 DEFAULT_EXPAND_BOTTOM_SHEET
@@ -295,13 +342,19 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
                 }
                 expandBottomSheet(dialog)
             }
-            //占用屏幕宽度一定比例
-            if (scale > 1) {
-                scale = 1.0
+            if (fullScreen) {
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT
+                lp.height = WindowManager.LayoutParams.MATCH_PARENT
+            } else {
+                //占用屏幕宽度一定比例
+                if (scale > 1) {
+                    scale = 1.0
+                }
+                lp.width = (getScreenWidth(mContext) * scale).toInt()
+                //设置dialog高度
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT
             }
-            lp.width = (getScreenWidth(mContext) * scale).toInt()
-            //设置dialog高度
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+
             //设置dialog进入、退出的动画
             if (animStyle != 0) {
                 window.setWindowAnimations(animStyle)
@@ -337,25 +390,6 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
         return dm.widthPixels
     }
 
-    /**
-     * 如果两个dialog的tag一致，则隐藏上一个dialog
-     *
-     * 报"IllegalStateException : Can not perform this action after onSaveInstanceState()"异常的时候使用此show
-     * @param manager FragmentManager
-     * @param tag String
-     */
-    fun showAllowingStateLoss(manager: FragmentManager, tag: String, dismissPreDialog: Boolean? = true) {
-        val ft = manager.beginTransaction()
-        //将之前的dialog隐藏
-        val targetFragment = manager.findFragmentByTag(tag)
-        if (dismissPreDialog!! && targetFragment is BaseDialogFragment) {
-            ft.remove(targetFragment)
-        }
-
-        ft.add(this, tag)
-        ft.commitAllowingStateLoss()
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
@@ -364,6 +398,7 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
     companion object {
 
         internal const val ARG_REQUEST_CODE = "request_code"
+        internal const val ARG_FULLSCREEN = "arg_fullscreen"
         internal const val ARG_SHOW_FROM_BOTTOM = "arg_show_from_bottom"
         internal const val ARG_EXPAND_BOTTOM_SHEET = "arg_expand_bottom_sheet"
         internal const val ARG_CANCELABLE_ON_TOUCH_OUTSIDE = "cancelable_oto"
@@ -381,5 +416,6 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
         internal const val DEFAULT_REQUEST_CODE = -42
         internal const val DEFAULT_SHOW_FROM_BOTTOM = false
         internal const val DEFAULT_EXPAND_BOTTOM_SHEET = true
+        internal const val DEFAULT_FULLSCREEN = false
     }
 }
