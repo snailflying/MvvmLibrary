@@ -4,8 +4,6 @@ import android.content.Context
 import android.media.AudioManager
 import androidx.annotation.IntDef
 import com.theone.framework.base.BaseApp
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.max
@@ -26,11 +24,11 @@ class AudioVolumeHelper private constructor(context: Context) {
     private var VOICE_STEP_100 = 2 //0-100的步进。
 
     @IntDef(TYPE_MUSIC, TYPE_ALARM, TYPE_RING)
-    @Retention(RetentionPolicy.SOURCE)
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class TYPE
 
     @IntDef(FLAG_SHOW_UI, FLAG_PLAY_SOUND, FLAG_NOTHING)
-    @Retention(RetentionPolicy.SOURCE)
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class FLAG
 
     fun getSystemMaxVolume(): Int = audioManager.getStreamMaxVolume(NOW_AUDIO_TYPE)

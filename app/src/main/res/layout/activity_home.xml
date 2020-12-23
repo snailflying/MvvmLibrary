@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_height="match_parent"
         tools:context=".home.ui.HomeActivity">
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="6dp"
             android:id="@+id/tvHello"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="Hello World!"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playSound"
+            android:padding="6dp"
+            android:text="播放声音"
+            />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playMedia"
+            android:padding="6dp"
+            android:text="播放Mediaplay"
+            />
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/releaseSound"
+            android:padding="6dp"
+            android:text="释放声音资源"
+            />
+</LinearLayout>

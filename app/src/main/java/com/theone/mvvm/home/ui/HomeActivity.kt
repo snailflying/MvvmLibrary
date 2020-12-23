@@ -5,23 +5,41 @@ import com.themone.core.util.LogUtil
 import com.theone.framework.base.BaseActivity
 import com.theone.framework.encrypt.AesRsaEncrypt
 import com.theone.framework.ext.clickWithTrigger
-import com.theone.mvvm.R
+import com.theone.framework.util.BeeHelper
+import com.theone.mvvm.databinding.ActivityHomeBinding
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : BaseActivity() {
 
+    lateinit var binding: ActivityHomeBinding
     val TAG = "HomeActivity"
-
+    private var beeAndVibrateHelper: BeeHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
-        tvHello.clickWithTrigger {
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        beeAndVibrateHelper = BeeHelper(this)
+        binding.tvHello.clickWithTrigger {
             tes1t()
         }
+        binding.playSound.setOnClickListener {
+            beeAndVibrateHelper?.playBeeSuccess()
+        }
+        binding.playMedia.setOnClickListener {
+            beeAndVibrateHelper?.playMediaSound()
+        }
+        binding.releaseSound.setOnClickListener {
+            beeAndVibrateHelper?.release()
+            beeAndVibrateHelper = BeeHelper(this)
+        }
         test()
+    }
+
+    override fun onDestroy() {
+        beeAndVibrateHelper?.release()
+        super.onDestroy()
     }
 
     fun test() {

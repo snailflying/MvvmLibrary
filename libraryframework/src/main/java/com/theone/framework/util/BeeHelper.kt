@@ -1,18 +1,8 @@
 package com.theone.framework.util
 
-/**
- * @Author zhiqiang
- * @Date 2019-06-22
- * @Email liuzhiqiang@theone.com
- * @Description
- */
-
-import android.annotation.SuppressLint
-import android.app.Service
 import android.content.Context
 import android.media.*
 import android.os.Build
-import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import androidx.annotation.RawRes
@@ -26,7 +16,7 @@ import java.io.IOException
  * @Date 2019-06-15
  * @Description 管理类(振动:[Vibrator]+提示音:[SoundPool],[MediaPlayer],[Ringtone])
  */
-class BeeAndVibrateUtils private constructor(context: Context) {
+class BeeHelper constructor(val context: Context) {
 
     /**
      * 声音播放，轻量，适合播放较短提示音。
@@ -39,64 +29,37 @@ class BeeAndVibrateUtils private constructor(context: Context) {
      */
     var mediaPlayer: MediaPlayer? = null
 
-    /**
-     * 一次振动
-     * @param context      Context实例
-     * @param milliseconds 震动时长 , 单位毫秒
-     */
-    @SuppressLint("MissingPermission")
-    fun vibrate(context: Context?, durationMill: Long = VIBRATE_DURATION) {
-        val vibrator = context?.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator?
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator?.vibrate(
-                VibrationEffect.createOneShot(
-                    durationMill,
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-            )
-        } else {
-            vibrator?.vibrate(durationMill)
-        }
-    }
-
-    /**
-     * 间歇式振动
-     * @param context  Context实例
-     * @param pattern  自定义震动模式 。数组中数字的含义依次是[静止时长，震动时长，静止时长，震动时长。。。]单位是毫秒
-     * @param isRepeat true-> 反复震动，false-> 只震动一次
-     */
-    fun vibrateWave(
-        context: Context?,
-        pattern: LongArray = longArrayOf(
-            VIBRATE_WAVE_DURATION,
-            VIBRATE_WAVE_DURATION,
-            VIBRATE_WAVE_DURATION,
-            VIBRATE_WAVE_DURATION
-        ),
-        isRepeat: Boolean = false
-    ) {
-        val vibrator = context?.getSystemService(Service.VIBRATOR_SERVICE) as Vibrator?
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator?.vibrate(VibrationEffect.createWaveform(pattern, if (isRepeat) 1 else -1))
-        } else {
-            vibrator?.vibrate(pattern, if (isRepeat) 1 else -1)
-        }
+    init {
+        initSoundPool(context)
     }
 
     /**
      * 播放成功声音
      * @param context Context
      */
-    fun playBeeSuccess(): SoundPool? {
-        return playSound(SOUND_SUCCESS)
+    fun playBeeSuccess(@RawRes resId: Int = R.raw.beep) {
+        //加载“成功”音效
+        if (SOUND_SUCCESS == SOUND_DEFAULT_ERROR) {
+            SOUND_SUCCESS = soundPool?.load(context, resId, 1) ?: SOUND_DEFAULT_ERROR
+            soundPool?.setOnLoadCompleteListener { soundPool, sampleId, status -> playSound(SOUND_SUCCESS) }
+        } else {
+            playSound(SOUND_SUCCESS)
+        }
     }
 
     /**
      * 播放错误声音
      * @param context Context
      */
-    fun playBeeError(): SoundPool? {
-        return playSound(SOUND_ERROR)
+    fun playBeeError(@RawRes resId: Int = R.raw.beep) {
+        //加载“失败”音效
+        if (SOUND_ERROR == SOUND_DEFAULT_ERROR) {
+            SOUND_ERROR = soundPool?.load(context, resId, 1) ?: SOUND_DEFAULT_ERROR
+            soundPool?.setOnLoadCompleteListener { soundPool, sampleId, status -> playSound(SOUND_ERROR) }
+        } else {
+            playSound(SOUND_ERROR)
+
+        }
     }
 
     private fun initSoundPool(context: Context?): SoundPool? {
@@ -113,10 +76,6 @@ class BeeAndVibrateUtils private constructor(context: Context) {
                 SoundPool(1, AudioManager.STREAM_SYSTEM, 5)
             }
         }
-        //加载“成功”音效
-        SOUND_SUCCESS = soundPool?.load(context, R.raw.beep, 1) ?: 1
-        //加载“失败”音效
-        SOUND_ERROR = soundPool?.load(context, R.raw.beep, 1) ?: 2
         return soundPool
     }
 
@@ -126,6 +85,7 @@ class BeeAndVibrateUtils private constructor(context: Context) {
      * @param number Int 音频的序号(load到SoundPool的顺序，从1开始)
      */
     private fun playSound(number: Int): SoundPool? {
+        mediaPlayer?.reset()
         soundPool?.play(
             number,
             BEEP_VOLUME,
@@ -155,26 +115,27 @@ class BeeAndVibrateUtils private constructor(context: Context) {
      * @param listener PlayerCompleteListener 允许为空
      */
     fun playMediaSound(
-        context: Context?, @RawRes id: Int,
+        @RawRes id: Int = R.raw.beep,
         listener: PlayerCompleteListener? = null
     ): MediaPlayer? {
         if (mediaPlayer == null) {
             mediaPlayer = MediaPlayer()
+            if (Build.VERSION.SDK_INT >= 21) {
+                val attributes = AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ALARM)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
+                mediaPlayer?.setAudioAttributes(attributes)
+            } else {
+                mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
+            }
         } else {
-            mediaPlayer?.release()
+            mediaPlayer?.stop()
             mediaPlayer?.reset()
         }
-        if (Build.VERSION.SDK_INT >= 21) {
-            val attributes = AudioAttributes.Builder()
-                .setUsage(AudioAttributes.USAGE_ALARM)
-                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                .build()
-            mediaPlayer?.setAudioAttributes(attributes)
-        } else {
-            mediaPlayer?.setAudioStreamType(AudioManager.STREAM_MUSIC)
-        }
+
         try {
-            context?.resources?.openRawResourceFd(id)?.use {
+            context.resources?.openRawResourceFd(id)?.use {
                 mediaPlayer?.setDataSource(
                     it.fileDescriptor,
                     it.startOffset, it.length
@@ -207,6 +168,8 @@ class BeeAndVibrateUtils private constructor(context: Context) {
     fun release() {
         mediaPlayer?.release()
         soundPool?.release()
+        SOUND_SUCCESS = SOUND_DEFAULT_ERROR
+        SOUND_ERROR = SOUND_DEFAULT_ERROR
     }
 
 
@@ -219,30 +182,12 @@ class BeeAndVibrateUtils private constructor(context: Context) {
         private const val TAG = "BeeAndVibrateUtils"
 
         private const val BEEP_VOLUME = 0.1F;
-        private const val VIBRATE_DURATION = 100L;
-        private const val VIBRATE_WAVE_DURATION = 130L;
 
-        private var SOUND_SUCCESS = 1;
-        private var SOUND_ERROR = 2;
+        private val SOUND_DEFAULT_ERROR = -1
+        private var SOUND_SUCCESS = SOUND_DEFAULT_ERROR;
+        private var SOUND_ERROR = SOUND_DEFAULT_ERROR;
 
-        @Volatile
-        private var instance: BeeAndVibrateUtils? = null
 
-        fun getInstance(context: Context): BeeAndVibrateUtils {
-            if (instance == null) {
-                synchronized(BeeAndVibrateUtils::class) {
-                    if (instance == null) {
-                        instance = BeeAndVibrateUtils(context)
-                    }
-                }
-            }
-            return instance!!
-        }
-
-    }
-
-    init {
-        initSoundPool(context)
     }
 
 }
