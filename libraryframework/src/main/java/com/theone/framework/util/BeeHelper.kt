@@ -181,7 +181,7 @@ class BeeHelper constructor(val context: Context) {
     companion object {
         private const val TAG = "BeeAndVibrateUtils"
 
-        private const val BEEP_VOLUME = 0.1F;
+        private const val BEEP_VOLUME = 1F;
 
         private val SOUND_DEFAULT_ERROR = -1
         private var SOUND_SUCCESS = SOUND_DEFAULT_ERROR;

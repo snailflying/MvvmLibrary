@@ -14,7 +14,7 @@ import android.os.Vibrator
  * @Date 2019-06-15
  * @Description 管理类(振动:[Vibrator]+提示音:[SoundPool],[MediaPlayer],[Ringtone])
  */
-class VibrateUtils private constructor(val context: Context) {
+class VibrateHelper private constructor(val context: Context) {
 
     /**
      * 一次振动
@@ -68,13 +68,13 @@ class VibrateUtils private constructor(val context: Context) {
 
 
         @Volatile
-        private var instance: VibrateUtils? = null
+        private var instance: VibrateHelper? = null
 
-        fun getInstance(context: Context): VibrateUtils {
+        fun getInstance(context: Context): VibrateHelper {
             if (instance == null) {
-                synchronized(VibrateUtils::class) {
+                synchronized(VibrateHelper::class) {
                     if (instance == null) {
-                        instance = VibrateUtils(context)
+                        instance = VibrateHelper(context)
                     }
                 }
             }
