@@ -2,7 +2,7 @@ package com.theone.framework.base
 
 import android.content.Context
 import com.themone.core.base.impl.CoreActivity
-import com.themone.core.util.LogUtil
+
 import com.theone.framework.util.I18NUtil
 
 /**
@@ -11,9 +11,10 @@ import com.theone.framework.util.I18NUtil
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-open class BaseActivity : CoreActivity(),IFrameworkActivity {
+open class BaseActivity : CoreActivity(), IFrameworkActivity {
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(I18NUtil.updateResource(newBase))
     }
+
 }

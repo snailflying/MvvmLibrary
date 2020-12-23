@@ -1,7 +1,7 @@
 package com.theone.framework.base
 
 import android.content.Context
-import android.util.Log
+
 import com.themone.core.base.IViewModel
 import com.themone.core.base.impl.CoreMvvmActivity
 import com.themone.core.util.LogUtil

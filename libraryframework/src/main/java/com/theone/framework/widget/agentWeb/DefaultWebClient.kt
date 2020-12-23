@@ -26,6 +26,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.text.TextUtils
 import android.view.View
@@ -157,13 +158,9 @@ class DefaultWebClient internal constructor(builder: Builder) : MiddlewareWebCli
                 }
                 val resolveInfo = lookupResolveInfo(url) ?: return false
                 val activityInfo = resolveInfo.activityInfo
-                LogUtil.e(
-                    TAG,
-                    "resolve package:" + resolveInfo.activityInfo.packageName + " app package:" + context!!.packageName
-                )
+                LogUtil.e(TAG, "resolve package:" + resolveInfo.activityInfo.packageName + " app package:" + context!!.packageName)
                 if (activityInfo != null && !TextUtils.isEmpty(activityInfo.packageName)
-                    && activityInfo.packageName == context!!.packageName
-                ) {
+                        && activityInfo.packageName == context!!.packageName) {
                     lookup(url)
                 } else true
             }
@@ -325,10 +322,9 @@ class DefaultWebClient internal constructor(builder: Builder) : MiddlewareWebCli
 
     private fun handleCommonLink(url: String): Boolean {
         if (url.startsWith(WebView.SCHEME_TEL)
-            || url.startsWith(SCHEME_SMS)
-            || url.startsWith(WebView.SCHEME_MAILTO)
-            || url.startsWith(WebView.SCHEME_GEO)
-        ) {
+                || url.startsWith(SCHEME_SMS)
+                || url.startsWith(WebView.SCHEME_MAILTO)
+                || url.startsWith(WebView.SCHEME_GEO)) {
             try {
                 var context: Context? = null
                 if (mWeakReference!!.get().also { context = it } == null) {
@@ -372,11 +368,9 @@ class DefaultWebClient internal constructor(builder: Builder) : MiddlewareWebCli
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
         if (request?.isForMainFrame == true && error?.errorCode != -1) {
-            onMainFrameError(
-                view,
-                error?.errorCode ?: 0, error?.description?.toString(),
-                request.url.toString()
-            )
+            onMainFrameError(view,
+                    error?.errorCode ?: 0, error?.description?.toString(),
+                    request.url.toString())
         }
         super.onReceivedError(view, request, error)
         LogUtil.i(TAG, "onReceivedError:" + error?.description + " code:" + error?.errorCode)
@@ -469,11 +463,7 @@ class DefaultWebClient internal constructor(builder: Builder) : MiddlewareWebCli
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    override fun onReceivedHttpError(
-        view: WebView?,
-        request: WebResourceRequest?,
-        errorResponse: WebResourceResponse?
-    ) {
+    override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
         super.onReceivedHttpError(view, request, errorResponse)
     }
 

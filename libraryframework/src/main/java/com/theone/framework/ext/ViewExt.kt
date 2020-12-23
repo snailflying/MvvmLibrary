@@ -7,6 +7,7 @@ import android.os.Build
 import android.view.View
 import android.view.ViewOutlineProvider
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.TextView
 
 /**
@@ -15,6 +16,13 @@ import android.widget.TextView
  * @Date 2019-06-19
  * @Description
  */
+
+/**
+ * 获取editText的字符串内容
+ */
+fun EditText.getTextString(): String? {
+    return editableText?.toString()?.trim()
+}
 
 /**
  * 隐藏键盘

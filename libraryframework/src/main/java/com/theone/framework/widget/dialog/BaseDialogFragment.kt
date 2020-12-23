@@ -40,9 +40,9 @@ import java.util.*
 
 /**
  * @Author zhiqiang
-
  * @Date 2019/2/16
  * @Description dialog的基类
+ * TODO:调用setArguments()时，请使用 val bundle = fragment.arguments?:Bundle()来获取Bundle,否则会影响setScale()等方法
  */
 open class BaseDialogFragment : AppCompatDialogFragment() {
     protected lateinit var mContext: Context
@@ -60,14 +60,10 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
     private var bgAlphaDimAmount: Float = DEFAULT_DIM_AMOUNT
 
     /**
-     * 是否全屏
-     */
-    private var fullScreen: Boolean = DEFAULT_FULLSCREEN
-
-    /**
      * 宽度缩放
      */
     private var scale = DEFAULT_SCALE
+    private var fullScreen: Boolean = DEFAULT_FULLSCREEN
 
     /**
      * 是否底部显示
@@ -91,25 +87,29 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
 
     fun setRequestCode(value: Int): BaseDialogFragment {
         mRequestCode = value
-        arguments?.putInt(ARG_REQUEST_CODE, value)
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putInt(ARG_REQUEST_CODE, value)
+            arguments = bundle
+        } else {
+            arguments?.putInt(ARG_REQUEST_CODE, value)
+        }
         return this
     }
+
 
     /**
      * 背景灰度深浅
      */
     fun setBgAlphaDimAmount(value: Float): BaseDialogFragment {
         bgAlphaDimAmount = value
-        arguments?.putFloat(ARG_DIM_AMOUNT, value)
-        return this
-    }
-
-    /**
-     * 是否全屏
-     */
-    fun setFullscreen(value: Boolean): BaseDialogFragment {
-        fullScreen = value
-        arguments?.putBoolean(ARG_FULLSCREEN, value)
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putFloat(ARG_DIM_AMOUNT, value)
+            arguments = bundle
+        } else {
+            arguments?.putFloat(ARG_DIM_AMOUNT, value)
+        }
         return this
     }
 
@@ -118,7 +118,13 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      */
     fun setScale(value: Double): BaseDialogFragment {
         scale = value
-        arguments?.putDouble(ARG_SCALE, value)
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putDouble(ARG_SCALE, value)
+            arguments = bundle
+        } else {
+            arguments?.putDouble(ARG_SCALE, value)
+        }
         return this
     }
 
@@ -127,7 +133,28 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      */
     fun setCanceledOnTouchOutside(value: Boolean): BaseDialogFragment {
         canceledOnTouchOutside = value
-        arguments?.putBoolean(ARG_CANCELABLE_ON_TOUCH_OUTSIDE, value)
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putBoolean(ARG_CANCELABLE_ON_TOUCH_OUTSIDE, value)
+            arguments = bundle
+        } else {
+            arguments?.putBoolean(ARG_CANCELABLE_ON_TOUCH_OUTSIDE, value)
+        }
+        return this
+    }
+
+    /**
+     * 是否全屏
+     */
+    fun setFullscreen(value: Boolean): BaseDialogFragment {
+        fullScreen = value
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putBoolean(ARG_FULLSCREEN, value)
+            arguments = bundle
+        } else {
+            arguments?.putBoolean(ARG_FULLSCREEN, value)
+        }
         return this
     }
 
@@ -136,7 +163,13 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      */
     fun setShowFromBottom(value: Boolean): BaseDialogFragment {
         showFromBottom = value
-        arguments?.putBoolean(ARG_SHOW_FROM_BOTTOM, value)
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putBoolean(ARG_SHOW_FROM_BOTTOM, value)
+            arguments = bundle
+        } else {
+            arguments?.putBoolean(ARG_SHOW_FROM_BOTTOM, value)
+        }
         return this
     }
 
@@ -145,7 +178,13 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      */
     fun setExpandBottomSheet(value: Boolean): BaseDialogFragment {
         expandBottomSheet = value
-        arguments?.putBoolean(ARG_EXPAND_BOTTOM_SHEET, value)
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putBoolean(ARG_EXPAND_BOTTOM_SHEET, value)
+            arguments = bundle
+        } else {
+            arguments?.putBoolean(ARG_EXPAND_BOTTOM_SHEET, value)
+        }
         return this
     }
 
@@ -154,7 +193,13 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      */
     fun setTheme(value: Int): BaseDialogFragment {
         mTheme = value
-        arguments?.putInt(ARG_USE_THEME, value)
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putInt(ARG_USE_THEME, value)
+            arguments = bundle
+        } else {
+            arguments?.putInt(ARG_ANIM_STYLE, value)
+        }
         return this
     }
 
@@ -163,7 +208,14 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      */
     fun setAnimStyle(value: Int): BaseDialogFragment {
         animStyle = value
-        arguments?.putInt(ARG_ANIM_STYLE, value)
+
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putInt(ARG_ANIM_STYLE, value)
+            arguments = bundle
+        } else {
+            arguments?.putInt(ARG_ANIM_STYLE, value)
+        }
         return this
     }
 
