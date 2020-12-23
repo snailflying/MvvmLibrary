@@ -63,6 +63,10 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      * 宽度缩放
      */
     private var scale = DEFAULT_SCALE
+
+    /**
+     * 是否全屏
+     */
     private var fullScreen: Boolean = DEFAULT_FULLSCREEN
 
     /**
