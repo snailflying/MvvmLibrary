@@ -32,7 +32,7 @@ class HomeActivity : BaseActivity() {
         }
         binding.releaseSound.setOnClickListener {
             beeAndVibrateHelper?.release()
-            beeAndVibrateHelper = BeeHelper(this)
+            beeAndVibrateHelper = BeeHelper(this,false)
         }
         test()
     }
