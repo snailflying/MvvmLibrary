@@ -21,6 +21,6 @@ data class ApiResponse<T>(
 ) : Serializable {
 
     val isSuccess: Boolean
-        get() = statusCode == 200 && null != data
+        get() = statusCode == 200
 
 }

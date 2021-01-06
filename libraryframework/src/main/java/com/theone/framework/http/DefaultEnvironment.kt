@@ -74,17 +74,18 @@ open class DefaultEnvironment : IAppEnvironment {
     override val interceptors: MutableList<Interceptor>
         get() {
             val interceptors = ArrayList<Interceptor>()
-            if (LogUtil.isDebug) {
-                val logging = HttpLoggingInterceptor()
-                logging.level = HttpLoggingInterceptor.Level.BODY
-                interceptors.add(logging)
-            }
             return interceptors
         }
 
     override val networkInterceptors: MutableList<Interceptor>
         get() {
-            return ArrayList()
+            val interceptors = ArrayList<Interceptor>()
+           /* if (LogUtil.isDebug) {
+                val logging = HttpLoggingInterceptor()
+                logging.level = HttpLoggingInterceptor.Level.BODY
+                interceptors.add(logging)
+            }*/
+            return interceptors
         }
 
     override val cache: Cache

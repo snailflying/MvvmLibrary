@@ -2,7 +2,6 @@ package com.themone.core.base.impl
 
 import android.content.Context
 import android.os.Bundle
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import com.themone.core.util.LogUtil
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -120,15 +119,15 @@ open class CoreFragment : Fragment() {
 
     }
 
-    fun onFragmentFirstVisible() {
+    open fun onFragmentFirstVisible() {
         LogUtil.i(TAG, this.javaClass.simpleName + "  对用户第一次可见")
     }
 
-    fun onFragmentResume() {
+    open fun onFragmentResume() {
         LogUtil.i(TAG, this.javaClass.simpleName + "  对用户可见")
     }
 
-    fun onFragmentPause() {
+    open fun onFragmentPause() {
         LogUtil.i(TAG, this.javaClass.simpleName + "  对用户不可见")
     }
 

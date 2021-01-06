@@ -17,6 +17,7 @@ open class BaseApp : Application() {
         super.onCreate()
         application = this
         Router.registerMatcher(AppMatcher())
+        ToastUtil.init(this)
     }
 
 

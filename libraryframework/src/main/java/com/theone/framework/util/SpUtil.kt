@@ -22,6 +22,7 @@ object SpUtil {
     const val SETTING_INFO = "setting_info"
 
     @JvmStatic
+    @JvmOverloads
     fun getSp(
         context: Context = BaseApp.application,
         spName: String = SETTING_INFO

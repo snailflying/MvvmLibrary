@@ -42,19 +42,15 @@ android {
             versionNameSuffix ".qa"
             resValue "string", "app_name", "MVVM-QA"
             buildConfigField 'String', 'PRODUCT_FLAVORS', '"qa"'
-        }
-        dev {
-            dimension "mvvm"
-            //使用的第三方ID和qa包名的相同
-            applicationIdSuffix ".qa"
-            versionNameSuffix ".dev"
-            resValue "string", "app_name", "MVVM_DEV"
-            buildConfigField 'String', 'PRODUCT_FLAVORS', '"dev"'
+            // App and library's flavor have the same name.
+            matchingFallbacks = ["qa"]
         }
         online {
             dimension "mvvm"
             resValue "string", "app_name", "MVVM"
             buildConfigField 'String', 'PRODUCT_FLAVORS', '"online"'
+            // App and library's flavor have the same name.
+            matchingFallbacks = ["online"]
         }
     }
 

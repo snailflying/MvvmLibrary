@@ -65,6 +65,11 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
     private var scale = DEFAULT_SCALE
 
     /**
+     * 高度缩放
+     */
+    private var scaleHeight: Double = DEFAULT_SCALE_HEIGHT
+
+    /**
      * 是否全屏
      */
     private var fullScreen: Boolean = DEFAULT_FULLSCREEN
@@ -128,6 +133,21 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
             arguments = bundle
         } else {
             arguments?.putDouble(ARG_SCALE, value)
+        }
+        return this
+    }
+
+    /**
+     * 宽度缩放
+     */
+    fun setScaleHeight(value: Double): BaseDialogFragment {
+        scaleHeight = value
+        if (arguments == null) {
+            val bundle = Bundle()
+            bundle.putDouble(ARG_SCALE_HEIGHT, value)
+            arguments = bundle
+        } else {
+            arguments?.putDouble(ARG_SCALE_HEIGHT, value)
         }
         return this
     }
@@ -233,13 +253,13 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
     @JvmOverloads
     fun showAllowingStateLoss(
         manager: FragmentManager?,
-        tag: String? = null,
-        dismissPreDialog: Boolean? = true
+        tag: String? = this.javaClass.name,
+        dismissPreDialog: Boolean = true
     ): BaseDialogFragment {
         val ft = manager?.beginTransaction()
         //将之前的dialog隐藏
         val targetFragment = manager?.findFragmentByTag(tag)
-        if (dismissPreDialog!! && targetFragment is BaseDialogFragment) {
+        if (dismissPreDialog && targetFragment is BaseDialogFragment) {
             ft?.remove(targetFragment)
         }
 
@@ -374,6 +394,7 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
             )
             bgAlphaDimAmount = args.getFloat(ARG_DIM_AMOUNT, DEFAULT_DIM_AMOUNT)
             scale = args.getDouble(ARG_SCALE, DEFAULT_SCALE)
+            scaleHeight = args.getDouble(ARG_SCALE_HEIGHT, DEFAULT_SCALE_HEIGHT)
             animStyle = args.getInt(ARG_ANIM_STYLE)
             val defaultTheme = if (theme == 0) -1 else theme
             mTheme = args.getInt(ARG_USE_THEME, R.style.Dialog)
@@ -408,7 +429,15 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
                 }
                 lp.width = (getScreenWidth(mContext) * scale).toInt()
                 //设置dialog高度
-                lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+                if (scaleHeight > 1) {
+                    scaleHeight = 1.0
+                }
+                if (scaleHeight == DEFAULT_SCALE_HEIGHT) {
+                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT
+                } else {
+                    lp.height = (getScreenHeight(mContext) * scaleHeight).toInt()
+                }
+
             }
 
             //设置dialog进入、退出的动画
@@ -446,6 +475,11 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
         return dm.widthPixels
     }
 
+    private fun getScreenHeight(context: Context): Int {
+        val dm = context.resources.displayMetrics
+        return dm.heightPixels
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
@@ -462,12 +496,14 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
         internal const val ARG_DIM_AMOUNT = "arg_dim_amount"
         internal const val ARG_ANIM_STYLE = "arg_anim_style"
         internal const val ARG_SCALE = "arg_scale"
+        internal const val ARG_SCALE_HEIGHT = "arg_scale_height"
 
         /**
          * 默认值
          */
         internal const val DEFAULT_DIM_AMOUNT = 0.5f
         internal const val DEFAULT_SCALE = 0.75
+        internal const val DEFAULT_SCALE_HEIGHT: Double = (-1).toDouble()
         internal const val DEFAULT_CANCELABLE_ON_TOUCH_OUTSIDE = true
         internal const val DEFAULT_REQUEST_CODE = -42
         internal const val DEFAULT_SHOW_FROM_BOTTOM = false
