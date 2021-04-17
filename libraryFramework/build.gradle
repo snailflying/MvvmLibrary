@@ -23,13 +23,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    flavorDimensions "eye"
+    flavorDimensions "mvvm"
     productFlavors {
         qa {
-            dimension "eye"
+            dimension "mvvm"
         }
         online {
-            dimension "eye"
+            dimension "mvvm"
         }
     }
     compileOptions {
@@ -76,6 +76,7 @@ dependencies {
     api "com.github.bumptech.glide:okhttp3-integration:${rootProject.ext.glide}"
     //高斯模糊
     api "jp.wasabeef:glide-transformations:${rootProject.ext.glide_transformations}"
+    api "com.contrarywind:Android-PickerView:${rootProject.ext.picker_view}"
 
     implementation project(":libraryCore")
 

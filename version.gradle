@@ -55,13 +55,13 @@ ext {
     rxdownload = "1.0.9"
 
     //react-native
-    react_native = "0.59.9"
+    picker_view = "4.1.9"
 }
 
 
 def addRepos(RepositoryHandler handler) {
     //阿里云nexus镜像
-    handler.maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    handler.maven { url 'https://maven.aliyun.com/repository/public' }
     handler.google()
     handler.jcenter()
     handler.mavenCentral()

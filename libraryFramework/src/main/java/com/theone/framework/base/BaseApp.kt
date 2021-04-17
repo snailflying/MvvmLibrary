@@ -4,6 +4,7 @@ import android.app.Application
 import com.chenenyu.router.Router
 import com.theone.framework.BuildConfig
 import com.theone.framework.router.AppMatcher
+import com.theone.framework.widget.toast.ToastUtil
 import kotlin.properties.Delegates
 
 /**

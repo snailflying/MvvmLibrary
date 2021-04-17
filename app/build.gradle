@@ -74,7 +74,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':libraryCore')
-    implementation project(':libraryframework')
+    implementation project(':libraryFramework')
 
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_stdlib_jdk7}"

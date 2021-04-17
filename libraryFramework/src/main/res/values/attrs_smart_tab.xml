@@ -21,20 +21,7 @@
             <enum name="alter" value="0" />
             <enum name="gradient" value="1" />
         </attr>
-        <!--设置选中与非选中文字大小【选中】，会强制覆盖layout内大小-->
-        <attr name="stl_titleSelectorTextSize" format="dimension" />
-        <!--设置选中与非选中文字大小【普通】，会强制覆盖layout内大小-->
-        <attr name="stl_titleNormalTextSize" format="dimension" />
-        <!--设置选中与非选中文字粗细【选中】，会强制覆盖layout内大小-->
-        <attr name="stl_titleSelectorTextStyle" format="enum">
-            <enum name="normal" value="0" />
-            <enum name="bold" value="1" />
-        </attr>
-        <!--设置选中与非选中文字粗细【普通】，会强制覆盖layout内大小-->
-        <attr name="stl_titleNormalTextStyle" format="enum">
-            <enum name="normal" value="0" />
-            <enum name="bold" value="1" />
-        </attr>
+
 
         <attr name="stl_indicatorWidth" format="dimension">
             <enum name="auto" value="-1" />

@@ -61,19 +61,7 @@ class SmartTabStrip(context: Context, attrs: AttributeSet?) : LinearLayout(conte
     private var indicationInterpolator: SmartTabIndicationInterpolator
     private var customTabColorizer: SmartTabLayout.TabColorizer? = null
     private val indicatorStyle: Int
-    private var textColors: IntArray? = null
 
-    /**
-     * 选中标题文字大小
-     */
-    private val titleSelectorSize: Int
-
-    /**
-     * 普通标题文字大小
-     */
-    private val titleNormalSize: Int
-    private val titleNormalTextStyle: Int
-    private val titleSelectorTextStyle: Int
     private val titleImageViewLoop: Boolean
     private val titleImageViewFileName: String?
     private val titleImageViewImageAssetsFolder: String?
@@ -96,7 +84,6 @@ class SmartTabStrip(context: Context, attrs: AttributeSet?) : LinearLayout(conte
 
     fun setTabTextColorBothIndicatorColor(colors: IntArray, indicatorColors: IntArray) {
         customTabColorizer = null
-        textColors = colors
         defaultTabColorizer.indicatorColors = indicatorColors
         invalidate()
     }
@@ -132,9 +119,9 @@ class SmartTabStrip(context: Context, attrs: AttributeSet?) : LinearLayout(conte
         }
     }
 
-    fun setTitleTextStyle(view: View?, selected: Boolean) {
+    /*fun setTitleTextStyle(view: View?, selected: Boolean) {
         if (view is TextView) {
-            if (titleSelectorSize != 0 && titleNormalSize != 0) {
+           *//* if (titleSelectorSize != 0 && titleNormalSize != 0) {
                 view.setTextSize(
                     TypedValue.COMPLEX_UNIT_PX,
                     if (selected) titleSelectorSize.toFloat() else titleNormalSize.toFloat()
@@ -142,12 +129,12 @@ class SmartTabStrip(context: Context, attrs: AttributeSet?) : LinearLayout(conte
             }
             if (titleSelectorTextStyle == 1) {
                 view.paint.isFakeBoldText = if (selected) titleSelectorTextStyle == 1 else titleNormalTextStyle == 1
-            }
+            }*//*
             textColors?.let {
                 view.setTextColor(if (selected) it[0] else it[1])
             }
         }
-    }
+    }*/
 
     private fun drawDecoration(canvas: Canvas) {
         if (titleImageViewId != View.NO_ID) {

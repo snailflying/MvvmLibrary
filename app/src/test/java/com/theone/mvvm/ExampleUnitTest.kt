@@ -1,8 +1,9 @@
 package com.theone.mvvm
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
+import java.util.*
+import java.util.regex.Pattern
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -12,6 +13,12 @@ import org.junit.Assert.*
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+        val url: String = "https://www.lalala.com/acs/v1/ac_shows/13liu3456789/get_encrypt?key=vall"
+        val pattern = Pattern.compile(url)
+        val matcher = pattern.matcher(".*acs/v1/ac_shows/(.*)/get_encrypt.*")
+        matcher.find()
+        val showId = matcher.group(1)
+        assertEquals(showId, "13liu3456789")
+
     }
 }

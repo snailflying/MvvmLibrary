@@ -327,7 +327,7 @@ class SmartTabLayout<VH : SmartTabAdapter.Holder, T : SmartTabAdapter<VH>> @JvmO
         } else {
             tabView
         }
-        tabStrip.setTitleTextStyle(customText, isSelected)
+//        tabStrip.setTitleTextStyle(customText, isSelected)
         //自定义 View
 /*        val customImg: ImageView
         if (tabViewImageViewId != View.NO_ID) {
