@@ -7,10 +7,14 @@ import com.theone.framework.base.BaseApp
 /**
  * @Author zhiqiang
  * @Date 2019-06-27
- * @Email liuzhiqiang@moretickets.com
  * @Description
  */
-class App : BaseApp() {
+class App : Application(), BaseApp {
+    override fun onCreate() {
+        super.onCreate()
+        initApplication(this)
+    }
+
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)

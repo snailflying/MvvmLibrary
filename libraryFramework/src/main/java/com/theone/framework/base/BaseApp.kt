@@ -12,19 +12,21 @@ import kotlin.properties.Delegates
  * @date 2019-06-05
  * @desc
  */
-open class BaseApp : Application() {
+interface BaseApp {
 
-    override fun onCreate() {
-        super.onCreate()
-        application = this
+
+    /**
+     * 初始化,必须在自定义Application类的onCreate内第一个调用
+     */
+    fun initApplication(application: Application) {
+        Companion.application = application
         Router.registerMatcher(AppMatcher())
-        ToastUtil.init(this)
+        ToastUtil.init(application)
     }
-
 
     companion object {
 
-        var application: BaseApp by Delegates.notNull()
+        var application: Application by Delegates.notNull()
             private set
 
         fun isDebug(): Boolean {

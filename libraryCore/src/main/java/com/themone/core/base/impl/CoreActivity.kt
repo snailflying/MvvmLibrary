@@ -1,7 +1,6 @@
 package com.themone.core.base.impl
 
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -59,7 +58,7 @@ open class CoreActivity : AppCompatActivity() {
      * @return Boolean
      */
     open fun isFitsSystemWindows(): Boolean {
-        return true
+        return false
     }
 
     /**

@@ -80,11 +80,11 @@ open class DefaultEnvironment : IAppEnvironment {
     override val networkInterceptors: MutableList<Interceptor>
         get() {
             val interceptors = ArrayList<Interceptor>()
-           /* if (LogUtil.isDebug) {
+            if (LogUtil.isDebug) {
                 val logging = HttpLoggingInterceptor()
                 logging.level = HttpLoggingInterceptor.Level.BODY
                 interceptors.add(logging)
-            }*/
+            }
             return interceptors
         }
 

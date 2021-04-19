@@ -20,6 +20,7 @@ object SpUtil {
      * 手机设置信息 相关sp
      */
     const val SETTING_INFO = "setting_info"
+    const val SP_LOGIN_COOKIE: String = "login_cookie"
 
     @JvmStatic
     @JvmOverloads

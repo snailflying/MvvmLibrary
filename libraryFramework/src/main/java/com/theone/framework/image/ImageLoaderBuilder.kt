@@ -46,7 +46,7 @@ class ImageLoaderBuilder {
         return this
     }
 
-    fun load(drawable: Drawable): ImageLoaderBuilder {
+    fun load(drawable: Drawable?): ImageLoaderBuilder {
         glideBuilder = glideManager.load(drawable)
         return this
     }

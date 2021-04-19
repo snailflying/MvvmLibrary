@@ -30,14 +30,14 @@ fun dp2px(dipValue: Int): Int {
     return (dipValue * scale + 0.5f).toInt()
 }
 
-fun getCompatDrawable(@DrawableRes resId: Int, context: Context? = BaseApp.application): Drawable? {
-    return if (null == context || context.resources == null) {
+fun getCompatDrawable(@DrawableRes resId: Int?, context: Context? = BaseApp.application): Drawable? {
+    return if (null == context || resId == null || context.resources == null) {
         ColorDrawable()
     } else ContextCompat.getDrawable(context, resId)
 }
 
-fun getDrawable(@DrawableRes resId: Int, context: Context? = BaseApp.application): Drawable? {
-    return if (null == context || context.resources == null) {
+fun getDrawable(@DrawableRes resId: Int?, context: Context? = BaseApp.application): Drawable? {
+    return if (null == context || resId == null || context.resources == null) {
         ColorDrawable()
     } else ContextCompat.getDrawable(context, resId)
 }
@@ -46,8 +46,8 @@ fun getDrawable(@DrawableRes resId: Int, context: Context? = BaseApp.application
 /**
  * get the color by id
  */
-fun getCompatColor(@ColorRes resId: Int, context: Context? = BaseApp.application): Int {
-    return if (null == context || context.resources == null) {
+fun getCompatColor(@ColorRes resId: Int?, context: Context? = BaseApp.application): Int {
+    return if (null == context || resId == null || context.resources == null) {
         Color.TRANSPARENT
     } else ContextCompat.getColor(context, resId)
 }
@@ -55,8 +55,8 @@ fun getCompatColor(@ColorRes resId: Int, context: Context? = BaseApp.application
 /**
  * get the color by id
  */
-fun getColor(@ColorRes resId: Int, context: Context? = BaseApp.application): Int {
-    return if (null == context || context.resources == null) {
+fun getColor(@ColorRes resId: Int?, context: Context? = BaseApp.application): Int {
+    return if (null == context || resId == null || context.resources == null) {
         Color.TRANSPARENT
     } else ContextCompat.getColor(context, resId)
 }
@@ -64,8 +64,8 @@ fun getColor(@ColorRes resId: Int, context: Context? = BaseApp.application): Int
 /**
  * 获取dimen的数值(没有转px的原始值)
  */
-fun getDimension(@DimenRes resId: Int, context: Context? = BaseApp.application): Float {
-    return if (null == context || context.resources == null) {
+fun getDimension(@DimenRes resId: Int?, context: Context? = BaseApp.application): Float {
+    return if (null == context || resId == null || context.resources == null) {
         0f
     } else context.resources.getDimension(resId)
 }
@@ -73,8 +73,8 @@ fun getDimension(@DimenRes resId: Int, context: Context? = BaseApp.application):
 /**
  * 获取dimen转成px的数值
  */
-fun getDimensionPixelSize(@DimenRes resId: Int, context: Context? = BaseApp.application): Int {
-    return if (null == context || context.resources == null) {
+fun getDimensionPixelSize(@DimenRes resId: Int?, context: Context? = BaseApp.application): Int {
+    return if (null == context || resId == null || context.resources == null) {
         0
     } else context.resources.getDimensionPixelSize(resId)
 }
@@ -82,8 +82,8 @@ fun getDimensionPixelSize(@DimenRes resId: Int, context: Context? = BaseApp.appl
 /**
  * get the String by id
  */
-fun getString(@StringRes resId: Int, context: Context? = BaseApp.application): String {
-    return if (null == context || context.resources == null) {
+fun getString(@StringRes resId: Int?, context: Context? = BaseApp.application): String {
+    return if (null == context || resId == null || context.resources == null) {
         ""
     } else context.getString(resId)
 }
