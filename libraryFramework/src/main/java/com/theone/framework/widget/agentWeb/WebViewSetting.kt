@@ -80,7 +80,7 @@ object WebViewSetting {
         //缓存文件最大值
         webSettings.setAppCacheMaxSize(1024 * 1024 * 8.toLong())
     }
-    private fun generaWebViewClient(context: Context?, header: MiddlewareWebClientBase?): WebViewClient? {
+    private fun generaWebViewClient(context: Context?, header: MiddlewareWebClientBase?): WebViewClient {
         val mDefaultWebClient: DefaultWebClient = DefaultWebClient
             .createBuilder()
             .setActivity(context)

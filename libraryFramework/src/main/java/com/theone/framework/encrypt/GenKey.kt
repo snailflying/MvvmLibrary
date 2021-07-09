@@ -46,7 +46,7 @@ object GenKey {
                 }
                 strResult = strHexString.toString()
             } catch (e: NoSuchAlgorithmException) {
-                Log.e("Exception", e.message)
+                Log.e("Exception", e.message?:"")
             }
 
         }

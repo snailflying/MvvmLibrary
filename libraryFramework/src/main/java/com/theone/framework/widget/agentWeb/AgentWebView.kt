@@ -20,7 +20,7 @@ import java.util.*
  * @Date 2020/11/15
  * @Description
  */
-open class AgentWebView @JvmOverloads constructor(context: Context?, attrs: AttributeSet? = null) :
+open class AgentWebView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) :
     WebView(context, attrs) {
     private var mOnScrollChangeListener: OnScrollListener? = null
 
@@ -40,7 +40,7 @@ open class AgentWebView @JvmOverloads constructor(context: Context?, attrs: Attr
      * Android 4.2.2及以上版本的 addJavascriptInterface 方法已经解决了安全问题，如果不使用“网页能将JS函数传到Java层”功能，不建议使用该类，毕竟系统的JS注入效率才是最高的；
      */
     @SuppressLint("JavascriptInterface", "AddJavascriptInterface")
-    override fun addJavascriptInterface(interfaceObj: Any?, interfaceName: String) {
+    override fun addJavascriptInterface(interfaceObj: Any, interfaceName: String) {
         interfaceObj ?: return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             super.addJavascriptInterface(interfaceObj, interfaceName)

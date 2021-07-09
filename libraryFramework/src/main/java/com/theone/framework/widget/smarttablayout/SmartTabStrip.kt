@@ -461,10 +461,6 @@ class SmartTabStrip(context: Context, attrs: AttributeSet?) : LinearLayout(conte
             R.styleable.stl_SmartTabLayout_stl_drawDecorationAfterTab, drawDecorationAfterTab
         )
         indicatorStyle = a.getInt(R.styleable.stl_SmartTabLayout_stl_indicatorStyle, DEFAULT_INDICATOR_STYLE)
-        titleSelectorSize = a.getDimensionPixelSize(R.styleable.stl_SmartTabLayout_stl_titleSelectorTextSize, 0)
-        titleNormalSize = a.getDimensionPixelSize(R.styleable.stl_SmartTabLayout_stl_titleNormalTextSize, 0)
-        titleNormalTextStyle = a.getInt(R.styleable.stl_SmartTabLayout_stl_titleNormalTextStyle, 0)
-        titleSelectorTextStyle = a.getInt(R.styleable.stl_SmartTabLayout_stl_titleSelectorTextStyle, 0)
         titleImageViewLoop = a.getBoolean(
             R.styleable.stl_SmartTabLayout_stl_customTabImageViewLoop, DEFAULT_IMAGEVIEW_LOOP
         )

@@ -10,7 +10,7 @@
 ext {
 
     android = [
-            compileSdkVersion: 29,
+            compileSdkVersion: 30,
             minSdkVersion    : 16,
             targetSdkVersion : 29,
             versionCode      : 1,
@@ -56,6 +56,7 @@ ext {
 
     //react-native
     picker_view = "4.1.9"
+    eventbus = "3.2.0"
 }
 
 
@@ -63,12 +64,9 @@ def addRepos(RepositoryHandler handler) {
     //阿里云nexus镜像
     handler.maven { url 'https://maven.aliyun.com/repository/public' }
     handler.google()
-    handler.jcenter()
     handler.mavenCentral()
     handler.maven { url "https://jitpack.io" }
     handler.maven { url "$rootDir/repo" }
-    //临时bintray库
-    handler.maven { url "https://dl.bintray.com/bravoon/maven/" }
 }
 
 ext.addRepos = this.&addRepos
