@@ -13,12 +13,14 @@ import com.themone.core.util.LogUtil
  * @desc
  */
 abstract class CoreViewModel<M : IModel> : ViewModel(), IViewModel {
+    protected val model: M by lazy { onCreateModel() }
+
     /**
      * 初始化 model
      *
      * @return model
      */
-    protected abstract var model: M
+    protected abstract fun onCreateModel(): M
 
     @MainThread
     override fun onResume(owner: LifecycleOwner) {
