@@ -4,6 +4,7 @@ import com.themone.core.base.IModel
 import com.themone.core.base.impl.CoreViewModel
 import com.theone.framework.http.ApiResponse
 import io.reactivex.rxjava3.core.Observer
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
 /**
@@ -11,7 +12,12 @@ import io.reactivex.rxjava3.disposables.Disposable
  * @Date 2019-08-02
  * @Description
  */
-abstract class BaseViewModel<M : IModel>: CoreViewModel<M>(),IFrameworkViewModel {
+abstract class BaseViewModel<M : IModel> : CoreViewModel<M>(), IBaseViewModel {
+    override val compositeDisposable: CompositeDisposable = CompositeDisposable()
+    override fun onCleared() {
+        compositeDisposable.clear()
+        super.onCleared()
+    }
 
     protected abstract inner class BaseObserver<T> : Observer<ApiResponse<T>> {
         override fun onSubscribe(d: Disposable) {

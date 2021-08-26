@@ -8,10 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import androidx.core.view.marginBottom
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
 import com.themone.core.util.StatusBarUtil.compat
 import com.themone.core.util.StatusBarUtil.setFitsSystemWindows
 
@@ -145,7 +141,7 @@ object StatusBarUtil {
      * 给具体view额外设置一个状态栏高度的 margin
      * 跟[setFitsSystemWindows]互斥
      */
-    fun addStatusBarHeightTopMarginForView(offsetView: View?) {
+    /*fun addStatusBarHeightTopMarginForView(offsetView: View?) {
         offsetView ?: return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             val layoutParams = offsetView.layoutParams as ViewGroup.MarginLayoutParams
@@ -156,7 +152,7 @@ object StatusBarUtil {
                 offsetView.marginBottom
             )
         }
-    }
+    }*/
 
     /**
      * 设置底部导航栏是否可见

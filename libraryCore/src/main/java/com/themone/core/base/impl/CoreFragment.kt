@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.themone.core.util.LogUtil
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * @author zhiqiang
@@ -21,8 +20,6 @@ open class CoreFragment : Fragment() {
     private var isFirstVisible = true
     private var isViewCreated = false
     private var isSupportVisible = false
-
-    protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private val isParentInvisible: Boolean
         get() {
@@ -129,11 +126,6 @@ open class CoreFragment : Fragment() {
 
     open fun onFragmentPause() {
         LogUtil.i(TAG, this.javaClass.simpleName + "  对用户不可见")
-    }
-
-    override fun onDestroy() {
-        compositeDisposable.clear()
-        super.onDestroy()
     }
 
     override fun onDestroyView() {

@@ -46,12 +46,9 @@ dependencies {
     testImplementation "androidx.test:runner:1.3.0"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_stdlib_jdk7}"
-    implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompat}"
-    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycle_extensions}"
-    implementation "androidx.palette:palette-ktx:${rootProject.ext.palette}"
-    implementation "androidx.core:core-ktx:${rootProject.ext.core_ktx}"
-
-    implementation "io.reactivex.rxjava3:rxjava:${rootProject.ext.rxjava}"
+    compileOnly "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_stdlib_jdk7}"
+    compileOnly "androidx.appcompat:appcompat:${rootProject.ext.appcompat}"
+    compileOnly "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycle_extensions}"
+    compileOnly "androidx.core:core-ktx:${rootProject.ext.core_ktx}"
 
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import com.themone.core.base.impl.CoreActivity
 
 import com.theone.framework.util.I18NUtil
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * @Author zhiqiang
@@ -11,10 +12,15 @@ import com.theone.framework.util.I18NUtil
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-open class BaseActivity : CoreActivity(), IFrameworkActivity {
+open class BaseActivity : CoreActivity(), IBaseActivity {
+    override val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(I18NUtil.updateResource(newBase))
     }
 
+    override fun onDestroy() {
+        compositeDisposable.clear()
+        super.onDestroy()
+    }
 }

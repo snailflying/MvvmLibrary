@@ -59,6 +59,7 @@ dependencies {
 
     //google
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompat}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycle_extensions}"
     //bottomsheet
     implementation "com.google.android.material:material:${rootProject.ext.material}"
 

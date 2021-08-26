@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.themone.core.util.StatusBarUtil
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * @author zhiqiang
@@ -13,8 +12,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
  * @desc 简单 Activity，无业务逻辑可继承此类
  */
 open class CoreActivity : AppCompatActivity() {
-
-    protected val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,11 +41,6 @@ open class CoreActivity : AppCompatActivity() {
         if (isFitsSystemWindows()) {
             StatusBarUtil.setFitsSystemWindows(this)
         }
-    }
-
-    override fun onDestroy() {
-        compositeDisposable.clear()
-        super.onDestroy()
     }
 
     /**
