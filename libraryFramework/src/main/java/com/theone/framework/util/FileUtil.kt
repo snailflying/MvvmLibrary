@@ -1,8 +1,10 @@
 package com.theone.framework.util
 
 import android.content.Context
+import java.io.ByteArrayOutputStream
 
 import java.io.File
+import java.io.InputStream
 
 /**
  * @Author zhiqiang
@@ -78,4 +80,15 @@ object FileUtil {
         return cacheDirectory
     }
     //获取文件夹目录 [end]
+
+    fun inputStreamToString(inputStream: InputStream): String {
+        val result = ByteArrayOutputStream()
+        val buffer = ByteArray(1024)
+        var length: Int
+        while (inputStream.read(buffer).also { length = it } != -1) {
+            result.write(buffer, 0, length)
+        }
+        return result.toString("UTF-8")
+    }
+
 }

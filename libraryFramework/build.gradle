@@ -78,7 +78,8 @@ dependencies {
     //高斯模糊
     api "jp.wasabeef:glide-transformations:${rootProject.ext.glide_transformations}"
     api "com.contrarywind:Android-PickerView:${rootProject.ext.picker_view}"
-
+    //键值对存储
+    api 'com.tencent:mmkv-static:1.2.7'
     implementation project(":libraryCore")
 
 }

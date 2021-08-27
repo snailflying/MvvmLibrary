@@ -4,6 +4,7 @@ import android.app.Application
 import com.chenenyu.router.Router
 import com.theone.framework.BuildConfig
 import com.theone.framework.router.AppMatcher
+import com.theone.framework.util.SpUtil
 import com.theone.framework.widget.toast.ToastUtils
 import kotlin.properties.Delegates
 
@@ -20,6 +21,7 @@ interface BaseApp {
      */
     fun initApplication(application: Application) {
         Companion.application = application
+        SpUtil.init(application)
         Router.registerMatcher(AppMatcher())
         ToastUtils.init(application)
     }

@@ -14,12 +14,22 @@ import java.io.Serializable
  * pagination : {"count":9,"offset":0,"length":20,"sortingConditions":[],"total":9,"pageNo":1,"pageSize":20}
  * data : {}
  */
-data class ApiResponse<T>(
-    var data: T?,
-    var statusCode: Int,
-    var message: String
-) : Serializable {
+open class ApiResponse<T> : Serializable {
+    constructor()
+    constructor(data: T?, statusCode: Int, message: String?) {
+        this.data = data
+        this.statusCode = statusCode
+        this.message = message
+    }
 
+    var data: T? = null
+    var statusCode: Int = 0
+    var message: String? = null
+
+    /**
+     * 用来拓展属性，比如pagination
+     */
+    var ext: Any? = null
     val isSuccess: Boolean
         get() = statusCode == 200
 
