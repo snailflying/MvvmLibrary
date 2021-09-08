@@ -1,6 +1,6 @@
 package com.theone.framework.http
 
-import com.themone.core.serviceloader.ServicesLoader
+import com.theone.framework.serviceloader.ServicesLoader
 
 /**
  * @author zhiqiang

@@ -1,4 +1,4 @@
-package com.themone.core.serviceloader
+package com.theone.framework.serviceloader
 
 import java.io.IOException
 import java.net.URL
