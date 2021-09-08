@@ -1,6 +1,6 @@
 package com.theone.framework.http
 
-import com.themone.core.util.LogUtil
+import com.theone.framework.util.LogUtil
 import com.theone.framework.base.BaseApp
 import okhttp3.Cache
 import okhttp3.Interceptor

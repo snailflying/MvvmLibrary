@@ -1,10 +1,10 @@
 package com.themone.core.base.impl
 
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.Lifecycle
 import com.themone.core.base.IViewModel
-import com.themone.core.util.LogUtil
 
 /**
  * @author zhiqiang
@@ -43,31 +43,28 @@ abstract class CoreMvvmActivity<VM : IViewModel> : CoreActivity() {
 
     override fun onPause() {
         super.onPause()
-        LogUtil.i(TAG, "onPause")
+        Log.i(TAG, "onPause")
 
     }
 
     override fun onResume() {
         super.onResume()
-        LogUtil.i(TAG, "onResume")
-
+        Log.i(TAG, "onResume")
     }
 
     override fun onStop() {
         super.onStop()
-        LogUtil.i(TAG, "onStop")
-
+        Log.i(TAG, "onStop")
     }
 
     override fun onStart() {
         super.onStart()
-        LogUtil.i(TAG, "onStart")
+        Log.i(TAG, "onStart")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        LogUtil.i(TAG, "onDestroy")
-
+        Log.i(TAG, "onDestroy")
     }
 
 }

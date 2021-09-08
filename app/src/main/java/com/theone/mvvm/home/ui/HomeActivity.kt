@@ -2,7 +2,7 @@ package com.theone.mvvm.home.ui
 
 import android.os.Bundle
 import android.util.Base64
-import com.themone.core.util.LogUtil
+import com.theone.framework.util.LogUtil
 import com.theone.framework.base.BaseActivity
 import com.theone.framework.encrypt.AesRsaEncrypt
 import com.theone.framework.ext.clickWithTrigger

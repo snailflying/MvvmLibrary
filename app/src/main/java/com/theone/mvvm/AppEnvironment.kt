@@ -1,6 +1,6 @@
 package com.theone.mvvm
 
-import com.themone.core.util.LogUtil
+import com.theone.framework.util.LogUtil
 import com.theone.framework.http.DefaultEnvironment
 import com.theone.mvvm.base.net.api.ApiService
 import com.theone.mvvm.base.net.interceptor.HeaderInterceptor

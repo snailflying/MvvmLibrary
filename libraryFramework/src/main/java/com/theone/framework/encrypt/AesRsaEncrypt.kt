@@ -8,7 +8,7 @@ import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import android.text.TextUtils
-import com.themone.core.util.LogUtil
+import com.theone.framework.util.LogUtil
 import java.math.BigInteger
 import java.security.*
 import java.security.spec.RSAKeyGenParameterSpec

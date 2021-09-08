@@ -1,4 +1,4 @@
-package com.themone.core.util
+package com.theone.framework.util
 
 import android.app.Activity
 import android.content.Context
@@ -8,15 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.WindowManager
-import com.themone.core.util.StatusBarUtil.compat
-import com.themone.core.util.StatusBarUtil.setFitsSystemWindows
+import com.theone.framework.util.StatusBarUtil.compat
+import com.theone.framework.util.StatusBarUtil.setFitsSystemWindows
 
 
 /**
  * @author zhiqiang
  * @date 2019-06-04
  * @desc
- * [com.themone.core.base.impl.CoreActivity]内如下调用：
+ * [com.themone.framework.base.BaseActivity]和[com.themone.framework.base.BaseMvvmActivity]内如下调用：
  * 1.[setTransparentForWindow]设置状态栏透明
  * 2.[setFitsSystemWindows]将activity的rootView设置一个“系统padding”
  * 额外需要处理的情况：
@@ -28,7 +28,7 @@ object StatusBarUtil {
 
 
     /**
-     * 设置透明状态栏,[com.piaoyou.piaoxingqiu.app.base.NMWActivity]内调用
+     * 设置透明状态栏,[com.themone.framework.base.BaseActivity]和[com.themone.framework.base.BaseMvvmActivity]内调用
      */
     fun transparentStatusBar(activity: Activity) {
         val window = activity.window
@@ -133,26 +133,12 @@ object StatusBarUtil {
                 offsetView.paddingLeft, offsetView.paddingTop + statusBarHeight,
                 offsetView.paddingRight, offsetView.paddingBottom
             )
-            layoutParams.height += statusBarHeight
+            val height = layoutParams.height
+            if (height > 0) {
+                layoutParams.height = height + statusBarHeight
+            }
         }
     }
-
-    /**
-     * 给具体view额外设置一个状态栏高度的 margin
-     * 跟[setFitsSystemWindows]互斥
-     */
-    /*fun addStatusBarHeightTopMarginForView(offsetView: View?) {
-        offsetView ?: return
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            val layoutParams = offsetView.layoutParams as ViewGroup.MarginLayoutParams
-            layoutParams.setMargins(
-                offsetView.marginLeft,
-                getStatusBarHeight(offsetView.context) + offsetView.marginTop,
-                offsetView.marginRight,
-                offsetView.marginBottom
-            )
-        }
-    }*/
 
     /**
      * 设置底部导航栏是否可见

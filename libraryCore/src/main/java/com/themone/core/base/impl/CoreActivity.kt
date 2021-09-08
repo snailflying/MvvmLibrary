@@ -1,10 +1,6 @@
 package com.themone.core.base.impl
 
-import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.themone.core.util.StatusBarUtil
 
 /**
  * @author zhiqiang
@@ -12,46 +8,6 @@ import com.themone.core.util.StatusBarUtil
  * @desc 简单 Activity，无业务逻辑可继承此类
  */
 open class CoreActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        //状态栏透明
-        StatusBarUtil.transparentStatusBar(this)
-    }
-
-    override fun setContentView(layoutResID: Int) {
-        super.setContentView(layoutResID)
-        //状态栏偏移
-        if (isFitsSystemWindows()) {
-            StatusBarUtil.setFitsSystemWindows(this)
-        }
-    }
-
-    override fun setContentView(view: View?) {
-        super.setContentView(view)
-        //状态栏偏移
-        if (isFitsSystemWindows()) {
-            StatusBarUtil.setFitsSystemWindows(this)
-        }
-    }
-
-    override fun setContentView(view: View?, params: ViewGroup.LayoutParams?) {
-        super.setContentView(view, params)
-        //状态栏偏移
-        if (isFitsSystemWindows()) {
-            StatusBarUtil.setFitsSystemWindows(this)
-        }
-    }
-
-    /**
-     * 1.statusBar的底色来自Imageview等元素，而非根部局
-     * 2.statusBar的底色Fragment
-     * 以上情况，isFitsSystemWindows()设置为false，且手动调用[StatusBarUtil.addStatusBarOffsetForView]
-     * @return Boolean
-     */
-    open fun isFitsSystemWindows(): Boolean {
-        return false
-    }
 
     /**
      * Fragment返回键处理，见[CoreFragment.onBackPressed]

@@ -1,11 +1,11 @@
 package com.themone.core.base.impl
 
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import com.themone.core.base.IModel
 import com.themone.core.base.IViewModel
-import com.themone.core.util.LogUtil
 
 /**
  * @author zhiqiang
@@ -24,18 +24,18 @@ abstract class CoreViewModel<M : IModel> : ViewModel(), IViewModel {
 
     @MainThread
     override fun onResume(owner: LifecycleOwner) {
-        LogUtil.i(TAG, "onResume")
+        Log.i(TAG, "onResume")
     }
 
     @MainThread
     override fun onPause(owner: LifecycleOwner) {
-        LogUtil.i(TAG, "onPause")
+        Log.i(TAG, "onPause")
     }
 
 
     override fun onCleared() {
         model.onDestroy()
-        LogUtil.i(TAG, "onCleared")
+        Log.i(TAG, "onCleared")
     }
 
     companion object {

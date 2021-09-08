@@ -33,7 +33,7 @@ import android.view.View
 import android.webkit.*
 import androidx.annotation.RequiresApi
 import com.alipay.sdk.app.PayTask
-import com.themone.core.util.LogUtil
+import com.theone.framework.util.LogUtil
 import com.theone.framework.base.BaseApp
 import java.lang.ref.WeakReference
 import java.lang.reflect.Method

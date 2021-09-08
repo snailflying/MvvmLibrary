@@ -2,8 +2,8 @@ package com.themone.core.base.impl
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
-import com.themone.core.util.LogUtil
 
 /**
  * @author zhiqiang
@@ -50,7 +50,6 @@ open class CoreFragment : Fragment() {
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        LogUtil.i(TAG, this.javaClass.simpleName + "  onHiddenChanged dispatchChildVisibleState  hidden " + hidden)
         if (hidden) {
             this.dispatchUserVisibleHint(false)
         } else {
@@ -117,15 +116,15 @@ open class CoreFragment : Fragment() {
     }
 
     open fun onFragmentFirstVisible() {
-        LogUtil.i(TAG, this.javaClass.simpleName + "  对用户第一次可见")
+        Log.i(TAG, this.javaClass.simpleName + "  对用户第一次可见")
     }
 
     open fun onFragmentResume() {
-        LogUtil.i(TAG, this.javaClass.simpleName + "  对用户可见")
+        Log.i(TAG, this.javaClass.simpleName + "  对用户可见")
     }
 
     open fun onFragmentPause() {
-        LogUtil.i(TAG, this.javaClass.simpleName + "  对用户不可见")
+        Log.i(TAG, this.javaClass.simpleName + "  对用户不可见")
     }
 
     override fun onDestroyView() {
