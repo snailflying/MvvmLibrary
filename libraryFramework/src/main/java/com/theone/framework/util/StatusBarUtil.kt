@@ -134,7 +134,7 @@ object StatusBarUtil {
                 offsetView.paddingRight, offsetView.paddingBottom
             )
             val height = layoutParams.height
-            if (height > 0) {
+            if (height >= 0) {
                 layoutParams.height = height + statusBarHeight
             }
         }
