@@ -8,7 +8,6 @@ import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.wifi.WifiManager
 import android.os.Build
-import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.text.TextUtils
 import com.theone.framework.base.BaseApp
@@ -90,66 +89,11 @@ object DeviceUtil {
      */
     @SuppressLint("HardwareIds", "MissingPermission", "PrivateApi")
     fun getDeviceId(context: Context = BaseApp.application): String {
-
-        //优化device id的策略，尽量减少漂移
-        if (!TextUtils.isEmpty(SpUtil.getSp(context).getString(TRACKING_DEVICE_ID, null))) {
-            return SpUtil.getSp(context).getString(TRACKING_DEVICE_ID, null) ?: ""
-
-        }
-
-        var result: String? = ""
-        try {
-            if (checkPermissions(context, "android.permission.READ_PHONE_STATE")) {
-                var deviceId: String? = null
-                if (context.getSystemService(
-                        Context
-                            .TELEPHONY_SERVICE
-                    ) != null
-                ) {
-                    val telephonyManager = context.getSystemService(
-                        Context.TELEPHONY_SERVICE
-                    ) as? TelephonyManager
-                    deviceId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        telephonyManager?.imei
-                    } else {
-                        telephonyManager?.deviceId
-                    }
-                }
-                var backId = ""
-                if (!TextUtils.isEmpty(deviceId) && deviceId?.contains("00000000000") != true) {
-                    backId = deviceId!!
-                    backId = backId.replace("0", "")
-                }
-
-                if (TextUtils.isEmpty(deviceId) || TextUtils.isEmpty(backId)) {
-                    deviceId = try {
-                        val c = Class.forName("android.os.SystemProperties")
-                        val get = c.getMethod("get", String::class.java, String::class.java)
-                        get.invoke(c, "ro.serialno", "unknown") as String
-                    } catch (t: Exception) {
-                        ""
-                    }
-
-                }
-
-                result = if (!deviceId.isNullOrEmpty()) {
-                    deviceId
-                } else {
-                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
-                }
-            } else {
-                result =
-                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
-            }
-        } catch (ignored: Exception) {
-
-        }
-
-        SpUtil.getSp(context).edit().putString(TRACKING_DEVICE_ID, result!!).apply()
-        return result
+        return UniqueIdUtils.getUniqueId(context)
     }
 
     @SuppressLint("HardwareIds", "MissingPermission", "PrivateApi")
+    @Deprecated("必须经过用户同意才可调用")
     fun getIMEI(context: Context): String? {
         return if (checkPermissions(context, "android.permission.READ_PHONE_STATE")) {
             if (context.getSystemService(Context.TELEPHONY_SERVICE) != null) {
