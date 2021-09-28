@@ -54,10 +54,10 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
 
     //kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_stdlib_jdk7}"
-    implementation "androidx.core:core-ktx:${rootProject.ext.core_ktx}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${rootProject.ext.kotlin_version}"
 
     //google
+    implementation "androidx.core:core-ktx:${rootProject.ext.core_ktx}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompat}"
     implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycle_extensions}"
     //bottomsheet
