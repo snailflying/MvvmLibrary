@@ -47,7 +47,7 @@ import java.util.*
 open class BaseDialogFragment : AppCompatDialogFragment() {
     protected lateinit var mContext: Context
 
-    private var mRequestCode = DEFAULT_REQUEST_CODE
+    protected var mRequestCode = DEFAULT_REQUEST_CODE
 
     /**
      * 点击外部隐藏dialog，默认开启
