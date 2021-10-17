@@ -25,7 +25,7 @@ object RxUtil {
                 if (it.isSuccess) {
                     it.data
                 } else {
-                    throw NetworkException(it.statusCode, it.message)
+                    throw NetworkException(it.statusCode, it.message?:"")
                 }
             }
         }
@@ -43,7 +43,7 @@ object RxUtil {
                 if (it.isSuccess) {
                     it.data
                 } else {
-                    throw NetworkException(it.statusCode, it.message)
+                    throw NetworkException(it.statusCode, it.message?:"")
                 }
             }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -61,7 +61,7 @@ object RxUtil {
                 if (it.isSuccess) {
                     it
                 } else {
-                    throw NetworkException(it.statusCode, it.message)
+                    throw NetworkException(it.statusCode, it.message?:"")
                 }
             }
         }
@@ -79,7 +79,7 @@ object RxUtil {
                 if (it.isSuccess) {
                     it
                 } else {
-                    throw NetworkException(it.statusCode, it.message)
+                    throw NetworkException(it.statusCode, it.message?:"")
                 }
             }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
