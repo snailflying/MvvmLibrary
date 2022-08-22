@@ -3,7 +3,7 @@ package com.shownow.shownow.base.constant
 /**
  * @Author zhiqiang
  * @Date 2019-06-11
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 object Constant {

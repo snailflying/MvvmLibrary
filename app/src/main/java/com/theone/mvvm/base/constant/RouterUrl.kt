@@ -3,7 +3,7 @@ package com.shownow.shownow.base.constant
 /**
  * @Author zhiqiang
  * @Date 2019-06-11
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description 用来定义路由器的路由地址，以及传参
  * ！！！！name和key默认以"_KEY"结尾，值需要显示以"_VALUE"结尾！！！！
  */

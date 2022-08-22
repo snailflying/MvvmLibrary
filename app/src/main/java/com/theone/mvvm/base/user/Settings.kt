@@ -8,7 +8,7 @@ import com.theone.framework.util.SpUtil
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Date 2019-06-11
  * @Description User类的保存
  */

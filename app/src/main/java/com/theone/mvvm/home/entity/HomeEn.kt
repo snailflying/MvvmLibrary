@@ -5,7 +5,7 @@ import java.io.Serializable
 /**
  * @Author zhiqiang
  * @Date 2019-08-13
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 class HomeEn : Serializable {

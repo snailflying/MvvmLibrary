@@ -6,7 +6,7 @@ import java.io.Serializable
 
 /**
  * @Author zhiqiang
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Date 2019-06-11
  * @Description
  */

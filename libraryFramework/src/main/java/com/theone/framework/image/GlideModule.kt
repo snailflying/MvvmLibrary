@@ -14,7 +14,7 @@ import java.io.InputStream
 /**
  * @Author zhiqiang
  * @Date 2020/7/28
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 @GlideModule

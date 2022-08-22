@@ -3,7 +3,7 @@ package com.theone.framework.util
 /**
  * @Author zhiqiang
  * @Date 2019-07-25
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 
@@ -18,7 +18,7 @@ import java.util.*
 /**
  * @Author zhiqiang
  * @Date 2019/3/8
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description UriUtils的测试类
  * 自动去掉path最后一个"/"
  * scheme {://} host /path {/?} query

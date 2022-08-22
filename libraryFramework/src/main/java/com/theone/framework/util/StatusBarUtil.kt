@@ -72,7 +72,7 @@ object StatusBarUtil {
     }
 
     /**
-     * 设置填充状态栏高度,[com.juqitech.moretickets.core.base.impl.CoreActivity]内调用
+     * 设置填充状态栏高度,[com.themone.core.base.impl.CoreActivity]内调用
      * rootView.fitsSystemWindows = true时，系统自动给rootView一个状态栏高度的paddingTop
      * 跟[addStatusBarHeightForView]互斥
      */

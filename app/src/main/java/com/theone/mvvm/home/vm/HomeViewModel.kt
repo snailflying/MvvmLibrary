@@ -6,7 +6,7 @@ import com.theone.mvvm.home.model.HomeModel
 /**
  * @Author zhiqiang
  * @Date 2019-08-13
- * @Email liuzhiqiang@moretickets.com
+ * @Email liuzhiqiang@theone.com
  * @Description
  */
 class HomeViewModel() : BaseViewModel<HomeModel>() {
