@@ -4,22 +4,21 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-
-import com.themone.core.base.IViewModel
-import com.themone.core.base.impl.CoreMvvmActivity
-import com.theone.framework.util.LogUtil
+import com.themone.core.base.presentation.CoreMvvmActivity
+import com.themone.core.base.presentation.IViewModel
 import com.theone.framework.util.I18NUtil
+import com.theone.framework.util.LogUtil
 import com.theone.framework.util.StatusBarUtil
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**
  * @Author zhiqiang
  * @Date 2019-06-19
- * @Email liuzhiqiang@theone.com
  * @Description
  */
 abstract class BaseMvvmActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), IBaseActivity {
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //状态栏透明
@@ -59,6 +58,7 @@ abstract class BaseMvvmActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), IBase
     open fun isFitsSystemWindows(): Boolean {
         return false
     }
+
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(I18NUtil.updateResource(newBase))
         LogUtil.i("attachBaseContext")
@@ -67,5 +67,15 @@ abstract class BaseMvvmActivity<VM : IViewModel> : CoreMvvmActivity<VM>(), IBase
     override fun onDestroy() {
         compositeDisposable.clear()
         super.onDestroy()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
     }
 }

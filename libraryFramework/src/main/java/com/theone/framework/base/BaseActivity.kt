@@ -4,8 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
-import com.themone.core.base.impl.CoreActivity
-
+import com.themone.core.base.presentation.CoreActivity
 import com.theone.framework.util.I18NUtil
 import com.theone.framework.util.StatusBarUtil
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -18,6 +17,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
  */
 open class BaseActivity : CoreActivity(), IBaseActivity {
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //状态栏透明

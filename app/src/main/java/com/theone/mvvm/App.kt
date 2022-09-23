@@ -13,7 +13,7 @@ import com.theone.framework.base.BaseApp
 class App : Application(), BaseApp {
     override fun onCreate() {
         super.onCreate()
-        initApplication(this)
+        BaseApp.initApplication(this)
     }
 
     override fun attachBaseContext(base: Context?) {

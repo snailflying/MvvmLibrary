@@ -1,6 +1,6 @@
 package com.theone.framework.base
 
-import com.themone.core.base.impl.CoreFragment
+import com.themone.core.base.presentation.CoreFragment
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 
@@ -12,7 +12,6 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
  */
 open class BaseFragment : CoreFragment(), IBaseFragment {
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
     override fun onDestroy() {
         compositeDisposable.clear()
         super.onDestroy()

@@ -1,7 +1,7 @@
 package com.theone.framework.base
 
-import com.themone.core.base.IModel
-import com.themone.core.base.impl.CoreViewModel
+import com.themone.core.base.domain.IRepository
+import com.themone.core.base.presentation.CoreViewModel
 import com.theone.framework.http.ApiResponse
 import io.reactivex.rxjava3.core.Observer
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.disposables.Disposable
  * @Date 2019-08-02
  * @Description
  */
-abstract class BaseViewModel<M : IModel> : CoreViewModel<M>(), IBaseViewModel {
+abstract class BaseViewModel<M : IRepository> : CoreViewModel<M>(), IBaseViewModel {
     override val compositeDisposable: CompositeDisposable = CompositeDisposable()
     override fun onCleared() {
         compositeDisposable.clear()
@@ -37,7 +37,7 @@ abstract class BaseViewModel<M : IModel> : CoreViewModel<M>(), IBaseViewModel {
          * @param statusCode
          * @param comments
          */
-        abstract fun onResultFailed(data: T?,statusCode: Int, comments: String?)
+        abstract fun onResultFailed(data: T?, statusCode: Int, comments: String?)
 
         override fun onComplete() { //空实现
         }
@@ -46,7 +46,7 @@ abstract class BaseViewModel<M : IModel> : CoreViewModel<M>(), IBaseViewModel {
             if (apiResponse.isSuccess) {
                 onResultSuccess(apiResponse.data)
             } else {
-                onResultFailed(apiResponse.data,apiResponse.statusCode, apiResponse.message)
+                onResultFailed(apiResponse.data, apiResponse.statusCode, apiResponse.message)
             }
         }
     }

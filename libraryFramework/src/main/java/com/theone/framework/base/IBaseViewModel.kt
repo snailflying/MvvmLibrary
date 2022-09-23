@@ -1,6 +1,6 @@
 package com.theone.framework.base
 
-import com.themone.core.base.IViewModel
+import com.themone.core.base.presentation.IViewModel
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 /**

@@ -1,6 +1,6 @@
 package com.theone.mvvm.home.model
 
-import com.theone.framework.base.BaseModel
+import com.theone.framework.base.BaseRepository
 import com.theone.mvvm.base.net.api.ApiService
 
 /**
@@ -9,5 +9,5 @@ import com.theone.mvvm.base.net.api.ApiService
  * @Email liuzhiqiang@theone.com
  * @Description
  */
-class HomeModel:BaseModel<ApiService>(ApiService::class.java) {
+class HomeRepository:BaseRepository<ApiService>(ApiService::class.java) {
 }

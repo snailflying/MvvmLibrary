@@ -1,7 +1,7 @@
 package com.shownow.shownow.base.constant
 
 /**
- * @author zhanfeng
+ * @author ZhiQiang
  * @date 2019-06-05
  * @desc
  */
