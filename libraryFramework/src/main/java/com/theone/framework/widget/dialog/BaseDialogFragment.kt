@@ -251,7 +251,7 @@ open class BaseDialogFragment : AppCompatDialogFragment() {
      * @param tag String
      */
     @JvmOverloads
-    fun showAllowingStateLoss(
+    open fun showAllowingStateLoss(
         manager: FragmentManager?,
         tag: String? = this.javaClass.name,
         dismissPreDialog: Boolean = true
