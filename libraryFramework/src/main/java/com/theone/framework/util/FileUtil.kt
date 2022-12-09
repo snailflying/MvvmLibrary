@@ -13,37 +13,54 @@ import java.io.InputStream
  * @Description 文件管理 工具类
  */
 object FileUtil {
-    private val CACHE_PATH = "cache"
-    private val FILE_PATH = "file"
-
 
     //获取文件夹目录 by:zhiqiang [start]
 
-
-    fun getCachePath(context: Context): String {
-        return getDiskCacheDir(
-            context,
-            CACHE_PATH
-        )!!.toString() + File.separator
+    /**
+     * 删除文件
+     */
+    fun deleteDir(dir: File?): Boolean {
+        if (dir != null && dir.isDirectory) {
+            val children = dir.list() ?: emptyArray()
+            for (i in children.indices) {
+                val success = deleteDir(File(dir, children[i]))
+                if (!success) {
+                    return false
+                }
+            }
+        }
+        return dir!!.delete()
     }
 
-    fun getFilePath(context: Context): String {
-        return getDiskFileDir(
-            context,
-            FILE_PATH
-        )!!.toString() + File.separator
-    }
-
-    fun getCachePath(context: Context, path: String): String {
-        return getDiskCacheDir(context, path)!!.toString() + File.separator
-    }
-
-    fun getFilePath(context: Context, path: String): String {
-        return getDiskFileDir(context, path)!!.toString() + File.separator
+    /**
+     * 判断文件是否存在
+     */
+    fun fileIsExists(file: File?): Boolean {
+        try {
+            if (file?.exists() != true) {
+                return false
+            }
+        } catch (e: Exception) {
+            return false
+        }
+        return true
     }
 
     @JvmOverloads
-    fun getDiskFileDir(context: Context, fileDir: String? = FILE_PATH): File? {
+    fun getCachePath(context: Context, fileDir: String? = null): String? {
+        return getDiskCacheDir(context, fileDir)?.toString()
+    }
+
+    @JvmOverloads
+    fun getFilePath(context: Context, path: String? = null): String? {
+        return getDiskFileDir(context, path)?.toString()
+    }
+
+    /**
+     * 优先获取getExternalFilesDir
+     * 其次getFilesDir
+     */
+    fun getDiskFileDir(context: Context, fileDir: String?): File? {
 
         var directory = context.getExternalFilesDir(null)
 
@@ -61,8 +78,7 @@ object FileUtil {
         return directory
     }
 
-    @JvmOverloads
-    fun getDiskCacheDir(context: Context, fileDir: String? = CACHE_PATH): File? {
+    fun getDiskCacheDir(context: Context, fileDir: String?): File? {
 
         var cacheDirectory = context.externalCacheDir
 

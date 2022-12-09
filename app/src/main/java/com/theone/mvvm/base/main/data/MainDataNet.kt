@@ -1,6 +1,8 @@
 package com.theone.mvvm.base.main.data
 
-import com.theone.mvvm.base.main.http.ApiService
+import com.theone.mvvm.base.net.api.ApiService
+import com.theone.mvvm.home.entity.HomeEn
+import io.reactivex.rxjava3.core.Observable
 
 /**
  * @Author ZhiQiang
@@ -8,7 +10,7 @@ import com.theone.mvvm.base.main.http.ApiService
  * @Description
  */
 class MainDataNet(private val apiService: ApiService) {
-    fun getData(): String {
-        return apiService.getData()
+    fun getData(): Observable<HomeEn> {
+        return apiService.getMock()
     }
 }
